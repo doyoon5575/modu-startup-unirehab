@@ -1,0 +1,1042 @@
+--- [P1] ---
+총  41 쪽 , 63,729 자를  모두  읽었습니다 . 핵심은  대상자  정보  → 목표 · 회기  설계  → 문항별  수행  → 치료사  검
+토  → 결과  확정  → 다음  계획  승인  → 가정  연습을  끊김  없이  연결하는  것입니다 .
+우선  설치  없이  브라우저에서  실행할  수  있는  로컬  버전으로  만들겠습니다 . 특히  첫  반응과  단서  후  반응
+의  분리 , 분모가  드러나는  결과 , 수정  시  재승인 , 실습생의  승인  제한을  실제  동작으로  구현하겠습니다 .
+다만  한국어  장애  발화  AI 의  정확도 , 실제  기관  계정 · 보안 , 의료기기  해당  여부는  이번  구현만으로  검증
+할  수  없으므로  완료된  것처럼  표시하지  않겠습니다 .
+( 크레딧  한도에  도달해  도구  실행을  멈추고  지금까지의  결과를  정리합니다 .)
+도윤님 , 첨부한  세  파일은  모두  읽었지만 , 요청하신  프로그램을  실행  가능한  완성본으로  제공하는  단계
+까지는  완료하지  못했습니다 . 현재는  핵심  계산 · 상태관리  코드  초안을  작성한  상태입니다 . 화면  구현과
+실행  검증이  끝나지  않았으므로  " 프로그램  완성 " 이라고  말씀드릴  수는  없습니다 .
+1. 확인한  자료  범위
+자료읽은  범위핵심  요구
+최초  아이디어 · 기획  자료
+14 쪽  전체
+대상자  관리부터  다음  회기 · 가정  연습까지  연결하는  서비스
+상세  자료  수집  자료
+20 쪽  전체
+기능별  입력 , 중재  조건 , 문항별  데이터 , 분석  한계 , 근거  관리
+치료사  검토  화면  설계
+7 쪽  전체
+3 단  검토  화면 , 분리  승인 , 수정  이력과  예외  처리
+합계
+41 쪽 ·63,729 자
+본문과  참고자료  목록까지  읽음
+검토  화면은  첫  페이지의  원래  배치도  별도로  확인했습니다 . 다만  문서에  나열된  외부  참고문헌의
+실재성 · 내용 · 최신성을  모두  검증한  것은  아닙니다 . 자료를  읽은  것과  근거를  검증한  것은  구분해야
+합니다 .
+2. 프로그램에서  반드시  지켜야  할  구조
+세  자료를  종합하면 , 이  프로그램은  단순한  음성인식  앱이  아니라  다음  과정이  연결된  치료사  의사
+결정  지원  프로그램이어야  합니다 .
+대상자  정보  → 기능  평가  → 개인별  목표  → 회기  설계  → 문항별  수행  → 치료사  검토  → 회기  결과  확정
+세  파일을  끝까지  읽고 , 요구사항을  기능 · 데이터 · 화면 ·
+안전  기준으로  나눠  실제  프로그램으로  구현하겠습니
+다 . 임상  검증이나  외부  AI 연결이  필요한  부분은  구현
+된  기능과  명확히  구분하고 , 각  요구사항의  반영  여부도
+함께  점검하겠습니다 .
+--- [P2] ---
+→ 다음  계획  승인  → 가정  연습  → 다음  평가에  반영
+특히  다음  요구사항은  화면에  안내문만  넣는  것이  아니라 , 실제  저장 · 계산 · 승인  조건으로  작동해야
+합니다 .
+미입력은  정상으로  처리하지  않기 : 정보마다  출처와  확인  상태를  보존합니다 .
+첫  반응을  덮어쓰지  않기 : 최초  반응 , 단서  종류 · 순서 , 단서  후  반응을  각각  남깁니다 .
+수집  실패와  무반응  구분 : 녹음  실패를  대상자의  오반응으로  계산하지  않습니다 .
+분모를  명시하기 : 독립  수행률과  도움  후  성공률을  별도로  계산합니다 .
+AI 와  치료사  판단  분리 : 자동  전사 · 분석을  치료사  확정값처럼  저장하지  않습니다 .
+승인을  분리하기 : 회기  결과  확정 , 다음  계획  승인 , 가정  배정은  각각  별도  동작입니다 .
+수정  시  재승인  요구 : 기초  자료나  채점  기준이  바뀌면  연결된  결과 · 계획을  재검토해야  합니다 .
+실습생  승인  제한 : 초안  작성과  검토  요청은  가능하지만  임상  계획을  확정할  수  없어야  합니다 .
+이는  특히  최초  자료  4~10 쪽 , 상세  자료  5~8 쪽 , 검토  화면  자료  3~6 쪽에  제시된  요구입니다 .
+3. 현재  작성한  코드의  범위
+아래  항목은  핵심  로직  초안에  작성했으나 , 아직  실행  테스트를  통과한  기능은  아닙니다 .
+영역작성한  내용
+대상자 · 동의
+기능  프로필 , 정보  출처 · 확인  상태 , 서비스 · 녹음 · 외부  전송 · 연구 · 모델  학습 · 보호자  공유  동의  분리
+목표 · 회기
+생활  목표 , 목표  행동 , 도움  조건 , 개인별  달성  기준 , 채점  기준과  버전 , 휴식 · 중단  조건
+문항별  기록
+최초  반응 , 여러  차례의  단서와  후속  반응 , 시점 , 수집  상태 , 음질  상태
+치료사  검토
+포함 · 제외 · 보류 , 최초 · 도움  후  판정 , 전사 · 시간  수정  이유 , 수정  이력
+결과  계산
+유효 · 미검토 · 보류 · 제외  문항 , 독립  수행 , 도움  후  성공 , 반응  시간과  해당  문항  ID
+다음  계획
+수집  환경 , 자료  부족 , 단서  의존 , 새  자극 , 후반  수행  저하  등을  검토하는  설명  가능한  규칙
+승인 · 변경  관리
+결과와  계획의  분리  승인 , 기초  자료  변경  시  승인  무효화 , 연결된  가정  배정  중지
+가정  연계
+승인  활동의  별도  배정 , 도움  안내 · 중단  조건 , 자기보고와  임상  점수의  분리
+다음  계획  생성  부분은  검증된  AI 치료계획  엔진이  아니라 , 첨부  자료의  설계  예시를  구현한  규칙  기
+반  초안입니다 . 근거  자료가  연결되지  않은  제안에  임상적  근거가  있는  것처럼  표시하지  않도록  구
+분했습니다 .
+4. 아직  완성되지  않은  부분
+현재  상태를  실제  사용  가능한  프로그램으로  오해하지  않도록  명확히  남깁니다 .
+미완료  영역필요한  작업
+사용자  화면
+대상자  입력 , 회기  실행 , 3 단  검토 , 결과 · 계획 , 가정  연습  화면
+실제  녹음 · 재생
+마이크  녹음 , 원음  저장 , 구간  반복 , 재생속도 , 시간  수정
+실제  AI 분석
+음성인식  연결 , 원음과  전사  보존 , 오류 · 불확실성  표시 , 한국어  장애  발화  성능  검증
+저장 · 복구
+지속  저장 , 백업 · 복원 , 저장  실패 , 동시  수정  충돌  처리
+--- [P3] ---
+기관  운영
+실제  로그인 · 서버  권한 , 기관  간  데이터  분리 , 보호자  접근  통제
+출력물
+회기  계획서 · 결과보고서 · 다음  계획서의  다운로드
+확장  콘텐츠
+AAC 표현판 , SFA·PCA·VNeST· 스크립트 · 읽기 · 말운동  과제의  실제  실행  화면
+검증 · 납품
+요구사항  대조표 , 자동  테스트 , 사용성  점검 , 실행  파일 · 소스  패키지
+현재  다운로드해서  바로  실행할  수  있는  완성  파일은  제공되지  않았습니다 . 따라서  이번  결과는  전
+체  자료  검토와  핵심  로직  초안  작성까지  진행된  미완성  구현입니다 . 요청하신  수준인  " 누락  여부를
+점검하고  실제로  사용할  수  있는  프로그램 " 에는  아직  도달하지  못했습니다 .
+이걸  토대로  부족한  부분을  모두  채워주기  바래 . 자료조사해서  가장  최적화된  최고의  자료들로  부족한
+부분을  기획  설계  채워  넣어주기  바래 .
+부족한  부분을  채우려면 , 기능  목록을  더  늘리는  것이  아니라  ʻ 무엇을  저장하고 , 어떻게  계산하며 , 누가
+확정하고 , 어떤  조건에서  사용을  막을지 ʼ 까지  정해야  합니다 . 아래는  기존  방향을  유지하면서  미완료  영
+역을  개발자가  구현하고  임상가가  검토할  수  있는  기획 · 설계  명세로  보완한  안입니다 .
+먼저  범위를  정확히  하겠습니다 . 이번  답변에서는  세  파일  원문  전체와  기존  코드의  실제  상태를  재확인
+하지  못했습니다 . 따라서  인용해  주신  요구사항을  기준으로  보완하며 , ʻ 설계  완료 ʼ 와  ʻ 구현 · 시험 · 임상  검
+증  완료 ʼ 를  구분합니다 .
+아래의  기능 · 데이터 · 화면 · 운영  규칙은  제품  설계  제안입니다 . 외부  근거가  있는  임상 · 기술  사실에는  출처
+를  붙였고 , 제품  자체의  효과나  국내  규제  적합성이  검증된  것처럼  표현하지  않았습니다 .
+이  서비스의  중심은  치료사가  개인별  목표를  설계하고 , 수행  자료를  검토해  다음  치료로  연결하는  업무
+입니다 . 기존에  말씀하신  방향  역시  일반적인  음성인식  앱이  아니라 , 성인  언어재활의  반복  연습과  임상
+의사결정을  지원하는  프로그램입니다 .
+뇌졸중  재활에  관한  NICE 지침은  개인에게  의미  있는  활동 · 참여  목표 , 의사소통  전문가의  감독 , 개별화
+된  중재를  강조합니다 . 컴퓨터  기반  이름대기  프로그램도  개인  목표와  상황에  맞추어  대면  언어치료와
+함께  고려하는  방식으로  제시합니다 .NICE NG236
+치료사가  승인한  개인별  목표와  과제를  실행하고 , 최초  반응 · 도움  과정 · 원음 · 검토  판단을  연결하
+여  회기  결과와  다음  계획을  관리하는  성인  언어재활  지원  서비스 .
+구분 설계상  정의
+주사용자 성인  언어재활을  담당하는  치료사
+공동사용자 감독받는  실습생 , 대상자 , 승인된  보호자
+핵심  가치 기록의  신뢰성 , 검토  시간  감소 , 회기  간  연결 , 생활  목표  추적
+성인  언어재활  서비스  보완  설계
+서비스의  중심을  고정
+제품  정의
+--- [P4] ---
+구분 설계상  정의
+AI 역할 전사 · 관찰값 · 문서  초안  생성  보조
+치료사  역할 목표 · 채점  기준  설정 , 반응  해석 , 결과  확정 , 계획  승인
+초기  제외 자동  진단 , 치료사  없는  자동  처방 , 검증되지  않은  종합  중증도  점수
+확장  원칙 임상  모듈별로  사용  목적과  검증  범위를  따로  관리
+최적화의  우선순위는  ʻAI 가  더  많이  판단하는  것 ʼ 이  아니라  ʻ 틀린  판단이  확정  결과에  들어가지  않게  하는
+것 ʼ 으로  잡는  것이  적절합니다 .
+모든  장애 · 모든  과제 · 모든  분석을  한  번에  구현하면 , 무엇을  검증했는지  설명하기  어려워집니다 . 다음과
+같이  공통  업무  기능과  임상별  기능을  분리하는  방안을  권합니다 .
+단계 포함  범위 허용할  결과  표현 다음  단계  조건
+업무  흐름
+검증판
+대상자 · 목표 · 회기 · 수기  채점 · 승인 ·
+출력 “ 기록 · 계산 · 승인  기능 ” 계산 · 권한 · 저장  시험  통과
+음성  검토
+지원판 실제  녹음 · 재생 · 구간  표시 · 수동  전사 “ 음성자료  검토  지원 ” 녹음  누락 · 시간  오차 · 복구
+시험
+제한적  AI 지원판 정해진  과제 · 대상  범위의  전사  초안 “ 검토  전  자동  전사 ” 별도  평가자료에서  성능  확인
+임상  모듈
+확장판
+SFA· 스크립트 · 읽기 · 말운동  등 모듈별  적용  범위  표시 콘텐츠  검토 · 사용성 · 임상평가
+기관  운영판 실제  계정 · 서버  권한 · 감사 · 보호자
+접근
+검증한  운영  기능만  표시 보안 · 복구 · 규제  검토
+효과  주장  단계 특정  대상 · 중재 · 결과지표 입증한  범위의  효과만
+표현
+적절한  임상연구  완료
+중증  대상자나  AAC 사용자를  서비스에서  배제하는  방식은  피해야  합니다 . ASHA 는  AAC 에  대해  배제하
+지  않는  접근을  지지하며 , 의사소통  지원  필요에  따라  고려하도록  설명합니다 .
+따라서  자동  음성분석의  적용  대상은  좁히되 , 사진 · 글자 · 쓰기 ·AAC 로  참여할  수  있는  길은  열어두는  설계
+가  필요합니다 .
+ID 기능 반드시  구현할  동작 완료  판정
+F01 대상자  등록 최소정보  등록  후  상세정보  단계  입력 미입력을  정상으로  저장하지  않음
+F02 기능  프로필 관찰 · 검사 · 보고 · 미확인  구분 항목마다  출처 · 확인일  표시
+F03 동의  관리 목적별  처리  조건과  철회  상태  관리 금지된  처리 · 전송이  차단됨
+F04 목표  작성 생활  목표와  측정  목표  연결 목표마다  기준 · 조건 · 검토일  존재
+출시  범위를  단계화
+[1]
+기능을  실제  동작으로  구체화
+공통  기능  명세
+--- [P5] ---
+ID 기능 반드시  구현할  동작 완료  판정
+F05 회기  설계 활동 · 문항 · 도움 · 휴식 · 중단  조건  설정 실행  전  누락  검사
+F06 과제  실행 자극  제시와  반응  수집 실제  제시  조건이  기록됨
+F07 최초  반응 첫  반응과  이후  반응  분리 후속  입력이  첫  반응을  덮어쓰지  않음
+F08 도움  기록 종류 · 순서 · 시각 · 제공자  저장 여러  차례의  도움을  표현  가능
+F09 수집  예외 무반응 · 건너뜀 · 실패 · 중단  구분 기술  실패가  오답으로  계산되지  않음
+F10 음성  검토 원음 · 구간 · 전사 · 판정  연결 수정  전후  값과  이유  확인
+F11 문항  검토 포함 · 제외 · 보류  결정 결정  사유가  저장됨
+F12 결과  계산 목표별  분자 · 분모 · 문항  목록  생성 화면 · 출력 · 내보내기  결과  일치
+F13 결과  확정 승인된  데이터  버전을  고정 이후  수정이  새  개정본으로  남음
+F14 다음  계획 관찰  근거가  있는  후보  생성 제안  이유 · 제한 · 승인자  표시
+F15 가정  배정 승인된  활동  일부를  별도  배정 유효기간 · 도움  방법 · 중단  조건  존재
+F16 복구 · 출력 백업 · 복원 · 문서  내보내기 복원  후  데이터 · 원음  연결  검증
+기존  목록에서  특히  보완할  부분은  다음입니다 .
+비교  가능성  검사 : 같은  목표라도  자극 · 도움 · 반응  방식이  다르면  단순  향상률을  표시하지  않음 .
+지표별  유효성 : 한  문항이  언어  반응  분석에는  유효하지만  음성  분석에는  부적합할  수  있도록  처리 .
+반응  방식  구분 : 말하기  성공과  AAC 를  통한  메시지  전달  성공을  다른  지표로  기록 .
+버전  고정 : 과제 · 채점  기준 · 계산  방식 · 모델  버전을  결과와  연결 .
+미완료  추적 : 예정  문항 , 실시  문항 , 검토  문항 , 제외  문항을  모두  표시 .
+승인  의존성  관리 : 어떤  수정이  어떤  결과 · 계획에  영향을  주는지  계산 .
+사용  가능  범위  표시 : 구현됨 · 검토  필요 · 연구용 · 사용  불가  상태를  기능마다  표시 .
+대상자에게  보여주는  실행  화면과  치료사의  검토  화면은  분리합니다 . 실어증  대상자용  정보는  의사소통
+특성에  맞게  조정해야  한다는  지침도  있으므로 , 치료사용  고밀도  화면을  대상자에게  그대로  보여주는  방
+식은  피하는  것이  좋습니다 .NICE NG236
+화면 주요  구성 가장  중요한  동작 예외  상태
+업무  대시보드 오늘  회기 · 검토  대기 · 재승인  필요 다음  업무  열기 저장  실패 · 접근  불가
+대상자  목록 가명 · 담당자 · 진행  상태 대상자  선택 기관  범위  밖  접근  차단
+대상자  프로필 기본정보 · 기능 · 접근성 · 출처 정보  확인 미확인 · 상충  정보  표시
+추가해야  할  핵심  기능
+화면을  업무  순서로  설계
+필수  화면
+--- [P6] ---
+화면 주요  구성 가장  중요한  동작 예외  상태
+동의 · 공유 목적 · 대상 · 기간 · 철회 허용  범위  확정 철회  후  전송  차단
+목표  설정 생활  목표 · 행동 · 조건 · 기준 목표  승인 측정  불가능한  목표  경고
+회기  편집 목표 · 활동 · 문항 · 도움 · 중단 실행  준비  확인 권한 · 콘텐츠  문제
+기기  점검 마이크 · 재생 · 시험  녹음 수집  준비  확인 권한  거절 · 장치  없음
+과제  실행 자극 · 응답 · 도움 · 휴식 반응  수집 중단 · 재시도 · 수집  실패
+치료사  검토 원자료 · 분석 · 확정  판단 문항  검토  완료 분석  불가 · 판정  보류
+회기  결과 지표 · 분모 · 제외 · 한계 결과  확정 미검토  문항  존재
+다음  계획 유지 · 변경 · 확인  과제와  근거 계획  승인 근거  부족
+가정  배정 활동 · 일정 · 도움 · 중단 배정  확정 만료 · 철회 · 중지
+가정  실행 승인된  활동 · 쉬운  안내 연습  시작 오프라인 · 문의  필요
+출력 · 이력 문서 · 개정본 · 승인 · 접근  기록 내보내기 권한  제한
+왼쪽 : 원자료
+목표와  자극
+과제 · 채점  기준  버전
+최초  반응과  도움  순서
+원수집  음성
+수집  환경과  예외
+가운데 : 자동  분석  초안
+자동  전사
+제안된  발화  구간
+계산  가능한  관찰값
+분석  실패 · 불확실  구간
+모델과  처리  버전
+오른쪽 : 치료사  판단
+전사 · 구간  수정
+목표별  반응  판정
+포함 · 제외 · 보류
+판단  근거와  수정  이유
+검토  완료
+치료사  3 단  검토  화면
+--- [P7] ---
+화면  하단에는  **“ 저장됨  / 저장  중  / 저장  실패  / 검토  전  / 검토  완료 ”** 가  구분되어야  합니다 . 저장되지
+않은  상태에서  다음  문항으로  이동할  때는  명확한  경고와  복구  경로가  필요합니다 .
+작은  화면에서는  3 열을  축소하지  않고  원자료  → 분석  초안  → 확정  판단의  탭으로  전환하는  설계를  권합
+니다 .
+데이터 필수  내용 중요한  연결
+기관 기관  ID· 정책 · 운영  상태 모든  기관  데이터
+사용자 계정 · 역할 · 소속 · 활성  상태 작성 · 검토 · 승인
+대상자 내부  ID· 가명 · 담당자 프로필 · 목표 · 회기
+정보  근거 정보값 · 출처 · 확인자 · 확인일 프로필  항목
+처리  허용  기록 목적 · 근거 · 범위 · 기간 · 철회 녹음 · 전송 · 공유
+목표 생활  목표 · 측정  행동 · 조건 · 기준 회기 · 활동 · 결과
+콘텐츠 자극 · 반응  방식 · 권리 · 버전 문항  실행
+채점  기준 허용  반응 · 도움  정의 · 예외 문항  판정
+회기 계획 · 실제  순서 · 중단 · 상태 문항 · 결과
+문항  시도 자극 · 최초  반응 · 도움 · 후속  반응 음성 · 검토
+음성자료 파일 · 형식 · 길이 · 수집  설정 · 해시 전사 · 구간
+자동  분석 입력  버전 · 모델 · 출력 · 오류 치료사  검토
+치료사  검토 판단 · 수정 · 사유 · 검토자 결과  계산
+결과  개정본 지표 · 분모 · 근거文항 · 승인 다음  계획
+다음  계획 후보 · 선택 · 이유 · 승인 · 유효성 가정  배정
+가정  기록 실제  수행 · 도움 · 자기보고 다음  회기  참고
+이력 작성 · 변경 · 승인 · 접근 · 내보내기 관련  객체
+모든  주요  데이터에는  다음  필드를  두는  것을  제안합니다 .
+고유  ID / 기관  ID / 버전  / 작성자  / 작성시각  / 상태  / 이전  버전  / 변경  이유
+임상  판단과  결과에는  추가로  다음이  필요합니다 .
+근거  데이터  ID / 적용한  규칙  버전  / 검토자  / 승인자  / 승인시각
+FHIR 의  Provenance 는  자료의  생성 · 수정 · 서명에  관여한  과정과  주체를  표현하며 , AuditEvent 는  사용 ·
+접근  등의  사건을  추적하는  데  초점을  둡니다 .
+데이터  구조를  확정
+핵심  데이터  묶음
+공통  필드
+[2]
+--- [P8] ---
+따라서  “ 누가  이  결과를  만들었는가 ” 와  “ 누가  이  자료를  열어보았는가 ” 를  다른  기록으로  관리하는  것이
+좋습니다 . 다만  이런  구조를  참고했다고  해서  FHIR 연동이나  규정  준수가  완료되는  것은  아닙니다 .
+최초  반응 · 원수집  음성 · 자동  분석  원본은  수정값으로  덮어쓰지  않음 .
+수정은  새  값과  수정  이유를  추가하는  방식으로  처리 .
+승인된  결과는  해당  시점의  데이터  묶음을  고정 .
+정보가  없으면  빈값 · 미확인으로  유지하고  정상값을  자동  생성하지  않음 .
+가정  자기보고와  치료사가  확인한  임상  판단을  같은  필드에  저장하지  않음 .
+삭제 · 철회 · 보존은  서로  다른  상태로  관리하고  적용  정책을  명시 .
+문항  전체에  하나의  ʻ 유효 / 무효 ʼ 를  붙이는  방식은  부족합니다 . 음성이  저장되지  않았더라도  치료사가  현
+장에서  그림  선택  반응을  확인했다면 , 선택  과제  결과와  음성  분석  결과의  사용  가능  여부는  달라집니다 .
+구분 예시
+실행  상태 예정 · 실시 · 건너뜀 · 중단
+수집  상태 성공 · 부분  성공 · 실패
+반응  상태 반응  있음 · 무반응 · 판단  불가
+검토  상태 미검토 · 완료 · 보류
+지표별  적합성 언어  반응  가능 · 시간  분석  불가 · 음향  분석  불가
+결과  사용 포함 · 제외  및  사유
+독립  수행은  “ 아무  도구도  사용하지  않은  수행 ” 이  아니라 , 목표에서  정한  기본  조건  외에  추가  도움  없이
+수행한  것으로  정의하는  방안을  권합니다 .
+예를  들어  목표가  ʻ 개인별  AAC 표현판으로  요구  전달하기 ʼ 라면 , 승인된  표현판  사용  자체를  단서  제공으
+로  처리하지  않습니다 . 반면  ʻ 구어  이름대기 ʼ 목표에서는  AAC 로  메시지를  전달한  성과를  별도  기록해야
+합니다 .
+AAC 는  말 · 글을  보완하거나  대신하는  의사소통  수단이며 , 평가에서  개인의  접근  방식과  환경을  함께  고
+려합니다 .
+저장  원칙
+계산  기준을  엄밀하게  설계
+문항  상태를  분리
+독립  수행의  정의
+[3] [1]
+--- [P9] ---
+독 립 수 행 률 목 표 의 독 립 수 행 기 준 을 충 족 한 문 항 수
+독 립 수 행 여 부 를 판 단 할 수 있 는 유 효 문 항 수
+제품  명세에는  다음을  함께  표시합니다 .
+분자와  분모
+포함  문항  ID
+제외  문항  ID 와  사유
+적용한  채점  기준  버전
+검토  완료  여부
+계획  대비  실제  실시  범위
+분모가  없으면  **0% 가  아니라  ʻ 산출  불가 ʼ** 입니다 .
+도움  후  성공은  다음  세  집합으로  나누어야  합니다 .
+집합 정의
+F 독립  수행  기준을  충족하지  못한  유효  문항
+O F 중  도움을  제공했고 , 도움  후  수행을  판단할  수  있는  문항
+A O 중  도움  후  성공  기준을  충족한  문항
+도 움 후 성 공 률
+도 움 후 평 가 범 위
+도움을  제공하지  않았거나  후속  반응을  수집하지  못한  문항을  조용히  빼고  성공률만  보여주지  않아야  합
+니다 . 성공률과  함께  도움  후  평가  범위 · 미실시  이유를  표시합니다 .
+다음  조건이  달라지면  결과에  비교  제한을  표시합니다 .
+연습한  자극과  새로운  자극
+단어 · 문장  길이  및  언어적  복잡도
+자극  제시  방식
+기본  도움과  추가  도움
+구어 · 쓰기 · 선택 ·AAC 등  반응  방식
+반응  허용  시간
+기기 · 녹음  처리  조건
+독립  수행률
+도움  후  성공률
+비교  가능성  검사
+--- [P10] ---
+채점  기준
+조건이  다른  회기를  하나의  상승  곡선으로  연결하는  것보다  비교  가능한  결과만  묶는  방식이  우선입니
+다 .
+영역 구현  내용 사용  전  확인
+기기  점검 마이크  선택 · 시험  녹음 · 재생 실제  소리  수집  여부
+녹음 시작 · 중지 · 문항  연결 권한 · 장치 · 저장  오류
+파일  보존 원수집  파일과  분석용  파일  분리 형식 · 길이 · 무결성
+재생 구간  반복 · 속도  변경 원본  보존  여부
+구간  수정 발화  시작 · 종료  수동  조정 수정자 · 이유 · 전후  값
+환경  기록 장치 · 브라우저 · 처리  설정 비교  가능성
+예외 장치  해제 · 화면  전환 · 중단 실패  상태와  복구
+자동  이득  조절 , 잡음  억제 , 반향  제거는  녹음에  영향을  주는  설정이며 , 요청한  값과  실제  적용값을  구분
+해야  합니다 .
+따라서  파일을  무조건  ʻ 가공되지  않은  원음 ʼ 이라고  부르지  않고  **ʻ 원수집  음성 ʼ** 으로  명명하며 , 확인  가
+능한  처리  설정을  함께  남깁니다 .
+지표 시작점 종료점
+최초  반응  개시시간 과제별로  정의한  자극  기준  시점 첫  목표  관련  반응  시작
+도움  후  개시시간 해당  도움의  기준  시점 후속  반응  시작
+반응  완성시간 반응  시작 목표  반응  종료
+선택  반응시간 선택  가능한  자극  제시 선택  확정
+음성  자극은  재생  시작과  재생  종료  중  무엇을  기준으로  삼는지  정해야  합니다 . 그림  자극은  화면  표시 · 반
+응  허용  시점을  구분하도록  설계합니다 .
+MediaRecorder 의  데이터  조각  전달  간격은  정확한  타이머가  아니며 , 조각  수로  경과  시간을  계산하지
+말라는  기술  문서의  주의가  있습니다 .
+그러므로  녹음  조각  개수로  반응  시간을  계산하는  구현은  제외하고 , 자극  사건과  음성  구간의  시간  연결
+을  별도로  구현 · 검증해야  합니다 .
+녹음과  시간  측정을  보완
+녹음  기능  명세
+[4] [5] [6]
+측정할  시간을  분리
+[7]
+--- [P11] ---
+일반  마이크의  상대적  음량을  곧바로  실제  음압  수준으로  표현
+음성인식  성공률을  사람의  말명료도로  대체
+전사  결과만으로  조음  정확도  확정
+발화가  없으면  모두  언어적  무반응으로  판정
+자동  검출된  발화  시작점을  수정  불가능하게  저장
+ASHA 는  말명료도를  청자가  말을  이해하는  정도로  설명하며 , 문맥  등을  포함한  이해  가능성과도  구분합
+니다 .
+말명료도 · 언어  정반응 · 전사  정확도는  별도  지표여야  합니다 .
+원수집  자료  → 수집  품질  확인  → 자동  분석  → 적용  범위  확인  → 치료사  검토  → 확정  결과
+단계 허용  기능 금지할  처리
+수집  품질 잘림 · 겹침 · 분석  불가  후보  표시 기술  실패를  임상  오답으로  변환
+전사 들린  내용의  초안  제시 목표  단어로  몰래  교정
+반응  비교 승인된  채점  기준에  따른  후보 자의적인  정답  확장
+시간  분석 검토  가능한  시작 · 종료  후보 검증  전  임상적  정상 · 비정상  판정
+결과  문장 확정  수치와  관찰의  문장화 없는  향상 · 진단 · 원인  생성
+계획  후보 조건과  근거를  드러낸  제안 자동  승인 · 가정  자동  배정
+이름대기  과제에서  AI 에  정답을  알려주면  실제  발화보다  목표  단어에  맞추어  해석할  위험을  관리해야  합
+니다 . 제품  설계상  다음을  분리합니다 .
+전사  모드 : 실제  들린  내용의  전사  초안
+반응  판정  모드 : 확정  전사 · 원음과  목표의  관계  검토
+정답  참조  여부 : 분석  결과에  명시
+정답을  참조한  인식  결과를  독립적인  발음 · 명료도  검사  결과로  사용하지  않는  것을  기본  규칙으로  제안
+합니다 .
+초기  자동화에서  제외할  해석
+[8]
+AI 를  안전하게  연결
+분석  흐름
+목표  단어의  영향  분리
+--- [P12] ---
+외부  전송  허용  상태를  요청  시점마다  재확인 .
+필요한  음성  구간 · 최소  정보만  전송 .
+이름 · 연락처  등  직접  식별정보를  요청  본문에  자동  포함하지  않음 .
+서비스  제공과  모델  학습  이용을  분리 .
+실패 · 시간  초과 · 재시도를  기록 .
+같은  요청의  중복  처리  방지 .
+모델 · 버전 · 설정 · 처리  시각  저장 .
+결과가  늦게  도착해도  이미  승인된  기록을  덮어쓰지  않음 .
+외부  제공자의  보관 · 재학습 · 재위탁  조건을  계약  단위로  확인 .
+API 비밀키를  사용자  화면  코드에  포함하지  않음 .
+AI 연결  여부와  관계없이  수기  검토 · 회기  완료가  가능한  구조가  필요합니다 .
+한국어  SFA 데이터베이스  연구는  명사  213 개 , 동사  159 개와  단어별  의미자질을  구성했습니다 . 이는  한
+국어  콘텐츠  개발에  참고할  자원이지만 , 해당  데이터베이스를  탑재한  서비스의  임상  효과를  입증한  것은
+아닙니다 .
+국내  VNeST 연구에서도  동사와  의미역을  연결하는  중재  절차를  확인할  수  있습니다 . 다만  확인한  절차
+를  디지털  서비스에  옮겼다는  이유만으로  동일한  효과를  주장해서는  안  됩니다 .
+모듈 실제  활동 기록할  요소 먼저  검토할  사항
+이름대기 사진 · 개인  자료  보고  표현 최초  반응 · 오류 · 도움 · 후속  반응 복수  정답 · 친숙도
+SFA 목표어와  관련된  의미  관계  탐색 자발  생성 · 선택 · 제공  정보 한국어  자질 · 권리 · 이해  부담
+PCA 소리  관련  정보  활용 생성 · 도움 · 후속  이름대기 한국어  구조에  맞는  과제
+VNeST 동사와  행위자 · 대상  관계  구성 의미  관계 · 문장 · 도움  조건 조사 · 생략 · 허용  표현
+스크립트 개인적으로  중요한  상황  연습 모델  의존 · 독립  산출 · 새  상황 암기  수행과  일반화  구분
+읽기 메시지 · 안내 · 일정  이해 읽기  지원 · 이해  반응 음독과  이해  구분
+말운동 치료사가  지정한  산출  연습 모델 · 동시 · 모방 · 독립  조건 개별  적합성 · 수행  검토
+인지 - 의사소통 일정  설명 · 정보  조직 · 대화  전략 정보  전달 · 전략 · 환경 인지 · 언어  요인  구분
+AAC 요구 · 거절 · 질문 · 대화  수리 접근  방식 · 전달  성공 · 도움 운동 · 감각 · 언어  접근성
+인지 - 의사소통  영역에서는  신체  기능뿐  아니라  활동 · 참여 · 환경과  실제  생활  역할을  함께  고려합니다 .
+외부  AI 연결  조건
+임상  콘텐츠를  모듈화
+[9]
+[10]
+모듈별  설계
+[3]
+--- [P13] ---
+중재  활동  자체와  추가  단서를  구분해야  합니다 .
+예를  들어  SFA 에서  의미  관련  질문을  제공하는  과정이  원래  활동의  일부라면 , 이를  모두  ʻ 추가  도움 ʼ 으로
+계산하면  중재  수행을  잘못  표현할  수  있습니다 .
+콘텐츠마다  다음을  먼저  정합니다 .
+과제의  기본  제시  조건
+중재  절차에  포함된  지원
+독립  수행을  확인하는  별도  시도
+추가  도움으로  분류할  사건
+새  자극  확인  절차
+이  구분이  없으면  모듈  간  점수를  비교할  수  없습니다 .
+각  콘텐츠에는  다음  정보가  있어야  합니다 .
+목표  / 적용  조건  / 반응  방식  / 기본  지원  / 추가  도움  / 허용  반응  / 채점  기준  / 새  자극  여부  / 권
+리  / 검토자  / 버전
+검사  문항 · 논문  부록 · 사진 · 음성은  공개되어  있다는  이유만으로  서비스  재배포가  허용된  것으로  처리하지
+않는  정책을  권합니다 .
+초기에는  자유로운  AI 치료계획  생성보다  명시적인  규칙으로  후보를  만들고 , AI 는  이를  문장화하는  구조
+가  적합합니다 .
+관찰  조건 후보 함께  보여줄  제한
+비교  가능한  조건에서  독립  수행  증가 도움  감소 · 새  자극  확인  검토 연습  노출  영향
+도움  후  성공에  집중 도움  방식 · 독립  시도  기회  검토 도움  종류별  비교  필요
+연습  항목에서만  성공 새  항목 · 상황  확인 난이도 · 친숙도  차이
+회기  후반  저하 활동  순서 · 분량 · 휴식  검토 피로로  단정하지  않음
+가정에서만  수행  저하 안내 · 기기 · 도움  환경  점검 능력  저하로  단정하지  않음
+수집  실패  증가 수집  환경  개선 임상  변화  해석  보류
+자료  부족 · 조건  불일치 추가  관찰 향상 · 악화  판단  보류
+중요한  채점  구분
+콘텐츠  등록  조건
+다음  계획을  설명  가능하게  생성
+계획  후보  규칙
+--- [P14] ---
+관찰된  사실
+사용한  문항과  회기
+충족한  규칙
+비교  조건
+제안  후보와  대안
+판단의  한계
+임상  근거  연결  여부
+치료사  수정 · 승인  결과
+ʻ 후반  수행  저하  → 피로  증가  → 연습량  감소 ʼ 처럼  관찰 · 원인 · 처방을  자동으로  이어붙이지  않도록  해야  합
+니다 .
+또한  난이도  상승 · 연습량  변경  기준은  임의의  공통  수치로  고정하지  않고 , 목표별로  치료사가  설정하도
+록  제안합니다 .
+아래는  기관  정책으로  채택할  권한  설계안이며 , 법적  자격  판단을  대신하지  않습니다 .
+작업 실습생 담당  치료사 감독  치료사 운영  관리자 보호자
+배정  대상자  보기 제한  허용 허용 담당  범위 기본  제한 공유  범위
+수행  입력 허용 허용 허용 제한 가정  기록만
+초안  작성 허용 허용 허용 제한 불가
+검토  요청 허용 허용 허용 불가 불가
+임상  결과  확정 불가 기관  정책 허용 불가 불가
+다음  계획  승인 불가 기관  정책 허용 불가 불가
+계정 · 권한  관리 불가 불가 제한 허용 불가
+원음  다운로드 별도  제한 권한  범위 권한  범위 기본  불가 별도  공유
+운영  관리자라고  해서  임상  자료를  자유롭게  읽거나  임상  계획을  승인할  수  있게  만들지  않습니다 .
+객체 주요  상태
+문항 미검토  → 검토  완료  / 보류  / 제외
+회기  결과 초안  → 검토  요청  → 확정  → 개정  검토
+다음  계획 후보  → 수정  → 승인  → 만료  / 재검토
+제안마다  필요한  항목
+승인과  변경을  세분화
+역할별  권한
+상태를  객체별로  분리
+--- [P15] ---
+객체 주요  상태
+가정  배정 작성  → 배정  → 진행  → 완료  / 중지  / 만료
+회기  결과  확정이  다음  계획  승인이나  가정  배정을  자동으로  의미하지  않도록  합니다 .
+변경  종류 권장  처리
+반응  판정 · 분모  변경 관련  결과  재계산 · 재확정
+발화  구간  변경 관련  시간 · 음향  지표  재계산
+채점  기준  변경 영향을  받는  문항과  결과  재검토
+목표 · 활동  조건  변경 관련  계획 · 가정  배정  재검토
+오탈자  등  비의미  변경 이력만  남기고  불필요한  재승인  방지
+공유  허용  철회 이후  공유  차단 · 정책에  따른  기존  자료  처리
+모델  변경 기존  승인  결과를  자동  재작성하지  않음
+확정본을  삭제하는  대신 , 이전  확정본과  새  개정본을  함께  보존하는  구조가  필요합니다 .
+가정  연습  중지는  향후  활동에  적용하고 , 이미  수행한  기록까지  없애지  않도록  합니다 .
+ʻ 로컬 ʼ 은  자동으로  안전하거나  영구  저장된다는  뜻이  아닙니다 . 설계에서는  어디에  저장되는지 , 누가  열
+수  있는지 , 어떻게  복구하는지를  따로  명시해야  합니다 .
+구분 검증용  로컬판 기관  운영판
+목적 업무  흐름 · 사용성  검증 실제  기관  업무
+사용자 단일  사용자  중심 실제  계정 · 역할
+저장 기기  내  저장 · 명시적  백업 서버  저장 · 기관  분리
+승인 동작  검증용 신원 · 권한  확인  기반
+공유 파일  단위  제한 인증된  접근
+복구 사용자의  백업  복원 운영  복구  절차
+실제  개인정보 원칙적으로  사용  억제 적합성  확인  후  제한적  사용
+브라우저에서  실행되는  검증판의  역할  선택  메뉴를  실제  보안  권한처럼  표시해서는  안  됩니다 . 기관판의
+권한  검사는  화면뿐  아니라  서버의  요청  처리  단계에서도  수행하는  설계를  제안합니다 .
+수정  시  처리
+저장과  기관  운영을  분리
+로컬  버전의  현실적  범위
+--- [P16] ---
+저장  가능  여부를  시작  시  확인 .
+저장  성공을  확인하기  전  ʻ 저장  완료 ʼ 표시  금지 .
+용량  부족 · 쓰기  실패  시  원인을  표시 .
+음성과  문항  데이터의  연결  무결성  검사 .
+새로고침 · 비정상  종료  후  복구  상태  제공 .
+백업  마지막  시점  표시 .
+복원  전  검증과  복원  후  점검 .
+이전  데이터  형식의  변환  이력  보존 .
+자료  목록  + 구조화  데이터  + 음성파일  + 콘텐츠  버전  + 형식  버전  + 무결성  확인값
+가져온  파일은  즉시  실행하거나  기관의  승인된  임상기록으로  신뢰하지  않습니다 . 다른  기관 · 다른  시스템
+에서  가져온  승인  정보는  출처와  신뢰  상태를  확인하기  전  참고자료로  처리하도록  제안합니다 .
+NICE 는  원격재활을  개인의  동의 · 목표에  맞추고 , 필요한  기기 · 교육 · 기술  지원과  진행  모니터링을  제공하
+도록  권고합니다 .NICE NG236
+따라서  가정  연습은  치료실  과제를  복사하는  기능이  아니라 , 지원  조건까지  포함한  별도  배정이어야  합
+니다 .
+항목 내용
+연결  목표 어떤  생활 · 치료  목표에  해당하는지
+승인  활동 사용할  활동과  콘텐츠  버전
+수행  조건 혼자 · 보호자  동반  등
+도움  방법 허용하는  도움과  피할  행동
+분량 치료사가  정한  범위
+중단  조건 불편 · 피로 · 지속  실패  등  개별  설정
+유효기간 시작 · 종료 · 재검토일
+문의 치료사에게  전달할  사항과  연락  경로
+기록  수준 자기보고 · 기기  기록 · 치료사  검토  구분
+로컬  저장  요구사항
+백업  구성
+가정  연습을  별도  설계
+배정  필수  항목
+--- [P17] ---
+한  화면에  하나의  주요  지시 .
+큰  조작  영역과  명확한  선택 .
+듣기 · 보기 · 다시  확인하기  지원 .
+휴식 · 중단을  언제든  선택 .
+정답을  강요하는  연속  실패  화면  지양 .
+승인되지  않은  활동으로  자동  확장하지  않음 .
+도움을  받았다고  실패로  평가하지  않음 .
+보호자  화면에서는  **ʻ 혼자  수행  / 안내만  제공  / 선택지  제공  / 답을  대신  제공  / 확인  불가 ʼ** 를  구분하도
+록  제안합니다 .
+가정  수행  결과는  치료실  임상  점수와  자동  합산하지  않고 , 다음  회기의  검토자료로  연결합니다 .
+문서 반드시  포함할  내용
+회기  계획서 목표 · 활동 · 도움 · 채점 · 중단  조건
+회기  결과보고서 실시  범위 · 분자 · 분모 · 제외 · 판단 · 한계
+다음  회기  계획서 유지 · 변경 · 확인할  사항과  근거
+가정  연습  안내 쉬운  지시 · 도움 · 중단 · 문의
+데이터  내보내기 문항별  기록 · 버전 · 검토  상태
+1. 대상자  가명 · 회기 · 작성자 · 승인  상태
+2. 계획한  목표와  실제  실시  활동
+3. 목표별  독립  수행 · 도움  후  수행
+4. 분모 · 미실시 · 보류 · 제외와  이유
+5. 대표  반응과  원자료  연결
+6. 이전  회기와  비교  가능한  범위
+7. 치료사  판단
+8. 자동  분석  사용  범위와  한계
+9. 다음  회기  확인  사항
+10. 개정 · 승인  이력
+출력본에는  초안  / 확정  / 개정  전  / 참고용 상태를  명시합니다 . 자동  생성  문서의  수치는  화면의  확정  데
+이터에서  가져오고 , 문장  생성  과정에서  다시  계산하지  않도록  설계합니다 .
+대상자  화면
+출력물을  임상  문서로  구성
+필수  출력물
+결과보고서  구성
+--- [P18] ---
+위험 설계상  차단  장치
+다른  대상자  기록에  입력 대상자 · 회기  지속  표시 , 전환  확인
+기술  실패를  오답  처리 수집  상태와  임상  반응  분리
+AI 를  확정  판단으로  오인 초안  표시 · 검토  전  확정  차단
+실습생의  무단  승인 실제  권한  검사
+수정된  결과에  오래된  계획  연결 의존성 · 재검토  상태
+잘못된  가정  활동  지속 유효기간 · 중지 · 승인  확인
+피로 · 불편  무시 쉬운  중단 · 휴식 · 문의  경로
+불필요한  외부  전송 목적 · 허용  범위  검사
+개인정보  과다  노출 최소표시 · 다운로드  제한 · 접근기록
+모델  업데이트로  결과  변화 버전  고정 · 별도  변경  검증
+실어증  등  의사소통  어려움이  있다는  이유만으로  본인의  선택을  생략하지  않도록  합니다 . 의사소통에  맞
+는  정보  제공과  의사결정  참여  지원이  필요하다는  지침을  반영한  설계입니다 .NICE NG236
+개인정보보호위원회는  2025 년  12 월  개정된  보건의료데이터  활용  가이드라인을  안내하고  있습니다 . 그
+러나  해당  안내의  존재만으로  이  서비스의  모든  처리  방식이  적법하다고  판단할  수는  없습니다 .개인정보
+보호위원회  안내
+다음은  실제  운영  전  별도로  확정해야  할  의사결정  항목입니다 .
+기능별  사용  목적과  의료기기  해당  여부 .
+기관 · 개발사 · 외부  AI 제공자의  역할 .
+건강 · 음성정보의  수집 · 이용  근거 .
+외부  전송 · 국외  처리 · 재위탁  여부 .
+서비스  제공과  연구 · 모델  학습의  구분 .
+보존 · 삭제 · 동의  철회  처리 .
+보호자  공유  범위와  권한  확인 .
+연구  목적  평가의  심의  필요성 .
+검사 · 중재 · 콘텐츠의  이용  권한 .
+ʻ 치료사  검토가  있으므로  규제  대상이  아니다 ʼ 또는  ʻ 이름을  빼면  음성은  익명이다 ʼ 라는  전제를  제품에  넣
+지  않는  것을  권합니다 .
+안전과  국내  적용  기준
+안전장치
+국내  검토에서  유보할  사항
+--- [P19] ---
+검증 확인할  질문 결과물
+소프트웨어  검증 저장 · 계산 · 권한 · 승인이  정확한가 ? 시험  기록 · 결함 · 수정  이력
+측정  검증 자동  전사 · 시간값이  기준과  일치하는가 ? 비교  결과 · 오차 · 적용  범위
+사용성  검증 실제  사용자가  안전하게  완료하는가 ? 관찰 · 오류 · 개선  사항
+임상  효과  검증 목표  기능 · 생활  수행이  개선되는가 ? 적절한  연구  결과
+사용성  평가를  통과했다고  치료  효과가  증명되는  것은  아니며 , 전사가  정확하다고  임상  판단까지  정확해
+지는  것도  아닙니다 .
+다음은  평가자료를  구성할  때  적용할  설계안입니다 .
+학습 · 개발 · 최종  평가  자료를  분리 .
+동일  대상자의  자료가  평가  구분을  넘나들지  않게  관리 .
+장애  유형 · 중증도 · 과제 · 기기 · 환경별  결과  확인 .
+한국어  띄어쓰기  처리  규칙을  명시하고  문자 · 어절  오류를  구분 .
+무음 · 기침 · 겹치는  말에서  잘못  생성한  전사  확인 .
+잘못된  정답  판정과  불필요한  오답  판정을  따로  평가 .
+자동  판정을  제공한  범위와  거절한  범위를  함께  보고 .
+사람  검토  기준과  평가자  간  불일치를  기록 .
+반복  문항을  모두  독립  대상자처럼  취급하지  않음 .
+출시  기준은  최종  평가자료를  보기  전에  결정 .
+모델이  출력한  신뢰도는  그  자체로  “ 임상적으로  맞을  확률 ” 이라고  표시하지  않는  정책을  권합니다 .
+시험 통과  조건
+미입력  처리 정상값이  자동  생성되지  않음
+최초  반응  보존 도움  후  반응  입력에도  그대로  유지
+수집  실패 임상  오답과  분리
+분모  없음 산출  불가  표시
+도움  후  결과 성공률과  평가  범위  함께  표시
+목표별  채점 AAC 성공과  구어  이름대기  구분
+실습생  승인 차단  및  시도  기록
+검증  계획을  제품에  포함
+시험을  네  종류로  분리
+AI 평가  설계
+필수  인수시험
+--- [P20] ---
+시험 통과  조건
+결과  수정 개정 · 재확정  요구
+비의미  수정 불필요한  전체  승인  무효화  없음
+오래된  AI 응답 최신 · 확정  자료를  덮어쓰지  않음
+외부  전송  제한 허용되지  않은  요청  차단
+저장  실패 성공  표시  금지 · 복구  안내
+백업  복원 데이터 · 원음 · 버전  일치
+동시  수정 충돌  감지 · 조용한  덮어쓰기  방지
+가정  배정  만료 새  수행  시작  제한
+문서  출력 화면의  확정  수치와  일치
+기관  간  접근 다른  기관  자료  차단
+모델  변경 기존  확정  결과  보존
+가장  효율적인  순서는  전체  화면을  먼저  만드는  것이  아니라 , 한  회기를  끝까지  정확하게  연결한  뒤  확장
+하는  것입니다 .
+순서 개발  묶음 완료  조건
+1 사용  목적 · 대상 · 제외  범위 기능별  주장과  사용  범위  확정
+2 데이터 · 상태 · 계산 동일  입력에서  동일  결과
+3 최소  종단  흐름 대상자  → 목표  → 수행  → 검토  → 확정
+4 승인 · 개정 · 권한 잘못된  확정과  오래된  계획  차단
+5 저장 · 백업 · 출력 중단 · 복구 · 재현  가능
+6 녹음 · 수동  구간  검토 음성과  문항의  연결  검증
+7 가정  연계 ·AAC 도움 · 반응  방식 · 만료  관리
+8 제한적  AI 적용  범위 · 오류 · 검토  절차  확인
+9 임상  모듈  확장 콘텐츠 · 채점 · 권리  검토
+10 기관  운영 · 현장  평가 실제  보안 · 복구 · 사용성  검증
+초기  완료  목표는  다음  한  문장으로  설정하면  됩니다 .
+“ 대상자  한  명의  한  회기를  수행한  뒤 , 원자료로  결과를  재현하고 , 권한  있는  치료사가  확정하며 ,
+변경  시  연결된  계획을  다시  검토할  수  있다 .”
+개발  순서를  재구성
+--- [P21] ---
+기존  미완료  영역 이번에  보완한  설계 여전히  필요한  실행
+사용자  화면 화면  목록 · 역할 · 예외 ·3 단  검토 구현 · 사용성  시험
+실제  녹음 · 재생 수집 · 보존 · 구간 · 시간  기준 기기별  구현 · 오차  시험
+실제  AI 역할 · 전송 · 실패 · 평가  설계 제공자  선정 · 연결 · 성능  검증
+저장 · 복구 저장  확인 · 백업 · 복원 · 충돌 장애  시험 · 복구  훈련
+기관  운영 역할 · 기관  분리 · 감사 실제  인증 · 서버  권한 · 보안  검토
+출력물 문서  항목 · 수치  출처 · 상태 다운로드 · 인쇄  시험
+임상  콘텐츠 모듈  구조 · 채점 · 권리  항목 한국어  콘텐츠  제작 · 전문가  검토
+다음  계획 설명  가능한  규칙 · 승인 규칙  적합성 · 사용성  평가
+가정  연계 배정 · 도움 · 만료 · 중단 대상자 · 보호자  현장  평가
+검증 · 납품 인수시험 · 단계별  완료  기준 시험  증거 · 실행본 · 소스  전달
+이번  단계에서  채워진  것은  ʻ 개발과  검증을  진행할  수  있는  상세  설계 ʼ 입니다 . 실행  가능한  프로그램 , 한
+국어  장애  발화  성능 , 임상  효과 , 국내  운영  적합성은  각각  별도의  증거가  필요하며 , 그  증거가  없는  항목
+은  완료로  표시하지  않아야  합니다 .
+⁂
+1. https://www.asha.org/Practice-Portal/Professional-Issues/Augmentative-and-Alternative-Communication/
+2. https://hl7.org/fhir/R4/provenance.html
+3. https://www.asha.org/practice-portal/clinical-topics/traumatic-brain-injury-in-adults/
+4. https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/autoGainControl
+5. https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints
+6. https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/getSettings
+7. https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/dataavailable_event
+8. https://www.asha.org/practice-portal/clinical-topics/acquired-apraxia-of-speech/
+9. https://www.e-csd.org/journal/view.php?number=1234
+10. https://www.e-csd.org/journal/view.php?doi=10.12963/csd.14119
+11. https://www.thelancet.com/journals/laneur/article/PIIS1474-4422(19)30192-9/fulltext
+12. https://www.w3.org/TR/2020/WD-coga-usable-20201211/Overview.html
+13. https://www.digitalpolicy.gov.hk/en/our_work/digital_infrastructure/digital_inclusion/accessibility/promulgating_reso
+urces/handbook/wcag2aa/9_17_target_size_min.html
+14. https://accessible-eu-centre.ec.europa.eu/content-corner/news/wcag-22-oﬀicially-w3c-recommendation-2023-10-06_
+en
+15. https://www.w3.org/WAI/WCAG22/Understanding/
+16. https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum
+17. https://at.mo.gov/wp-content/uploads/Accessibility-Testing-Checklist-2025.docx
+현재  보완  여부를  점검
+--- [P22] ---
+18. https://www.w3.org/TR/wcag/all/
+19. https://www.w3.org/standards/history/coga-usable/
+20. https://lists.w3.org/Archives/Public/www-archive/2021Oct/att-0007/COGA_Content_Usable_for_TPAC_2021.pdf
+21. aidieo-hoeyireul-jinhaenghanda._naneun-gaebaleul-hagojahanda.-_seongindaesanginde.-
+eoneociryoga-.pdf
+22. https://www.w3.org/2025/03/31-coga-minutes.html
+23. https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
+24. https://www.w3.org/groups/cg/global-inclusion/
+25. https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+26. https://www.w3.org/WAI/WCAG2/supplemental/objectives/o3-clear-content/
+27. https://www.w3.org/TR/WCAG22/
+28. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/MediaRecorder$revision/1088979
+29. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/MediaRecorder$revision/971699
+30. https://wiki.mozilla.org/Web_speech_api
+31. https://discourse.mozilla.org/t/what-is-the-model-behind-web-speech-api/31880
+32. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6700375/
+33. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/SpeechRecognition/SpeechRecognition
+34. https://wiki.mozilla.org/SpeechAPI
+35. https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition?trk=article-ssr-frontend-pulse_little-text-block
+36. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/SpeechRecognition/onsoundstart
+37. https://github.com/mdn/content/issues/44590
+38. https://developer.mozilla.org.cach3.com/en-US/docs/tag/MediaRecorder
+39. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/SpeechRecognition/onresult
+40. https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/MediaRecorder
+41. https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
+42. https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/mimeType
+43. https://evidence.nihr.ac.uk/alert/computerised-speech-and-language-therapy-can-help-people-with-aphasia-find-wor
+ds-following-a-stroke/
+44. https://emedi.mfds.go.kr/msismext/emd/bif/digitInfoIntrcnView.do
+45. https://emedi.mfds.go.kr/msismext/emd/apy/emdApplyView.do
+46. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15657
+47. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15956&srchFr=&srchTo=&srchWord=&srchTp=&itm_seq_1=0&itm_s
+eq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=1
+48. https://charstring.tistory.com/2529
+49. http://edumedi.mfds.go.kr/msismext/emd/psi/ltmuPmInfo/ltmuPmInfoView.do
+50. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15879&srchFr=&srchTo=&srchWord=&srchTp=&itm_seq_1=0&itm_s
+eq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=1
+--- [P23] ---
+51. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15879&srchFr=&srchTo=&srchWord=&srchTp=&itm_seq_1=0&itm_s
+eq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=3
+52. http://udiportal.mfds.go.kr/brd/MNU30469
+53. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15879&srchFr=&srchTo=&srchWord=&srchTp=0&itm_seq_1=0&itm_
+seq_2=0&multi_itm_seq=0&company_cd=&company_nm=&Data_stts_gubun=C1004&page=2
+54. https://www.parkinsons.org.uk/news/2024/results-major-study-speech-and-language-therapy-parkinsons-published
+55. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15879&srchFr=&srchTo=&srchWord=&srchTp=0&itm_seq_1=0&itm_
+seq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=1
+56. http://helptrial.com/board/view?bd_id=rules&wr_id=2503
+57. https://www.mfds.go.kr/mfdssearch/main.do
+58. https://www.mfds.go.kr/eng/index.do
+59. https://mfds.go.kr/brd/m_207/view.do?seq=10953&srchFr=&srchTo=&srchWord=&srchTp=&itm_seq_1=0&itm_seq_2=0
+&multi_itm_seq=0&company_cd=&company_nm=&page=120
+60. https://pmc.ncbi.nlm.nih.gov/articles/PMC7232133/
+61. https://nspccro.nihr.ac.uk/research-news-and-results/research-reports/stroke
+62. https://aphasiatavistocktrust.org/projects/big-cactus/
+63. https://eso-stroke.org/wp-content/uploads/ESO-Press-Release-Guidelines.pdf
+64. https://eso-stroke.org/guidelines/eso-guideline-directory/
+65. https://www.sciencedaily.com/releases/2024/07/240710195321.htm
+66. https://www.jslhd.org/_common/do.php?a=current&b=3&bidx=3869&aidx=42681
+67. https://jslhd.org/_common/do.php?a=full&b=12&bidx=3869&aidx=42681
+68. https://eso-stroke.org/wp-content/uploads/ESO-Stroke-PPT_Aphasia_Rehab_2025.pdf
+69. https://scienceon.kisti.re.kr/srch/selectPORSrchArticle.do?cn=DIKO0016372036
+70. https://research.regionh.dk/en/publications/european-stroke-organisation-eso-guideline-on-aphasia-rehabilitat/
+71. https://www.hra.nhs.uk/planning-and-improving-research/application-summaries/research-summaries/computerised
+-aphasia-therapy-rct-big-cactus/
+72. https://www.mfds.go.kr/law/jfile/download.do?brdId=data0011&brdSeq=15228&fileSeq=1
+73. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15879&srchFr=&srchTo=&srchWord=&srchTp=0&itm_seq_1=0&itm_
+seq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=5
+74. https://medinet.or.kr/ 법령정보 -2/?mod=document&uid=251232
+75. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15653&srchFr=&srchTo=&srchWord=&srchTp=&itm_seq_1=0&itm_s
+eq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=4
+76. https://www.bmj.com/content/bmj/386/bmj-2023-078341.full.pdf
+77. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15655&srchFr=&srchTo=&srchWord=&srchTp=&itm_seq_1=0&itm_s
+eq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=7
+78. https://www.rainfo.or.kr/00371/00385/00525.web?amode=view&crtfcTrendSno=88&nationCd=cm
+79. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15653&srchFr=&srchTo=&srchWord=&srchTp=&itm_seq_1=0&itm_s
+eq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=2
+80. https://standard.go.kr/KSCI/potcommon/dbFileDown.do?id=APOT2025111314363481&sn=1
+--- [P24] ---
+81. https://www.privacy.go.kr/front/bbs/bbsList.do?bbsNo=BBSMSTR_000000000049
+82. https://www.law.go.kr/LSW/lsInfoP.do?lsId=011357&ancYnChk=0
+83. https://www.privacy.go.kr/front/bbs/bbsView.do?bbsNo=BBSMSTR_000000000049&bbscttNo=20836
+84. https://law.go.kr/lsInfoP.do?lsId=011468
+85. https://www.law.go.kr/LSW//lsLawLinkInfo.do?chrClsCd=010202&lsJoLnkSeq=900078586&lsId=011357&print=print
+86. https://www.asha.org/Practice-Portal/Clinical-Topics/Dysarthria-in-Adults/
+87. https://parkinsonsnewstoday.com/news/lsvt-loud-bests-uk-standard-parkinsons-speech-therapy-trial/
+88. https://pubs.asha.org/doi/10.1044/2023_AJSLP-22-00230
+89. https://www.usf.edu/cbcs/csd/services/slc-service-descriptions.aspx
+90. https://apps.asha.org/eweb/ashadynamicpage.aspx?cok=c611e56b-dcdb-4391-84bd-3321b874e275&pagename=curre
+nt&site=ashacms&webcode=cefinddetail
+91. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/1e98cfd4-0654-4161-80aa-374bc405f0ﬀ
+92. https://www.asha.org/Practice-Portal/Clinical-Topics/Childhood-Apraxia-of-Speech/
+93. https://www.memphis.edu/csd/pdfs/msconf_2025/diﬀerential_diagnosis_of_pediatric_speech_sounds_disorders_mi
+d_south_25.pdf
+94. https://sites.google.com/nyu.edu/mmkcd/adult-language-and-disorders
+95. https://www.e-csd.org/journal/view.php?viewtype=pubreader&number=1177
+96. https://www.e-csd.org/articles/search_result.php?term=4&key= 비유창성  실어증
+97. https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder.
+98. https://www.bmj.com/bmj/section-pdf/1098703?path=/bmj/386/8435/Research.full.pdf
+99. https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia...
+100. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/MediaRecorder/start
+101. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/MediaRecorder/start$revision/811213
+102. https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API?ref=jevid.com
+103. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/MediaRecorder/start$revision/971643
+104. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/MediaRecorder/start$revision/747293
+105. https://wiki.mozilla.org/Gecko:MediaRecorder
+106. https://stackoverflow.com/a/15819208
+107. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/IndexedDB_API/Browser_storage_limits_and_eviction_
+criteria
+108. https://developer.mozilla.org/en-US/docs/Web/API/StorageAccessHandle/indexedDB
+109. https://www.netzwerk-kokos.germanistik.uni-muenchen.de/wissenscha liche-beitraege/incogguidelines-kurzfassung.
+pdf
+110. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/IndexedDB_API$revision/1127697
+111. https://developer.mozilla.org.cach3.com/en-US/docs/Web/API/IndexedDB_API$revision/1127691
+112. https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Terminology
+113. https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API.
+114. https://www.w3.org/TR/coga-user-research/
+--- [P25] ---
+115. https://www.w3.org/WAI/WCAG2/supplemental/patterns/o3p01-clear-words/
+116. https://www.w3.org/WAI/GL/task-forces/coga/wiki/Clear_and_simple_writing
+117. https://www.w3.org/WAI/cognitive/
+118. https://www.w3.org/WAI/GL/task-forces/coga/wiki/Getting_started
+119. https://cornucopia.owasp.org/taxonomy/asvs-5.0/05-file-handling/02-file-upload-and-content
+120. https://pubmed.ncbi.nlm.nih.gov/38232176/
+121. https://www.w3.org/TR/2001/WD-WCAG20-20010824/
+122. https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/
+123. https://www.w3.org/WAI/WCAG22/quickref/
+124. https://www.beckershospitalreview.com/quality/patient-safety-outcomes/study-finds-hallucinations-in-hospital-used-
+ai-tool/
+125. https://link.springer.com/article/10.1007/s00146-026-03073-y?error=cookies_not_supported&code=6ﬀ6ed31-8405-4cf
+1-808b-7d4c1e52c7a1
+126. https://www.arxiv.org/pdf/2501.11378.pdf
+127. https://arxiv.org/pdf/2609.32560v1.pdf
+128. https://www.isca-archive.org/interspeech_2025/wang25b_interspeech.pdf
+129. https://www.theverge.com/2024/10/27/24281170/open-ai-whisper-hospitals-transcription-hallucinations-studies
+130. https://arxiv.org/html/2506.08846v2
+131. https://www.bmj.com/content/386/bmj-2023-078341
+132. https://languagelog.ldc.upenn.edu/nll/?p=66682
+133. https://news.cornell.edu/stories/2024/06/ai-speech-text-can-hallucinate-violent-language
+134. https://jslhd.org/_common/do.php?a=full&b=12&bidx=4344&aidx=48323
+135. https://arxiv.org/search/?searchtype=author&query=Sloane,+M
+136. https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003242601
+137. https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71434
+138. https://www.nice.org.uk/researchrecommendation/computer-based-speech-and-language-therapy
+139. https://pmc.ncbi.nlm.nih.gov/articles/PMC12083764/
+140. https://ro.ecu.edu.au/cgi/viewcontent.cgi?article=3455&context=ecuworks2022-2026
+141. https://www.nice.org.uk/guidance/ng236/chapter/Recommendations-for-research
+142. https://www.birmingham.ac.uk/news/2024/major-trial-explores-most-eﬀective-speech-therapy-for-people-with-parki
+nsons-disease
+143. https://pure.mpg.de/view/item_3356603
+144. https://njl-admin.nihr.ac.uk/document/download/2040353
+145. https://www.nice.org.uk/guidance/ng236/chapter/Recommendations
+146. https://aphasiatrials.org/our-work/working-groups/predictors-and-markers-of-aphasia-recovery/release/
+147. https://reference.medscape.com/cc2/p10/stroke-rehabilitation-adults-2023a1000ppo
+148. https://www.journalslibrary.nihr.ac.uk/hta/HTA24190
+149. https://researchonline.gcu.ac.uk/ws/files/27627918/PIIS1474442219301929.pdf
+--- [P26] ---
+150. https://pmc.ncbi.nlm.nih.gov/articles/PMC6700375/
+151. https://research.manchester.ac.uk/en/publications/self-managed-computerised-speech-and-language-therapy-for-pat
+ient/
+152. https://www.e-asr.org/journal/view.php?doi=10.21848/asr.260227
+153. https://www.bmj.com/content/386/bmj-2023-078341/rapid-responses
+154. https://www.kjorl.org/m/journal/view.php?doi=10.3342/kjorl-hns.2026.00052
+155. https://www.nihr.ac.uk/story/computer-therapy-helps-people-regain-words-a er-stroke
+156. https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART001864896
+157. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15879&srchFr=&srchTo=&srchWord= 거대언어모델 (LLM)+ 기반 + 디
+지털의료기기 + 허가 · 심사 + 가이드라인 &srchTp=0&itm_seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&com
+pany_nm=&Data_stts_gubun=C9999&page=1
+158. https://www.rainfo.or.kr/00371/00385/00525.web?amode=view&crtfcTrendSno=88&cpage=3
+159. https://www.privacy.go.kr/cmm/fms/FileDown.do?atchFileId=ATCH_000000000900705&fileSn=2
+160. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15657&srchFr=&srchTo=&srchWord=&srchTp=&itm_seq_1=0&itm_s
+eq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=7
+161. https://pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=9901
+162. https://pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000.Updated&nttId=12183
+163. https://pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=&nttId=12183
+164. https://www.bmj.com/content/386/bmj-2023-078341/rr-0
+165. https://emedi.mfds.go.kr/msismext/emd/bif/digitInfoDownloadView.do
+166. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15956
+167. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/ab79c3d7-2f06-4343-8d7f-5fe392df8720
+168. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/bf2f7ae7-2fb3-41a1-bf0b-11581ebacde0
+169. https://pubs.asha.org/doi/10.1044/2020_JSLHR-19-00233
+170. https://www.asha.org/Practice-Portal/Clinical-Topics/Aphasia/
+171. https://pubs.asha.org/doi/10.1044/2020_AJSLP-19-00112
+172. https://pubs.asha.org/doi/10.1044/2015_AJSLP-14-0113
+173. https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003007108
+174. https://www.mayoclinic.org/diseases-conditions/dysarthria/symptoms-causes/syc-20371994
+175. https://pubmed.ncbi.nlm.nih.gov/38986549/
+176. https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART003218920
+177. https://www.e-asr.org/upload/pdf/asr-240159.pdf
+178. https://arxiv.org/html/2412.03784
+179. https://www.e-asr.org/journal/view.php?number=579
+180. https://arxiv.org/html/2508.15882v1
+181. https://arxiv.org/html/2609.04561v1
+182. https://arxiv.org/pdf/2609.32560.pdf
+183. https://www.alphaxiv.org/ja/abs/2505.12969
+--- [P27] ---
+184. https://www.arxiv.org/pdf/2503.09905.pdf
+185. https://discourse.mozilla.org/t/understanding-extension-permission-unlimitedstorage/66592
+186. https://pubmed.ncbi.nlm.nih.gov/36594860/
+187. https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/isTypeSupported_static
+188. https://github.com/dexie/dexie-website-old/blob/68f51f7c/docs/StorageManager.md?plain=1
+189. https://web.dev/learn/pwa/oﬀline-data
+190. https://developer.mozilla.org/en-US/docs/Web/API/StorageManager
+191. https://developer.mozilla.org/ja/docs/Web/API/MediaDevices/getUserMedia
+192. https://w3c.github.io/wai-website/cognitive/
+193. https://www.w3.org/WAI/GL/wiki/WCAG_2.1/targets
+194. https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
+195. https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html
+196. https://cheatsheetseries.owasp.org/cheatsheets/Multi_Tenant_Security_Cheat_Sheet.html
+197. https://www.privacy.go.kr/cmm/fms/FileDown.do?atchFileId=ATCH_000000000919989&fileSn=1
+198. https://www.w3.org/WAI/WCAG2/supplemental/patterns/o4p07-step-instructions/
+199. https://www.w3.org/2020/10/01-mobile-a11y-minutes.html
+200. https://cheatsheetseries.owasp.org/IndexASVS.html
+201. https://cornucopia.owasp.org/taxonomy/asvs-5.0/level-2-controls
+202. https://www.w3.org/TR/coga-usable/
+203. https://goltc.org/publications/careless-whisper-speech-to-text-hallucination-harms/
+204. https://ar5iv.labs.arxiv.org/html/2402.08021
+205. https://languagelog.ldc.upenn.edu/nll/?m=202410
+206. https://www.ixbt.com/live/sw/razbor-ii-intervyuer-brosil-trubku-na-zibo-deba-shima-chto-mashina-slyshit-pri-ocenke-
+kandidata-na-sobesedovanii-i-kogo-ona-ne-uslyshit.html
+207. https://pure.ewha.ac.kr/en/publications/developing-the-korean-version-of-a-semantic-feature-database-for-/fingerpri
+nts/?sortBy=alphabetically
+208. https://www.maip.kr/bbs/board.php?bo_table=b51&wr_id=1687&sst=wr_hit&sod=asc&sop=and&page=2&device=pc
+209. https://scispace.com/journals/communication-sciences-and-disorders-27ezwap0/2014
+210. https://dl.nanet.go.kr/detail/KINX2023215595
+211. https://library.nih.go.kr/ncmiklib/elib/kom/articleDtl.do?pk_pb_seq=PB08385041
+212. https://scienceon.kisti.re.kr/srch/selectPORSrchArticle.do?cn=ART003007108
+213. https://www.e-csd.org/articles/search_result.php?term=4&key=Semantic features
+214. https://pubs.asha.org/doi/10.1044/2025_AJSLP-24-00397
+215. https://www.semanticscholar.org/paper/Careless-Whisper:-Speech-to-Text-Hallucination-Koenecke-Choi/b2bc4582f4c
+33a70fe48549f88edb72645a6e4f7
+216. https://journals.plos.org/plosone/article/file?type=printable&id=10.1371/journal.pone.0315286
+217. https://datalaw.kr/en/pipa-amendment-2026-text/pipa-amendment-2026-text.csv
+218. https://pipc.go.kr/np/cmm/fms/FileDown.do?atchFileId=FILE_000000000556760&fileSn=1
+--- [P28] ---
+219. https://www.mfds.go.kr/law/board/boardDetail.do?menuKey=29&brdId=data0011&seq=15756
+220. https://www.privacy.go.kr/cmm/fms/FileDown.do?atchFileId=ATCH_000000000916941&fileSn=1
+221. https://www.aihub.or.kr/aihubdata/data/list.do?currMenu=115&topMenu=100&searchKeyword= 자연어처리
+222. https://www.aihub.or.kr/aihubdata/data/view.do?aihubDataSe=data&dataSetSn=71434
+223. https://www.law.go.kr/lsEfInfoP.do?lsiSeq=195062
+224. https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0315286
+225. https://thinkingspeech.com/2025/03/06/understanding-dysarthria-speech-intelligibility/
+226. https://www.mdpi.com/2076-3425/12/8/1011
+227. https://pubs.asha.org/doi/10.1044/2025_JSLHR-24-00862
+228. https://arxiv.org/pdf/2609.12122v1.pdf
+229. https://pubs.asha.org/doi/10.1044/jshr.2301.28
+230. https://pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=G010030020&nttId=11439
+231. https://pubs.asha.org/doi/abs/10.1044/2017_AJSLP-16-0112
+232. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/e7b4ed09-ea09-4eb0-9605-80daf4141bf4
+233. https://www.e-csd.org/upload/csd-19-1-89-9.pdf
+234. https://e-csd.org/articles/search_result.php?page=3&term=(keywords like '% 의미 %' or keywords_ko like '% 의미 %')
+235. https://pubs.asha.org/doi/10.1044/2021_PERSP-21-00050
+236. https://apps.asha.org/eweb/OLSDynamicPage.aspx?Site=ashacms&Webcode=olsresults&tpc=aac
+237. https://www.asha.org/practice/communication-access/communication-aids/
+238. https://pubs.asha.org/doi/10.1044/2023_AJSLP-23-00129
+239. https://www.asha.org/practice/early-intervention-provider-support/augmentative-and-alternative-communication-in-
+early-intervention/
+240. https://pubs.asha.org/doi/10.1044/2024_PERSP-23-00111
+241. https://pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=11439
+242. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/a04dbb8e-5786-40d6-818d-3a15bfdc167e
+243. https://www.asha.org/practice-portal/clinical-topics/augmentative-and-alternative-communication
+244. https://pubs.asha.org/doi/abs/10.1044/2020_AJSLP-20-00110
+245. https://hl7.org/fhir/R4/diagnosticreport.html
+246. https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getSupportedConstraints
+247. https://github.com/livekit/client-sdk-flutter/blob/main/lib/src/track/options.dart
+248. https://hl7-ips-server.hl7.org/fhir/swagger-ui/?page=ChargeItemDefinition
+249. https://hl7-ips-server.hl7.org/fhir/swagger-ui/?page=Basic
+250. https://github.com/bigbluebutton/bigbluebutton/blob/2c3db458/bigbluebutton-html5/private/config/settings.yml
+251. https://www.law.go.kr/lsInfoP.do?lsiSeq=283839
+252. https://law.go.kr/LSW/lsRvsRsnListP.do?lsId=014846&chrClsCd=010202&lsRvsGubun=all
+253. https://www.law.go.kr/lsInfoP.do?lsiSeq=248613&efYd=20240315
+254. https://www.law.go.kr/ 법령 / 개인정보보호법 / 제 23 조
+--- [P29] ---
+255. https://www.law.go.kr/ 법령 / 개인정보  보호법 /
+256. https://www.mfds.go.kr/brd/m_1060/view.do?seq=15756
+257. https://www.law.go.kr/ 법령 / 디지털의료제품법
+258. https://pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030020&nttId=11439
+259. https://pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS074&mCode=C020010000&nttId=11410
+260. https://www.law.go.kr/lsLinkCommonInfo.do?chrClsCd=010202&lsJoLnkSeq=1029334953
+261. https://apps.asha.org/eweb/ashadynamicpage.aspx?cok=9bc35b3a-2d44-4975-a85b-320623812ef1&pagename=curren
+t&site=ashacms&webcode=cefinddetail
+262. https://pubs.asha.org/doi/abs/10.1044/2023_AJSLP-22-00230
+263. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/39f37355-d648-4bf2-a26e-49e25b76900e
+264. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/5251dcdc-638f-4b75-b7b5-ef57cb9f3e85
+265. https://apps.asha.org/eweb/ashadynamicpage.aspx?cok=c61d93fc-60a9-491e-b923-0f827c6e0561&pagename=current
+&site=ashacms&webcode=coursesearchdetail
+266. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/531332b7-479b-4679-b022-d51ab3d08a21
+267. https://www.asha.org/practice-portal/
+268. https://apps.asha.org/EvidenceMaps/Articles/ArticleSummary/3a58767b-f5c3-41be-b9c4-5bd6a348428d
+269. https://sites.google.com/nyu.edu/mmkcd/motor-speech-disorders
+270. https://www.asha.org/ce/speech-and-language-pathology-subject-codes/
+271. https://www.asha.org/siteassets/practice-portal/adult-motor-speech-evaluation-template.doc
+272. https://www.asha.org/Practice-Portal/Clinical-Topics/Acquired-Apraxia-of-Speech/
+273. https://theadultspeechtherapyworkbook.com/apraxia-worksheets-for-adults/
+274. https://pubs.asha.org/doi/10.1044/2015_AJSLP-14-0118
+275. https://pubs.asha.org/doi/abs/10.1044/2024_PERSP-23-00247
+276. https://www.e-csd.org/upload/csd-27-3-629.pdf
+277. https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART003242601
+278. https://dspace.ewha.ac.kr/handle/2015.oak/261806
+279. https://scienceon.kisti.re.kr/srch/selectPORSrchArticle.do?cn=ART002885861
+280. https://xai.kaist.ac.kr/static/files/2023_xai_workshop/paper30.pdf
+281. https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE01880425
+282. https://www.jslhd.org/xml//48323/48323.pdf
+283. https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002962030
+284. https://scholar.kyobobook.co.kr/article/detail/4050027022712
+285. https://pure.ewha.ac.kr/en/publications/eﬀects-of-verb-network-strengthening-treatment-on-retrieval-of-v/
+286. https://www.eksss.org/archive/view_article?pid=pss-13-2-57
+287. https://alliedhealth.ceconnection.com/files/AReviewofVerbNetworkStrengtheningTreatmentTheoryMethodsResultsan
+dClinicalImplications-1461945203145.pdf
+288. https://www.krm.or.kr/krmts/search/detailView.html?dbGubun=SD&category=Report&m201_id=10036321&local_id=1
+0072521
+--- [P30] ---
+289. https://k-knowledge.kr/srch/read.jsp?id=281890691
+290. https://s-space.snu.ac.kr/handle/10371/215777
+291. https://www.asha.org/practice-portal/clinical-topics/dysarthria-in-adults/
+292. https://www.asha.org/Practice-Portal/Clinical-Topics/Traumatic-Brain-Injury-in-Adults/
+293. https://pubs.asha.org/doi/abs/10.1044/2022_PERSP-21-00129
+294. https://academy.pubs.asha.org/2026/03/brain-injury-awareness-month-new-resources-for-asha-members/
+295. https://www.asha.org/Practice-Portal/Clinical-Topics/Pediatric-Traumatic-Brain-Injury/
+296. https://my.clevelandclinic.org/health/diseases/5502-aphasia
+297. https://www.asha.org/Practice-Portal/Clinical-Topics/Dysarthria-in-Adults/Distinguishing-Perceptual-Characteristics/
+298. https://www.asha.org/siteassets/practice-portal/traumatic-brain-injury-adult/clinicians-guide-to-cognitive-rehabilitati
+on-in-mild-traumatic-brain-injury.pdf
+299. https://www.asha.org/Practice-Portal/Clinical-Topics/
+300. https://pubs.asha.org/doi/10.1044/2022_PERSP-22-00111
+301. https://sites.google.com/nyu.edu/mmkcd/cognitive-linguistic-disorders
+302. https://www.asha.org/practice-portal/clinical-topics/aphasia/person-and-family-centered-care/
+303. https://pubs.asha.org/doi/10.1044/2024_JSLHR-23-00168
+304. https://www.asha.org/practice-portal/clinical-topics/aphasia/
+305. https://www.asha.org/practice-portal/clinical-topics/traumatic-brain-injury-in-adults/common-classifications-of-tbi/
+306. https://www.bmj.com/content/368/bmj.m520
+307. https://www.ncbi.nlm.nih.gov/books/NBK556712/
+308. https://pubmed.ncbi.nlm.nih.gov/32213484/
+309. https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2020.582328/full
+310. https://catch.sites.sheﬀield.ac.uk/projects/big-cactus
+311. https://onlinelibrary.wiley.com/doi/full/10.1111/1460-6984.12814
+312. https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2026.1936067/full
+313. https://eprints.whiterose.ac.uk/id/eprint/170141/3/Implementation of aphasia computer therapy 18.1.21 Accepted
+version.pdf
+314. https://sheﬀield.ac.uk/scharr/news/big-cactus-has-recently-published-lancet-neurology
+315. https://sheﬀield.ac.uk/ctru/impact/stroke
+316. https://pubmed.ncbi.nlm.nih.gov/40401776/
+317. https://www.e-csd.org/journal/view.php?viewtype=pubreader&number=1279
+318. https://pubmed.ncbi.nlm.nih.gov/32369007/

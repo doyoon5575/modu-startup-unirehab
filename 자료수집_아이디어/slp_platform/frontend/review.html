@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>치료사 검토 화면 — 성인 언어재활 임상지원 플랫폼</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#d1d5db;--primary:#2563eb;--warn:#b45309;--danger:#b91c1c;--ok:#15803d;--soft:#f3f4f6;--radius:6px;font-family:Pretendard,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-size:14px}
+header{border-bottom:1px solid var(--border);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header .meta{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+header .meta span b{font-weight:600}
+.link{color:var(--primary);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--fg);padding:6px 12px;border-radius:var(--radius);cursor:pointer}
+button.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.steps{display:flex;border-bottom:1px solid var(--border)}
+.steps div{padding:10px 18px;border-right:1px solid var(--border);cursor:pointer;color:var(--muted)}
+.steps div.active{color:var(--fg);font-weight:600;border-bottom:2px solid var(--primary)}
+.goalbar{padding:8px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.counts span{margin-right:12px;cursor:pointer}
+.counts span.sel{font-weight:600;text-decoration:underline}
+main{display:grid;grid-template-columns:20% 48% 32%;min-height:70vh}
+main>section{border-right:1px solid var(--border);padding:12px;overflow:auto;max-height:72vh}
+main>section:last-child{border-right:none}
+h3{font-size:13px;margin:0 0 8px;color:var(--muted);font-weight:600;text-transform:none}
+.card{border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;margin-bottom:6px;cursor:pointer}
+.card.sel{border-color:var(--primary);background:#eff6ff}
+.card .row{display:flex;justify-content:space-between}
+.badge{display:inline-block;border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:12px;margin-left:4px}
+.badge.ai{border-color:#93c5fd;color:#1d4ed8}
+.badge.warn{border-color:#fcd34d;color:var(--warn)}
+.badge.danger{border-color:#fca5a5;color:var(--danger)}
+.badge.ok{border-color:#86efac;color:var(--ok)}
+.small{font-size:12px;color:var(--muted)}
+.player{border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin:8px 0}
+.timeline{position:relative;height:36px;background:var(--soft);border-radius:4px;margin:8px 0}
+.timeline .mark{position:absolute;top:0;bottom:0;width:2px;background:var(--fg)}
+.timeline .mark span{position:absolute;top:38px;left:-20px;font-size:11px;color:var(--muted);white-space:nowrap}
+.timeline .seg{position:absolute;top:12px;height:12px;background:#93c5fd;border-radius:2px}
+.tabs{display:flex;gap:6px;margin-bottom:8px}.tabs button.active{background:var(--soft);font-weight:600}
+textarea,input[type=text],input[type=number],select{font:inherit;width:100%;border:1px solid var(--border);border-radius:4px;padding:6px}
+.diff ins{background:#dcfce7;text-decoration:none}.diff del{background:#fee2e2}
+fieldset{border:1px solid var(--border);border-radius:var(--radius);margin:0 0 10px;padding:8px 10px}
+legend{font-size:12px;color:var(--muted);padding:0 4px}
+label.opt{display:block;margin:3px 0}
+.tags label{display:inline-block;margin:2px 6px 2px 0}
+footer{border-top:1px solid var(--border);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.save{font-size:13px}.save.fail{color:var(--danger);font-weight:600}
+table{border-collapse:collapse;width:100%;margin:8px 0}th,td{border:1px solid var(--border);padding:6px 8px;text-align:left;font-size:13px}td.num{text-align:right}
+.notice{border:1px solid #fcd34d;background:#fffbeb;border-radius:var(--radius);padding:8px 10px;margin:8px 0;font-size:13px}
+.notice.danger{border-color:#fca5a5;background:#fef2f2}
+.proposal{border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:10px}
+.proposal dl{display:grid;grid-template-columns:110px 1fr;gap:4px 10px;margin:8px 0}.proposal dt{color:var(--muted)}
+.hidden{display:none}
+@media (max-width:1000px){main{grid-template-columns:1fr}main>section{max-height:none;border-right:none;border-bottom:1px solid var(--border)}}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center}
+.modal .box{background:#fff;border-radius:8px;padding:16px;max-width:560px;width:92%;max-height:80vh;overflow:auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="meta">
+    <span>대상자 <b class="link" onclick="openPanel('profile')" id="h-patient"></b></span>
+    <span class="link" onclick="openPanel('session')" id="h-session"></span>
+    <span>상태: <b id="h-state">검토 중</b></span>
+    <span class="small" id="h-lastsave">마지막 저장: —</span>
+  </div>
+  <div><button onclick="tempSave()">임시저장</button> <button onclick="leave()">나가기</button></div>
+</header>
+<div class="steps">
+  <div id="step1" class="active" onclick="go(1)">① 문항 검토</div>
+  <div id="step2" onclick="go(2)">② 회기 결과</div>
+  <div id="step3" onclick="go(3)">③ 다음 계획</div>
+</div>
+<div class="goalbar">
+  <div>목표: <span id="h-goal"></span> <span class="link" onclick="openPanel('criterion')">[목표·채점 기준 보기]</span></div>
+  <div class="counts" id="h-counts"></div>
+</div>
+
+<!-- ① 문항 검토 -->
+<main id="view1">
+  <section>
+    <h3>A. 문항 목록</h3>
+    <select id="filter" onchange="renderList()">
+      <option>전체</option><option>미검토</option><option>확인 필요</option><option>수정됨</option><option>판정 보류</option><option>제외</option>
+    </select>
+    <div id="list" style="margin-top:8px"></div>
+  </section>
+  <section id="evidence"></section>
+  <section id="judge"></section>
+</main>
+
+<!-- ② 회기 결과 -->
+<div id="view2" class="hidden" style="padding:16px"></div>
+<!-- ③ 다음 계획 -->
+<div id="view3" class="hidden" style="padding:16px"></div>
+
+<footer>
+  <span class="save" id="savestate">저장 상태: 저장됨</span>
+  <div>
+    <button onclick="prevTrial()">이전 문항</button>
+    <button class="primary" onclick="go(2)">회기 결과 확인 →</button>
+  </div>
+</footer>
+<div id="modal" class="hidden"></div>
+
+<script>
+const DATA = {"patient": {"code": "P-001", "date": "2026-10-17", "activity": "생활용품 이름대기", "setting": "치료실"}, "goal": "대상자는 생활용품 사진 10개에서 추가 단서 없는 조건으로 8개 이상(기초선 3개 기준으로 치료사가 설정)에 따라 이름을 말한다.", "criterion": {"id": "CR-1", "version": 2, "text": "목표어 또는 허용 표현을 추가 단서 없이 산출하면 독립 성공; '~이요/~요' 허용; 용도 설명은 다른 반응"}, "trials": [{"id": "T-d344d712", "order": 1, "stim": "사과", "stim_version": 1, "purpose": "연습용", "collection": "수집됨", "row_version": 4, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-01_1.wav", "ai": "사과", "conf": 0.9, "cls": "독립 성공 제안", "th": null, "cue": "없음"}], "timing": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "cue_given_s": null, "post_cue_onset_s": null, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "target_completed_s": null}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "분석 가능", "recording_issues": [], "status": "자동 분석 후 검토 완료", "limits": [], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "수정됨", "usage": "결과에 포함", "exclusion_reason": null, "first_judgement": "다른 반응", "cues_given": [], "post_cue_judgement": null, "observation_tags": [], "observation_note": "", "hold_reason": null, "modification_reason": "기준 적용 오류", "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}, {"version": 2, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}, {"version": 3, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "다른 반응", "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": "기준 적용 오류", "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-b2e2661e", "order": 2, "stim": "우유", "stim_version": 1, "purpose": "연습용", "collection": "수집됨", "row_version": 3, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-02_1.wav", "ai": "우유", "conf": 0.9, "cls": "독립 성공 제안", "th": null, "cue": "없음"}], "timing": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "cue_given_s": null, "post_cue_onset_s": null, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "target_completed_s": null}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "분석 가능", "recording_issues": [], "status": "자동 분석 후 검토 완료", "limits": [], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "검토 완료", "usage": "결과에 포함", "exclusion_reason": null, "first_judgement": "독립 성공", "cues_given": [], "post_cue_judgement": "해당 없음", "observation_tags": [], "observation_note": "", "hold_reason": null, "modification_reason": null, "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}, {"version": 2, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-eff3e8a0", "order": 3, "stim": "비누", "stim_version": 1, "purpose": "연습용", "collection": "수집됨", "row_version": 3, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-03_1.wav", "ai": "비누", "conf": 0.9, "cls": "독립 성공 제안", "th": null, "cue": "없음"}], "timing": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "cue_given_s": null, "post_cue_onset_s": null, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "target_completed_s": null}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "분석 가능", "recording_issues": [], "status": "자동 분석 후 검토 완료", "limits": [], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "검토 완료", "usage": "결과에 포함", "exclusion_reason": null, "first_judgement": "독립 성공", "cues_given": [], "post_cue_judgement": "해당 없음", "observation_tags": [], "observation_note": "", "hold_reason": null, "modification_reason": null, "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}, {"version": 2, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-48ef8bb2", "order": 4, "stim": "수건", "stim_version": 1, "purpose": "연습용", "collection": "수집됨", "row_version": 3, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-04_1.wav", "ai": "수건", "conf": 0.9, "cls": "독립 성공 제안", "th": null, "cue": "없음"}], "timing": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "cue_given_s": null, "post_cue_onset_s": null, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "target_completed_s": null}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "분석 가능", "recording_issues": [], "status": "자동 분석 후 검토 완료", "limits": [], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "검토 완료", "usage": "결과에 포함", "exclusion_reason": null, "first_judgement": "독립 성공", "cues_given": [], "post_cue_judgement": "해당 없음", "observation_tags": [], "observation_note": "", "hold_reason": null, "modification_reason": null, "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}, {"version": 2, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-eb71b944", "order": 5, "stim": "칫솔", "stim_version": 1, "purpose": "연습용", "collection": "수집됨", "row_version": 3, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-05_1.wav", "ai": "치솔", "conf": 0.55, "cls": "판정 보류 제안(전사 신뢰도 낮음)", "th": "칫솔", "cue": "없음"}, {"type": "단서 후 반응", "audio": "audio/2026-10-17/ST-05_2.wav", "ai": "칫솔", "conf": 0.9, "cls": "성공 제안", "th": null, "cue": "소리 단서"}], "timing": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.1, "cue_given_s": 8.0, "post_cue_onset_s": 9.2, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "target_completed_s": null, "cue_given_s": 8.0, "post_cue_onset_s": 9.2}, "corrected_by": "slp"}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "분석 가능", "recording_issues": [], "status": "자동 분석 후 검토 완료", "limits": ["최초 반응: 전사 신뢰도 0.55 → 치료사 확인 필요"], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "수정됨", "usage": "결과에 포함", "exclusion_reason": null, "first_judgement": "다른 반응", "cues_given": [], "post_cue_judgement": null, "observation_tags": [], "observation_note": "", "hold_reason": null, "modification_reason": null, "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null, null], "timing": {"onset": 3.5, "post_cue_onset": 9.2}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "원음상 '칫솔'로 들림", "transcripts": ["칫솔", null], "timing": {"onset": 3.1, "post_cue_onset": 9.2}}, "reason": "전사 오류", "note": ""}, {"version": 2, "reviewer_id": "trn", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "원음상 '칫솔'로 들림", "transcripts": ["칫솔", null], "timing": {"onset": 3.1, "post_cue_onset": 9.2}}, "current": {"usage": "결과에 포함", "first": "다른 반응", "cues": [], "post": null, "tags": [], "note": "", "transcripts": ["칫솔", null], "timing": {"onset": 3.1, "post_cue_onset": 9.2}}, "reason": null, "note": ""}, {"version": 3, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "다른 반응", "cues": [], "post": null, "tags": [], "note": "", "transcripts": ["칫솔", null], "timing": {"onset": 3.1, "post_cue_onset": 9.2}}, "current": {"usage": "결과에 포함", "first": "다른 반응", "cues": [], "post": null, "tags": [], "note": "", "transcripts": ["칫솔", null], "timing": {"onset": 3.1, "post_cue_onset": 9.2}}, "reason": null, "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-01870fae", "order": 6, "stim": "컵", "stim_version": 1, "purpose": "연습용", "collection": "수집됨", "row_version": 3, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-06_1.wav", "ai": "물 먹는 거", "conf": 0.9, "cls": "다른 반응 제안", "th": null, "cue": "없음"}, {"type": "단서 후 반응", "audio": "audio/2026-10-17/ST-06_2.wav", "ai": "컵", "conf": 0.9, "cls": "성공 제안", "th": null, "cue": "의미 단서"}], "timing": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "cue_given_s": 8.0, "post_cue_onset_s": 9.2, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "target_completed_s": null, "cue_given_s": 8.0, "post_cue_onset_s": 9.2}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "분석 가능", "recording_issues": [], "status": "자동 분석 후 검토 완료", "limits": [], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "검토 완료", "usage": "결과에 포함", "exclusion_reason": null, "first_judgement": "다른 반응", "cues_given": ["의미 단서"], "post_cue_judgement": "성공", "observation_tags": ["이름 대신 용도 설명"], "observation_note": "", "hold_reason": null, "modification_reason": null, "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null, null], "timing": {"onset": 3.5, "post_cue_onset": 9.2}}, "current": {"usage": "결과에 포함", "first": "다른 반응", "cues": ["의미 단서"], "post": "성공", "tags": ["이름 대신 용도 설명"], "note": "", "transcripts": [null, null], "timing": {"onset": 3.5, "post_cue_onset": 9.2}}, "reason": null, "note": ""}, {"version": 2, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "다른 반응", "cues": ["의미 단서"], "post": "성공", "tags": ["이름 대신 용도 설명"], "note": "", "transcripts": [null, null], "timing": {"onset": 3.5, "post_cue_onset": 9.2}}, "current": {"usage": "결과에 포함", "first": "다른 반응", "cues": ["의미 단서"], "post": "성공", "tags": ["이름 대신 용도 설명"], "note": "", "transcripts": [null, null], "timing": {"onset": 3.5, "post_cue_onset": 9.2}}, "reason": null, "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-85f4ac5c", "order": 7, "stim": "숟가락", "stim_version": 1, "purpose": "연습용", "collection": "수집됨", "row_version": 2, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-07_1.wav", "ai": null, "conf": null, "cls": null, "th": null, "cue": "없음"}], "timing": {"stimulus_end_s": null, "first_speech_onset_s": null, "cue_given_s": null, "post_cue_onset_s": null, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "재녹음", "recording_issues": ["잡음", "잘림"], "status": "녹음 품질 부족", "limits": ["녹음 품질 부족: 임상 점수 산출 보류(잡음, 잘림)"], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "제외", "usage": "결과에서 제외", "exclusion_reason": "녹음 품질 부족(잡음·잘림)", "first_judgement": null, "cues_given": [], "post_cue_judgement": null, "observation_tags": [], "observation_note": "", "hold_reason": null, "modification_reason": null, "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null], "timing": {"onset": null, "post_cue_onset": null}}, "current": {"usage": "결과에서 제외", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null], "timing": {"onset": null, "post_cue_onset": null}}, "reason": null, "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-b450982a", "order": 8, "stim": "휴지", "stim_version": 1, "purpose": "연습용", "collection": "수집됨", "row_version": 3, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-08_1.wav", "ai": "휴지", "conf": 0.9, "cls": "독립 성공 제안", "th": null, "cue": "없음"}], "timing": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "cue_given_s": null, "post_cue_onset_s": null, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "target_completed_s": null}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "분석 가능", "recording_issues": [], "status": "자동 분석 후 검토 완료", "limits": [], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "검토 완료", "usage": "결과에 포함", "exclusion_reason": null, "first_judgement": "독립 성공", "cues_given": [], "post_cue_judgement": "해당 없음", "observation_tags": [], "observation_note": "", "hold_reason": null, "modification_reason": null, "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}, {"version": 2, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "current": {"usage": "결과에 포함", "first": "독립 성공", "cues": [], "post": "해당 없음", "tags": [], "note": "", "transcripts": [null], "timing": {"onset": 3.5, "post_cue_onset": null}}, "reason": null, "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-323d7443", "order": 9, "stim": "빗", "stim_version": 1, "purpose": "새 자극 확인용", "collection": "수집됨", "row_version": 2, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-09_1.wav", "ai": "머리 하는 거", "conf": 0.9, "cls": "다른 반응 제안", "th": null, "cue": "없음"}, {"type": "단서 후 반응", "audio": "audio/2026-10-17/ST-09_2.wav", "ai": "빗", "conf": 0.9, "cls": "성공 제안", "th": null, "cue": "의미 단서"}], "timing": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "cue_given_s": 8.0, "post_cue_onset_s": 9.2, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {"stimulus_end_s": 1.0, "first_speech_onset_s": 3.5, "target_completed_s": null, "cue_given_s": 8.0, "post_cue_onset_s": 9.2}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "분석 가능", "recording_issues": [], "status": "자동 분석 후 검토 대기", "limits": [], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "판정 보류", "usage": "보류", "exclusion_reason": null, "first_judgement": "판정 보류", "cues_given": [], "post_cue_judgement": null, "observation_tags": ["이름 대신 용도 설명"], "observation_note": "", "hold_reason": "'머리 하는 거'가 용도 설명인지 부분 반응인지 재청취 필요", "modification_reason": null, "reviewer_id": "slp", "reviewed_at": "2026-10-23T19:08:22", "history": [{"version": 1, "reviewer_id": "slp", "at": "2026-10-23T19:08:22", "previous": {"usage": "결과에 포함", "first": null, "cues": [], "post": null, "tags": [], "note": "", "transcripts": [null, null], "timing": {"onset": 3.5, "post_cue_onset": 9.2}}, "current": {"usage": "보류", "first": "판정 보류", "cues": [], "post": null, "tags": ["이름 대신 용도 설명"], "note": "", "transcripts": [null, null], "timing": {"onset": 3.5, "post_cue_onset": 9.2}}, "reason": null, "note": ""}], "clinician_speech_ratings": {}}}, {"id": "T-a0da0201", "order": 10, "stim": "열쇠", "stim_version": 1, "purpose": "새 자극 확인용", "collection": "수집 실패", "row_version": 1, "attempts": [{"type": "최초 반응", "audio": "audio/2026-10-17/ST-10_1.wav", "ai": null, "conf": null, "cls": null, "th": null, "cue": "없음"}], "timing": {"stimulus_end_s": null, "first_speech_onset_s": null, "cue_given_s": null, "post_cue_onset_s": null, "target_completed_s": null, "definition": "자극 음성 종료 → 첫 발화 시작", "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음", "auto_values": {}, "corrected_by": null}, "analysis": {"model_version": "mock-ko-asr-0.1", "recording_quality": "재녹음", "recording_issues": ["녹음 누락"], "status": "녹음 품질 부족", "limits": ["녹음 누락: 대상자 오반응으로 계산하지 않음"], "speech_rate": null, "speech_rate_unit": "음절/초(쉼 제외)", "speech_rate_segment": "", "repetitions": [], "pauses": [], "analyzed_at": "2026-10-23T19:08:22"}, "review": {"review_status": "제외", "usage": "결과에서 제외", "exclusion_reason": "수집 실패(녹음 누락)", "first_judgement": null, "cues_given": [], "post_cue_judgement": null, "observation_tags": [], "observation_note": "", "hold_reason": null, "modification_reason": null, "reviewer_id": null, "reviewed_at": null, "history": [], "clinician_speech_ratings": {}}}], "plan": {"id": "PLAN-c39fbeb4", "patient_id": "P-001", "based_on_session_id": "S-c2472444", "based_on_result_version": 1, "state": "재승인 필요", "goals_to_keep": [{"goal_id": "G-1", "goal": "대상자는 생활용품 사진 10개에서 추가 단서 없는 조건으로 8개 이상(기초선 3개 기준으로 치료사가 설정)에 따라 이름을 말한다.", "reason": "이번 회기 결과가 확정되어 다음 회기 비교 기준으로 사용"}], "conditions_to_change": [{"target": "분량", "change": "생활용품 사진 10개에서 동일 조건으로 문항 수를 늘려 재실시", "proposal_id": "PR-1fbb3a89"}, {"target": "자극", "change": "새로운 생활용품 사진을 포함하여 독립 이름대기를 확인", "proposal_id": "PR-0b95f251"}, {"target": "분량", "change": "문항 수를 줄이거나 중간 휴식을 넣고 순서를 바꿔 재실시", "proposal_id": "PR-08ce4256"}], "selection_rationale": "결과 포함 문항 7개(기준 8개 미만); 연습한 자극의 수행 기록은 있으나 새 자극 기록이 없음; 앞 절반 100.0% → 뒤 절반 50.0%", "probe_tasks": ["새로운 생활용품 사진을 포함하여 독립 이름대기를 확인"], "home_practice_candidates": [], "stop_adjust_conditions": "대상자가 피로를 호소하거나 3문항 연속 무반응이면 휴식 5분, 2회 휴식 후에도 지속되면 종료", "proposals": [{"id": "PR-1fbb3a89", "plan_id": "PLAN-c39fbeb4", "title": "추가 관찰 제안", "linked_goal_id": "G-1", "rationale_data": "결과 포함 문항 7개(기준 8개 미만)", "related_trial_ids": ["T-d344d712", "T-b2e2661e", "T-eff3e8a0", "T-48ef8bb2", "T-eb71b944", "T-01870fae", "T-b450982a"], "activity_draft": "생활용품 사진 10개에서 동일 조건으로 문항 수를 늘려 재실시", "uncertainty": "자료가 적어 진전 여부를 판단할 수 없음", "needs_confirmation": "다음 회기 문항 수와 제외 기준", "evidence_ids": [], "rule_key": "MORE_OBSERVATION", "precheck_condition": "제외·보류 문항 사유 확인", "decision": "수락", "therapist_edit": null, "decided_by": "trn", "decided_at": "2026-10-23T19:08:22"}, {"id": "PR-0b95f251", "plan_id": "PLAN-c39fbeb4", "title": "새로운 자극에서 수행 확인", "linked_goal_id": "G-1", "rationale_data": "연습한 자극의 수행 기록은 있으나 새 자극 기록이 없음", "related_trial_ids": ["T-d344d712", "T-b2e2661e", "T-eff3e8a0", "T-48ef8bb2", "T-eb71b944", "T-01870fae", "T-b450982a"], "activity_draft": "새로운 생활용품 사진을 포함하여 독립 이름대기를 확인", "uncertainty": "현재 자료로 생활 상황의 일반화는 판단하지 않음", "needs_confirmation": "치료사가 자극의 친숙도와 과제 적합성을 검토", "evidence_ids": ["EV-9935afea"], "rule_key": "NO_PROBE", "precheck_condition": "새 자극의 친숙도", "decision": "수락", "therapist_edit": null, "decided_by": "trn", "decided_at": "2026-10-23T19:08:22"}, {"id": "PR-08ce4256", "plan_id": "PLAN-c39fbeb4", "title": "과제 순서·분량·휴식 검토", "linked_goal_id": "G-1", "rationale_data": "앞 절반 100.0% → 뒤 절반 50.0%", "related_trial_ids": ["T-d344d712", "T-b2e2661e", "T-eff3e8a0", "T-48ef8bb2", "T-eb71b944", "T-01870fae", "T-b450982a"], "activity_draft": "문항 수를 줄이거나 중간 휴식을 넣고 순서를 바꿔 재실시", "uncertainty": "순서 효과와 난이도 효과를 이번 자료로 구분할 수 없음", "needs_confirmation": "휴식 삽입 또는 분량 조정 여부", "evidence_ids": [], "rule_key": "FATIGUE", "precheck_condition": "피로·환경·과제 난이도", "decision": "채택하지 않음", "therapist_edit": null, "decided_by": "trn", "decided_at": "2026-10-23T19:08:22"}], "document_draft": "[다음 회기 계획 초안] 대상자 P-001 · 기준 회기 2026-10-17 (결과 v1)\n\n■ 유지할 목표\n  - 대상자는 생활용품 사진 10개에서 추가 단서 없는 조건으로 8개 이상(기초선 3개 기준으로 치료사가 설정)에 따라 이름을 말한다. — 이유: 이번 회기 결과가 확정되어 다음 회기 비교 기준으로 사용\n■ 바꿀 조건\n  - 분량: 생활용품 사진 10개에서 동일 조건으로 문항 수를 늘려 재실시\n  - 자극: 새로운 생활용품 사진을 포함하여 독립 이름대기를 확인\n  - 분량: 문항 수를 줄이거나 중간 휴식을 넣고 순서를 바꿔 재실시\n■ 제안별 근거\n  [추가 관찰 제안] 근거: 결과 포함 문항 7개(기준 8개 미만) / 불확실성: 자료가 적어 진전 여부를 판단할 수 없음 / 확인 필요: 다음 회기 문항 수와 제외 기준 / 참고자료: 근거 자료 연결 필요\n  [새로운 자극에서 수행 확인] 근거: 연습한 자극의 수행 기록은 있으나 새 자극 기록이 없음 / 불확실성: 현재 자료로 생활 상황의 일반화는 판단하지 않음 / 확인 필요: 치료사가 자극의 친숙도와 과제 적합성을 검토 / 참고자료: 근거 자료 연결됨\n  [과제 순서·분량·휴식 검토] 근거: 앞 절반 100.0% → 뒤 절반 50.0% / 불확실성: 순서 효과와 난이도 효과를 이번 자료로 구분할 수 없음 / 확인 필요: 휴식 삽입 또는 분량 조정 여부 / 참고자료: 근거 자료 연결 필요\n■ 확인 과제: 새로운 생활용품 사진을 포함하여 독립 이름대기를 확인\n■ 가정 연습 후보(승인 후 별도 배정): 없음\n■ 중단·조정 조건: 대상자가 피로를 호소하거나 3문항 연속 무반응이면 휴식 5분, 2회 휴식 후에도 지속되면 종료\n■ 승인 상태: 초안", "author_id": "trn", "approved_by": "sup", "approved_at": "2026-10-23T19:08:22", "history": [{"at": "2026-10-23T19:08:22", "by": "trn", "event": "AI 초안 생성", "role": "실습생"}, {"at": "2026-10-23T19:08:22", "by": "trn", "event": "제안 '추가 관찰 제안' → 수락"}, {"at": "2026-10-23T19:08:22", "by": "trn", "event": "제안 '새로운 자극에서 수행 확인' → 수락"}, {"at": "2026-10-23T19:08:22", "by": "trn", "event": "제안 '과제 순서·분량·휴식 검토' → 채택하지 않음"}, {"at": "2026-10-23T19:08:22", "by": "trn", "event": "지도자 승인 요청"}, {"at": "2026-10-23T19:08:22", "by": "sup", "event": "다음 회기 계획 승인"}, {"at": "2026-10-23T19:08:22", "by": "slp", "event": "기초 결과 변경됨 → 재승인 요구"}], "supervisor_feedback": [{"at": "2026-10-23T19:08:22", "by": "sup", "feedback": "새 자극 확인 제안 적절. 승인."}]}, "evidence": {"EV-9935afea": {"id": "EV-9935afea", "title": "의미자질분석(Semantic Feature Analysis)", "target_population": "실어증(이름대기 결함)", "target_function": "이름대기", "intervention": "목표어의 용도·장소·특징 등 의미 자질을 산출하도록 유도", "evidence_level": "ASHA 실어증 임상자료(지침 수준)", "outcome_measures": "훈련 자극 이름대기 정확도", "limitations": "한국어 자극과 채점 기준, 이해 부담 미검토", "korean_applicability": "미확인", "usage_rights": "자체 제작 자극만 사용", "linked_feature": "용도·장소·특징을 다루는 활동", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/", "approach_key": "SFA", "verified_effect_in_app": false}, "EV-02c80cc4": {"id": "EV-02c80cc4", "title": "음운요소분석(Phonological Components Analysis)", "target_population": "실어증", "target_function": "이름대기", "intervention": "목표어의 첫소리·음절 수·운 등 소리 정보를 활용", "evidence_level": "ASHA 실어증 임상자료", "outcome_measures": "이름대기 정확도", "limitations": "영어의 운·철자 과제를 한국어에 그대로 적용하지 않는 검토 필요", "korean_applicability": "미확인", "usage_rights": "자체 제작 자극만 사용", "linked_feature": "소리·음절 정보를 제공하는 활동", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/", "approach_key": "PCA", "verified_effect_in_app": false}, "EV-13c80868": {"id": "EV-13c80868", "title": "동사네트워크강화(VNeST)", "target_population": "실어증", "target_function": "문장 속 어휘 인출", "intervention": "동사와 관련된 행위자·대상 역할을 구성", "evidence_level": "ASHA 실어증 임상자료", "outcome_measures": "동사·문장 산출", "limitations": "조사·어미·생략 등 한국어 반응의 허용 범위 미정", "korean_applicability": "미확인", "usage_rights": "자체 제작", "linked_feature": "'누가–무엇을–어떻게' 관계 구성 활동", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/", "approach_key": "VNEST", "verified_effect_in_app": false}, "EV-6a762a0f": {"id": "EV-6a762a0f", "title": "스크립트 훈련", "target_population": "실어증", "target_function": "기능적 대화", "intervention": "개인에게 중요한 상황의 말하기를 반복 연습", "evidence_level": "ASHA 실어증 임상자료", "outcome_measures": "스크립트 산출 정확도·속도", "limitations": "연습한 문장과 새로운 상황 수행을 분리 측정해야 함", "korean_applicability": "미확인", "usage_rights": "자체 제작", "linked_feature": "주문·예약·자기소개 등 개인별 대화 연습", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/", "approach_key": "SCRIPT", "verified_effect_in_app": false}, "EV-23681bfa": {"id": "EV-23681bfa", "title": "읽기 지원", "target_population": "실어증", "target_function": "읽기 이해", "intervention": "이해를 돕는 사진·형식·언어적 지원 활용", "evidence_level": "ASHA 실어증 임상자료", "outcome_measures": "읽기 이해", "limitations": "읽기 이해와 소리 내어 읽기의 평가 분리 필요", "korean_applicability": "미확인", "usage_rights": "자체 제작", "linked_feature": "안내문·메시지·일정 읽기 활동", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/", "approach_key": "READING_SUPPORT", "verified_effect_in_app": false}, "EV-d3b84a6d": {"id": "EV-d3b84a6d", "title": "의사소통 상대자 훈련", "target_population": "실어증·보호자", "target_function": "상대자의 지원 방식", "intervention": "기다리기, 선택지 제공, 표현 확인 등 지원 방식 훈련", "evidence_level": "ASHA 실어증 임상자료", "outcome_measures": "대화 참여·상대자 행동 변화", "limitations": "정답을 대신 말하는 도움과 의사표현을 지원하는 도움의 구분 필요", "korean_applicability": "미확인", "usage_rights": "자체 제작", "linked_feature": "보호자용 도움 안내와 연습", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/", "approach_key": "PARTNER_TRAINING", "verified_effect_in_app": false}, "EV-dd9e5465": {"id": "EV-dd9e5465", "title": "말실행증: 조음운동 접근·감각 단서·속도/리듬 조절(SPT 등)", "target_population": "후천성 말실행증", "target_function": "말운동 계획", "intervention": "모델 보고 따라 말하기, 함께 말하기, 길이·복잡도 조절, 피드백 조건 설정", "evidence_level": "ASHA 말실행증 임상자료 + 개별 비교연구(소표본)", "outcome_measures": "조음 정확도", "limitations": "표본이 작아 확대 해석 주의; 한국어 미검증", "korean_applicability": "미확인", "usage_rights": "자체 제작", "linked_feature": "말운동 연습(2단계 이후)", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/acquired-apraxia-of-speech/", "approach_key": "AOS_MOTOR", "verified_effect_in_app": false}, "EV-8579689e": {"id": "EV-8579689e", "title": "마비말장애: 하위체계별 개별화", "target_population": "마비말장애", "target_function": "말 산출", "intervention": "원인과 영향을 받는 말 하위체계(호흡·발성·공명·조음·운율)에 맞춘 개별화", "evidence_level": "ASHA 마비말장애 임상자료", "outcome_measures": "말명료도(청자 기반)", "limitations": "특정 질환 발성훈련을 모든 말장애에 공통 적용 금지", "korean_applicability": "미확인", "usage_rights": "자체 제작", "linked_feature": "말 특성 분석과 치료사가 선택한 연습(2단계 이후)", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/dysarthria-in-adults/", "approach_key": "DYSARTHRIA", "verified_effect_in_app": false}, "EV-7f8ca214": {"id": "EV-7f8ca214", "title": "AAC: 개인의 언어·운동·감각·환경·상대자 고려", "target_population": "AAC 필요 성인", "target_function": "보완·대체 표현", "intervention": "사진·글자·선택판을 정식 의사소통 방식으로 제공", "evidence_level": "ASHA AAC 임상자료", "outcome_measures": "메시지 전달 여부", "limitations": "말이 일부 가능해도 보완 수단이 필요할 수 있음", "korean_applicability": "미확인", "usage_rights": "자체 제작", "linked_feature": "개인별 표현판, 반응 방식 전환", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/professional-issues/augmentative-and-alternative-communication/", "approach_key": "AAC", "verified_effect_in_app": false}, "EV-8925a844": {"id": "EV-8925a844", "title": "인지-의사소통: 기능적 상황 정보 중시", "target_population": "외상성 뇌손상 등", "target_function": "정보 조직화·전략 사용", "intervention": "검사 결과와 일상 수행이 다를 수 있으므로 기능적 상황 기록", "evidence_level": "ASHA TBI 임상자료", "outcome_measures": "정보 유지·순서·전략", "limitations": "실어증이라는 이유만으로 인지장애를 전제하지 않음", "korean_applicability": "미확인", "usage_rights": "자체 제작", "linked_feature": "정보 조직화·보상전략 연습(확장)", "reviewer": "", "reviewed_at": "", "update_status": "검토 필요", "url": "https://www.asha.org/practice-portal/clinical-topics/traumatic-brain-injury-in-adults/", "approach_key": "COG_COMM", "verified_effect_in_app": false}}};
+const ROLE = (new URLSearchParams(location.search).get('role')) || '언어재활사'; // 실습생 / 언어재활사 / 지도자
+const CAN_APPROVE = ROLE !== '실습생';
+let state = { trials: DATA.trials, sel: 0, saving:false, failNext: true, sessionState:'검토 중', resultFinalized:false, resultVersion:0, planApproved:false, basisChanged:false, lastSave:null, criterionVersion: DATA.criterion.version, homeAssigned:[] };
+state.trials.forEach(t=>{ t.draft = JSON.parse(JSON.stringify(t.review)); t.draft.transcripts = t.attempts.map(a=>a.th ?? a.ai ?? ''); t.draft.onset = t.timing.first_speech_onset_s; t.attemptTab=0; });
+
+const ICON = {'미검토':'○','검토 중':'◐','검토 완료':'✓','확인 필요':'!','수정됨':'✎','판정 보류':'?','제외':'×','재확인 필요':'↻'};
+function statusOf(t){ return t.review.review_status; }
+function counts(){
+  const c = {'전체':state.trials.length,'검토 완료':0,'미검토':0,'확인 필요':0,'판정 보류':0,'제외':0,'수정됨':0,'재확인 필요':0};
+  state.trials.forEach(t=>{const s=statusOf(t); if(s==='검토 완료'||s==='수정됨') c['검토 완료']++; if(s==='미검토'||s==='검토 중') c['미검토']++; if(s==='확인 필요'||s==='재확인 필요') c['확인 필요']++; if(s==='판정 보류') c['판정 보류']++; if(s==='제외') c['제외']++; if(s==='수정됨') c['수정됨']++; if(s==='재확인 필요') c['재확인 필요']++;});
+  return c;
+}
+function renderHeader(){
+  document.getElementById('h-patient').textContent = DATA.patient.code;
+  document.getElementById('h-session').textContent = `${DATA.patient.date} · ${DATA.patient.activity} · ${DATA.patient.setting}`;
+  document.getElementById('h-goal').textContent = DATA.goal + ` (채점 기준 ${DATA.criterion.id} v${state.criterionVersion})`;
+  document.getElementById('h-state').textContent = state.basisChanged ? '기초 결과 변경됨' : state.planApproved ? '계획 승인' : state.resultFinalized ? '회기 결과 확정' : '검토 중';
+  const c = counts();
+  document.getElementById('h-counts').innerHTML = ['전체','검토 완료','확인 필요','판정 보류','제외'].map(k=>`<span onclick="setFilter('${k==='검토 완료'?'전체':k}')">${k} ${c[k]}개</span>`).join('');
+  document.getElementById('h-lastsave').textContent = '마지막 저장: ' + (state.lastSave||'—');
+}
+function setFilter(f){ document.getElementById('filter').value=f; go(1); renderList(); }
+function matchFilter(t,f){ const s=statusOf(t); return f==='전체' || (f==='미검토'&&(s==='미검토'||s==='검토 중')) || (f==='확인 필요'&&(s==='확인 필요'||s==='재확인 필요')) || (f==='수정됨'&&s==='수정됨') || (f==='판정 보류'&&s==='판정 보류') || (f==='제외'&&s==='제외'); }
+function checkReason(t){ const a=t.analysis; if(!a) return '분석 대기'; if(a.status==='녹음 품질 부족') return '음질 문제'; if(a.status==='현재 모델의 검증 범위 밖') return '적용 범위 밖'; if(a.limits && a.limits.length) return '전사 검토'; return null; }
+function renderList(){
+  const f = document.getElementById('filter').value;
+  document.getElementById('list').innerHTML = state.trials.map((t,i)=>{ if(!matchFilter(t,f)) return '';
+    const s=statusOf(t); const r=checkReason(t);
+    return `<div class="card ${i===state.sel?'sel':''}" onclick="select(${i})">
+      <div class="row"><b>${String(t.order).padStart(2,'0')} ${t.stim}</b><span class="badge ${s==='확인 필요'||s==='재확인 필요'?'warn':s==='제외'?'danger':s==='검토 완료'||s==='수정됨'?'ok':''}">${ICON[s]} ${s}</span></div>
+      <div class="small">최초: ${t.attempts[0].cls||'분석 대기'}${t.attempts[1]?` · 도움 후: ${t.attempts[1].cls||'—'}`:''}</div>
+      ${r?`<div class="small">확인 사유: ${r}</div>`:''}
+      ${t.purpose==='새 자극 확인용'?'<div class="small">새 자극 확인용</div>':''}
+    </div>`; }).join('') || '<div class="small">해당 항목 없음</div>';
+}
+function select(i){ state.sel=i; renderList(); renderEvidence(); renderJudge(); }
+function prevTrial(){ if(state.sel>0) select(state.sel-1); }
+function diffHtml(a,b){ if(a===b||a==null) return b||''; return `<span class="diff"><del>${a}</del> → <ins>${b}</ins></span>`; }
+
+function renderEvidence(){
+  const t = state.trials[state.sel]; const a = t.attempts[t.attemptTab]||t.attempts[0]; const tm=t.timing; const an=t.analysis;
+  const lat = (tm.stimulus_end_s!=null && tm.first_speech_onset_s!=null) ? (tm.first_speech_onset_s-tm.stimulus_end_s).toFixed(2) : null;
+  const autoOn = tm.auto_values && tm.auto_values.first_speech_onset_s;
+  const scale = 12; const px = s=> (s/scale*100).toFixed(1)+'%';
+  let html = `<h3>B. 반응·근거 확인</h3>
+  <div><b>문항 ${String(t.order).padStart(2,'0')} · ${t.stim}</b> <span class="small">자극 ${t.stim}.png v${t.stim_version} · ${t.purpose} · 수집 상태: ${t.collection}</span></div>
+  <div style="border:1px dashed var(--border);border-radius:6px;height:90px;display:flex;align-items:center;justify-content:center;margin:8px 0;color:var(--muted)">[자극 이미지: ${t.stim}]</div>`;
+  if(t.collection==='수집 실패'){ html += `<div class="notice danger">녹음 누락(수집 실패). 대상자 무반응과 구분되어 결과 계산에서 제외됩니다. 오반응으로 계산하지 않습니다.</div>`; document.getElementById('evidence').innerHTML=html; return; }
+  html += `<div class="tabs">${t.attempts.map((x,i)=>`<button class="${i===t.attemptTab?'active':''}" onclick="state.trials[${state.sel}].attemptTab=${i};renderEvidence()">${x.type}${x.cue&&x.cue!=='없음'?` (${x.cue} 후)`:''}</button>`).join('')}</div>
+  <div class="small">자극 제시 ── 최초 반응 ── 단서 제공 ── 후속 반응</div>
+  <div class="player">
+    <div>▶ <span class="small">${a.audio||'원음 없음'}</span> &nbsp; <button onclick="playFail()">재생</button> <button>구간 반복</button> <select style="width:auto"><option>1.0x</option><option>0.75x</option><option>0.5x</option></select> <span class="small">(재생속도는 듣기 편의용. 반응 시간은 원본 녹음 기준)</span></div>
+    <div class="timeline">
+      ${tm.stimulus_end_s!=null?`<div class="mark" style="left:${px(tm.stimulus_end_s)}"><span>자극 종료 ${tm.stimulus_end_s}s</span></div>`:''}
+      ${tm.first_speech_onset_s!=null?`<div class="mark" style="left:${px(tm.first_speech_onset_s)};background:var(--primary)"><span>발화 시작 ${tm.first_speech_onset_s}s</span></div>`:''}
+      ${tm.cue_given_s!=null?`<div class="mark" style="left:${px(tm.cue_given_s)};background:var(--warn)"><span>단서 ${tm.cue_given_s}s</span></div>`:''}
+      ${tm.post_cue_onset_s!=null?`<div class="mark" style="left:${px(tm.post_cue_onset_s)};background:var(--primary)"><span>후속 ${tm.post_cue_onset_s}s</span></div>`:''}
+    </div>
+    <div style="height:14px"></div>
+    <div class="small">반응 시간: <b>${lat!=null?lat+'초':'미산출'}</b> — 측정: ${tm.definition}${autoOn!=null && autoOn!==tm.first_speech_onset_s?` · 자동 측정 ${autoOn}s → 수정 ${tm.first_speech_onset_s}s`:''}</div>
+    <div class="small">발화 시작점 수정: <input type="number" step="0.1" style="width:90px" id="onsetInput" value="${t.draft.onset??''}" onchange="state.trials[${state.sel}].draft.onset=parseFloat(this.value)"> 초 (저장 시 관련 결과 재계산)</div>
+  </div>
+  <table><tr><th style="width:120px">AI 전사 <span class="badge ai">자동 분석 제안</span></th><td>${a.ai==null?'<span class="small">분석 대기</span>':a.ai===''?'<span class="small">(무음)</span>':a.ai} ${a.conf!=null?`<span class="small">신뢰도 ${a.conf}</span>`:''}</td></tr>
+  <tr><th>확인 전사(치료사)</th><td><input type="text" value="${t.draft.transcripts[t.attemptTab]??''}" oninput="state.trials[${state.sel}].draft.transcripts[${t.attemptTab}]=this.value;document.getElementById('diff').innerHTML=diffHtml('${(a.ai||'').replace(/'/g,"\\'")}',this.value)"></td></tr>
+  <tr><th>차이 표시</th><td id="diff">${diffHtml(a.ai, t.draft.transcripts[t.attemptTab])}</td></tr>
+  <tr><th>AI 반응 분류</th><td>${a.cls?`${a.cls} <span class="badge ai">자동 분석 제안</span>`:'<span class="small">제공 안 함(적용 범위 밖 또는 분석 대기)</span>'}</td></tr>
+  <tr><th>단서</th><td>${a.cue||'없음'}</td></tr>
+  </table>`;
+  if(an){ html += `<div class="small">분석 모델 ${an.model_version} · 녹음 품질 ${an.recording_quality}${an.recording_issues.length?` (${an.recording_issues.join(', ')})`:''} · 상태 ${an.status}</div>`;
+    if(an.limits.length) html += `<div class="notice">분석 제한: ${an.limits.join(' / ')}</div>`;
+    if(an.repetitions&&an.repetitions.length||an.pauses&&an.pauses.length) html += `<div class="small">반복·쉼 관찰값: ${JSON.stringify(an.repetitions)} ${JSON.stringify(an.pauses)} (유창성·말운동 문제로 자동 해석하지 않음)</div>`;
+  } else html += `<div class="notice">AI 분석이 아직 없습니다 — 원음 기반 수동 검토가 가능합니다. (분석 대기)</div>`;
+  document.getElementById('evidence').innerHTML = html;
+}
+function playFail(){ toast('원음 재생 실패: 재시도하세요. 재생이 확인되기 전까지 "확인 불가" 상태가 유지됩니다.', true); }
+
+const FIRST=['독립 성공','다른 반응','무반응','판정 보류']; const POST=['성공','다른 반응','무반응','판정 보류','해당 없음'];
+const CUES=['의미 단서','소리 단서','그림','글자','모델 제시','재청취','선택지 제공']; const TAGS=['이름 대신 용도 설명','관련 단어 표현','부분 반응','자기수정','기타 관찰']; const REASONS=['전사 오류','기준 적용 오류','기타'];
+function renderJudge(){
+  const t=state.trials[state.sel]; const d=t.draft; const locked = ROLE==='실습생' ? '' : '';
+  const radio=(name,opts,val,key)=>opts.map(o=>`<label class="opt"><input type="radio" name="${name}" value="${o}" ${val===o?'checked':''} onchange="state.trials[${state.sel}].draft.${key}='${o}';renderJudge()"> ${o}</label>`).join('');
+  let html=`<h3>C. 치료사 판단 ${ROLE==='실습생'?'<span class="badge warn">실습생: 검토 초안·승인 요청만 가능</span>':''}</h3>
+  <div class="small">검토 상태: <b>${ICON[statusOf(t)]} ${statusOf(t)}</b>${t.review.reviewer_id?` · 검토자 ${t.review.reviewer_id} · ${t.review.reviewed_at}`:''}</div>
+  <fieldset><legend>자료 사용 여부</legend>${radio('usage',['결과에 포함','결과에서 제외','보류'],d.usage,'usage')}
+   ${d.usage==='결과에서 제외'?`<input type="text" placeholder="제외 사유(필수)" value="${d.exclusion_reason||''}" oninput="state.trials[${state.sel}].draft.exclusion_reason=this.value">`:''}</fieldset>
+  <fieldset><legend>최초 반응 판정 (도움 전 수행만)</legend>${radio('first',FIRST,d.first_judgement,'first_judgement')}</fieldset>
+  <fieldset><legend>도움 기록 (실제 제공한 단서)</legend><div class="tags">${CUES.map(c=>`<label><input type="checkbox" ${d.cues_given.includes(c)?'checked':''} onchange="toggleArr(${state.sel},'cues_given','${c}')"> ${c}</label>`).join('')}</div></fieldset>
+  <fieldset><legend>도움 후 반응 (최초 판정과 별도 저장)</legend>${radio('post',POST,d.post_cue_judgement,'post_cue_judgement')}</fieldset>
+  ${(d.first_judgement==='판정 보류'||d.post_cue_judgement==='판정 보류'||d.usage==='보류')?`<fieldset><legend>보류 이유(필수)</legend><input type="text" value="${d.hold_reason||''}" oninput="state.trials[${state.sel}].draft.hold_reason=this.value"></fieldset>`:''}
+  <fieldset><legend>추가 관찰 (해석과 실제 반응 구분; 진단 자동 확정에 사용하지 않음)</legend><div class="tags">${TAGS.map(c=>`<label><input type="checkbox" ${d.observation_tags.includes(c)?'checked':''} onchange="toggleArr(${state.sel},'observation_tags','${c}')"> ${c}</label>`).join('')}</div>
+   <textarea rows="2" placeholder="자유 입력" oninput="state.trials[${state.sel}].draft.observation_note=this.value">${d.observation_note||''}</textarea></fieldset>
+  <fieldset><legend>수정 이유 (AI 초안에서 변경 시)</legend><select onchange="state.trials[${state.sel}].draft.modification_reason=this.value||null"><option value="">—</option>${REASONS.map(r=>`<option ${d.modification_reason===r?'selected':''}>${r}</option>`).join('')}</select></fieldset>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <button class="primary" onclick="saveTrial(true)">검토 저장·다음 문항</button>
+    <button onclick="holdAndNext()">보류 후 이동</button>
+    <button onclick="cancelEdit()">변경 취소</button>
+    <button onclick="openPanel('history')">수정 이력 (${t.review.history.length})</button>
+  </div>
+  <div class="small" style="margin-top:8px">※ '전체 AI 판정 일괄 승인' 버튼은 초기 버전에서 제공하지 않습니다.</div>`;
+  document.getElementById('judge').innerHTML=html;
+}
+function toggleArr(i,key,v){ const arr=state.trials[i].draft[key]; const k=arr.indexOf(v); if(k>=0) arr.splice(k,1); else arr.push(v); }
+function cancelEdit(){ const t=state.trials[state.sel]; t.draft=JSON.parse(JSON.stringify(t.review)); t.draft.transcripts=t.attempts.map(a=>a.th??a.ai??''); t.draft.onset=t.timing.first_speech_onset_s; renderJudge(); renderEvidence(); }
+function validate(d){
+  if(d.usage==='결과에서 제외' && !d.exclusion_reason) return '결과에서 제외하려면 제외 사유를 입력해야 합니다.';
+  if((d.first_judgement==='판정 보류'||d.post_cue_judgement==='판정 보류'||d.usage==='보류') && !d.hold_reason) return '판정 보류에는 이유가 필요합니다.';
+  if(d.usage==='결과에 포함' && !d.first_judgement) return '최초 반응 판정을 선택하세요.';
+  if(d.first_judgement==='독립 성공' && d.post_cue_judgement && d.post_cue_judgement!=='해당 없음') return "최초 반응이 독립 성공이면 도움 후 반응은 '해당 없음'이어야 합니다.";
+  if(d.post_cue_judgement && d.post_cue_judgement!=='해당 없음' && d.cues_given.length===0) return '도움 후 반응을 판정하려면 실제 제공한 단서를 먼저 기록하세요.';
+  return null;
+}
+function holdAndNext(){ const t=state.trials[state.sel]; t.draft.usage='보류'; t.draft.first_judgement='판정 보류'; if(!t.draft.hold_reason){ t.draft.hold_reason=prompt('보류 이유를 입력하세요')||''; } saveTrial(true); }
+function saveTrial(next){
+  const t=state.trials[state.sel]; const d=t.draft; const err=validate(d); if(err){ toast(err,true); return; }
+  setSave('저장 중…');
+  setTimeout(()=>{
+    if(state.failNext){ state.failNext=false; setSave('저장 실패 — 재시도하세요. 이동하면 변경 내용이 사라집니다.', true); toast('저장 실패: 네트워크 오류. "저장됨"으로 표시하지 않습니다.', true); return; }
+    // 다른 사용자 수정 충돌 시뮬레이션: row_version 불일치
+    if(t.conflictOnce===undefined && t.order===6){ t.conflictOnce=true; toast('다른 사용자가 이 문항을 수정했습니다(서버 v'+(t.row_version+1)+'). 최신 변경을 확인한 뒤 다시 저장하세요.', true); t.row_version+=1; setSave('충돌 — 최신 변경 확인 필요', true); return; }
+    const prev=JSON.parse(JSON.stringify(t.review));
+    const aiFirst=(t.attempts[0].cls||'');
+    t.review={...t.review, usage:d.usage, exclusion_reason:d.exclusion_reason||null, first_judgement:d.first_judgement||null, cues_given:[...d.cues_given],
+      post_cue_judgement:d.post_cue_judgement||(d.first_judgement==='독립 성공'?'해당 없음':null), observation_tags:[...d.observation_tags], observation_note:d.observation_note||'', hold_reason:d.hold_reason||null,
+      modification_reason:d.modification_reason||null, reviewer_id:ROLE==='실습생'?'trn':'slp', reviewed_at:new Date().toISOString().slice(0,19)};
+    t.attempts.forEach((a,i)=>{ a.th=d.transcripts[i]; });
+    if(d.onset!=null && d.onset!==t.timing.first_speech_onset_s){ t.timing.first_speech_onset_s=d.onset; t.timing.corrected_by='slp'; }
+    if(d.usage==='결과에서 제외') t.review.review_status='제외'; else if(d.usage==='보류'||d.first_judgement==='판정 보류'||d.post_cue_judgement==='판정 보류') t.review.review_status='판정 보류';
+    else t.review.review_status = (d.modification_reason || (d.first_judgement && !aiFirst.includes(d.first_judgement.split(' ')[0]))) ? '수정됨' : '검토 완료';
+    t.review.history.push({version:t.review.history.length+1, reviewer_id:t.review.reviewer_id, at:t.review.reviewed_at, previous:prev, current:JSON.parse(JSON.stringify(t.review)), reason:d.modification_reason||null});
+    t.row_version+=1; state.lastSave=new Date().toLocaleTimeString(); setSave('저장됨');
+    if(state.resultFinalized){ state.basisChanged=true; state.resultVersion+=1; toast('확정된 결과의 문항이 수정되었습니다 → 새 수정본(v'+state.resultVersion+') 생성, 회기 결과·다음 계획 재검토가 필요합니다.', true); }
+    renderHeader(); renderList(); renderJudge(); renderEvidence();
+    if(next){ const i=state.trials.findIndex((x,k)=>k>state.sel && matchFilter(x,document.getElementById('filter').value)); if(i>=0) select(i); }
+  },300);
+}
+function setSave(txt,fail){ const el=document.getElementById('savestate'); el.textContent='저장 상태: '+txt; el.className='save'+(fail?' fail':''); }
+function tempSave(){ setSave('임시저장됨 (확정 아님)'); state.lastSave=new Date().toLocaleTimeString(); renderHeader(); }
+function leave(){ if(document.getElementById('savestate').classList.contains('fail')) { if(!confirm('저장되지 않은 변경이 있습니다. 이동하면 사라집니다. 계속하시겠습니까?')) return; } toast('대상자 목록으로 이동(데모)'); }
+function toast(msg,warn){ const m=document.getElementById('modal'); m.className='modal'; m.innerHTML=`<div class="box"><div class="${warn?'notice danger':'notice'}">${msg}</div><div style="text-align:right"><button onclick="closeModal()">확인</button></div></div>`; }
+function closeModal(){ const m=document.getElementById('modal'); m.className='hidden'; m.innerHTML=''; }
+function openPanel(kind){
+  let body='';
+  if(kind==='profile') body=`<h3>기능 프로필 (개인정보 최소 표시)</h3><table><tr><th>임상 영역</th><td>실어증</td></tr><tr><th>진단</th><td>좌측 MCA 뇌경색 후 실어증 <span class="badge">확인됨·의무기록</span></td></tr><tr><th>이름대기</th><td>단어 수준 어려움, 의미 단서에 반응 <span class="badge">관찰됨·치료사</span></td></tr><tr><th>문장 이해</th><td>짧은 문장 가능 <span class="badge">관찰됨</span></td></tr><tr><th>청력</th><td><b>정보 미입력</b> (정상으로 해석하지 않음)</td></tr><tr><th>도움이 되는 단서</th><td>의미 단서, 소리 단서</td></tr><tr><th>생활 목표</th><td>마트에서 필요한 물건 이름 말하고 요청하기 <span class="badge">보고받음</span></td></tr></table>`;
+  if(kind==='session') body=`<h3>실시 조건</h3><table><tr><th>날짜</th><td>${DATA.patient.date}</td></tr><tr><th>장소</th><td>${DATA.patient.setting}</td></tr><tr><th>활동</th><td>${DATA.patient.activity} / 접근: 치료사가 선택한 접근(SFA)에 기반한 연습</td></tr><tr><th>산출 조건</th><td>혼자 말하기</td></tr><tr><th>단서 순서</th><td>의미 단서 → 소리 단서</td></tr><tr><th>휴식·종료</th><td>피로 호소 또는 3문항 연속 무반응 시 휴식 5분</td></tr></table>`;
+  if(kind==='criterion') body=`<h3>목표·채점 기준</h3><p>${DATA.goal}</p><table><tr><th>기준 ${DATA.criterion.id} v${state.criterionVersion}</th><td>${DATA.criterion.text}</td></tr><tr><th>허용 반응</th><td>목표어, '~이요/~요'</td></tr><tr><th>단서 조건</th><td>의미 → 소리 순, 1회씩</td></tr></table><div class="small">목표 변경 이력: v1 2026-09-01 작성(slp) · 승인(slp)</div><button onclick="changeCriterion()">채점 기준 변경(v${state.criterionVersion+1}) 시뮬레이션</button>`;
+  if(kind==='history'){ const t=state.trials[state.sel]; body=`<h3>수정 이력 — 문항 ${t.order}</h3>`+(t.review.history.length?t.review.history.map(h=>`<div class="card"><div class="small">v${h.version} · ${h.reviewer_id} · ${h.at} · 이유: ${h.reason||'—'}</div><div class="small">이전: ${JSON.stringify(h.previous.first_judgement)} / ${JSON.stringify(h.previous.usage)} → 현재: ${JSON.stringify(h.current.first_judgement)} / ${JSON.stringify(h.current.usage)}</div></div>`).join(''):'<div class="small">이력 없음</div>'); }
+  const m=document.getElementById('modal'); m.className='modal'; m.innerHTML=`<div class="box">${body}<div style="text-align:right;margin-top:8px"><button onclick="closeModal()">닫기</button></div></div>`;
+}
+function changeCriterion(){ state.criterionVersion+=1; let n=0; state.trials.forEach(t=>{ if(t.review.review_status==='검토 완료'||t.review.review_status==='수정됨'){ t.review.review_status='재확인 필요'; n++; } }); closeModal(); renderHeader(); renderList(); renderJudge(); toast(`채점 기준이 v${state.criterionVersion}로 변경되었습니다. 이미 검토한 ${n}개 문항에 '재확인 필요'를 표시했습니다. (조용히 기준만 바뀌지 않습니다)`, true); }
+
+// ---------------- ② 회기 결과
+function metrics(){
+  const inc=state.trials.filter(t=>t.review.usage==='결과에 포함' && (t.review.review_status==='검토 완료'||t.review.review_status==='수정됨'));
+  const exc=state.trials.filter(t=>t.review.review_status==='제외'); const hold=state.trials.filter(t=>t.review.review_status==='판정 보류');
+  const unrev=state.trials.filter(t=>['미검토','검토 중','확인 필요','재확인 필요'].includes(t.review.review_status));
+  const indepOk=inc.filter(t=>t.review.first_judgement==='독립 성공'); const notIndep=inc.filter(t=>['다른 반응','무반응'].includes(t.review.first_judgement));
+  const postOk=notIndep.filter(t=>t.review.post_cue_judgement==='성공');
+  const cues={}; notIndep.forEach(t=>t.review.cues_given.forEach(c=>{cues[c]=cues[c]||{제공:0,성공:0}; cues[c].제공++; if(t.review.post_cue_judgement==='성공') cues[c].성공++;}));
+  const lats=inc.map(t=>t.timing.first_speech_onset_s!=null&&t.timing.stimulus_end_s!=null?{id:t.id,v:+(t.timing.first_speech_onset_s-t.timing.stimulus_end_s).toFixed(2)}:null).filter(Boolean).sort((a,b)=>a.v-b.v);
+  const med=lats.length?lats[Math.floor(lats.length/2)].v:null;
+  const probe=inc.filter(t=>t.purpose==='새 자극 확인용'); const practice=inc.filter(t=>t.purpose==='연습용');
+  const tags={}; inc.forEach(t=>t.review.observation_tags.forEach(x=>tags[x]=(tags[x]||0)+1));
+  return {inc,exc,hold,unrev,indepOk,notIndep,postOk,cues,lats,med,probe,practice,tags};
+}
+function pct(n,d){ return d?`${n}/${d} (${(n/d*100).toFixed(1)}%)`:'자료 없음'; }
+function trialLinks(arr){ return arr.map(t=>`<span class="link" onclick="go(1);select(${state.trials.indexOf(t)})">${String(t.order).padStart(2,'0')}</span>`).join(' '); }
+function renderResult(){
+  const m=metrics(); const warns=['채점 기준 버전이 이전 회기와 다름 (v1 → v'+state.criterionVersion+')','이전 회기와 도움 조건 다름']; if(m.probe.length===0) warns.push('새 자극 자료 없음');
+  let html=`<h2 style="font-size:16px;margin:0 0 8px">회기 결과 · ${state.resultFinalized?'확정 v'+state.resultVersion:'검토 초안'} ${state.basisChanged?'<span class="badge danger">기초 결과 변경됨 — 재확정 필요</span>':''}</h2>
+  <div>${['미검토','판정 보류','제외'].map((k,i)=>`<span class="badge ${[m.unrev,m.hold,m.exc][i].length?'warn':''}" style="cursor:pointer" onclick="setFilter('${k}')">${k} ${[m.unrev,m.hold,m.exc][i].length}개</span>`).join(' ')}</div>
+  <table><tr><th>계산 범위</th><td class="num">실시 ${state.trials.length}</td><td class="num">결과 포함 ${m.inc.length}</td><td class="num">제외 ${m.exc.length}</td><td class="num">보류 ${m.hold.length}</td></tr></table>
+  <h3>목표별 결과 — ${DATA.goal}</h3>
+  <table><tr><th>지표</th><th>값(분자/분모)</th><th>포함 문항(클릭하면 해당 문항으로)</th><th>정의·비고</th></tr>
+  <tr><td>독립 수행</td><td class="num">${pct(m.indepOk.length,m.inc.length)}</td><td>${trialLinks(m.inc)}</td><td>추가 도움 없이 기준 충족</td></tr>
+  <tr><td>도움 후 수행</td><td class="num">${pct(m.postOk.length,m.notIndep.length)}</td><td>${trialLinks(m.notIndep)}</td><td>분모 = 독립 수행하지 못한 문항</td></tr>
+  <tr><td>반응 시간(중앙값)</td><td class="num">${m.med!=null?m.med+'초':'미산출'}</td><td>${m.lats.length}개 문항</td><td>자극 음성 종료 → 첫 발화 시작 (원본 녹음 기준)</td></tr>
+  <tr><td>사용한 단서</td><td colspan="3">${Object.keys(m.cues).length?Object.entries(m.cues).map(([k,v])=>`${k}: 제공 ${v.제공}, 제공 후 성공 ${v.성공}`).join(' · '):'없음'}</td></tr>
+  <tr><td>연습 자극 / 새 자극</td><td class="num">${pct(m.practice.filter(t=>t.review.first_judgement==='독립 성공').length,m.practice.length)} / ${pct(m.probe.filter(t=>t.review.first_judgement==='독립 성공').length,m.probe.length)}</td><td>${trialLinks(m.probe)}</td><td>외운 항목 성공을 일반화로 표시하지 않음</td></tr>
+  <tr><td>관찰 태그(치료사)</td><td colspan="3">${Object.entries(m.tags).map(([k,v])=>`${k} ${v}`).join(' · ')||'없음'}</td></tr></table>
+  <h3>대표 반응 (원음·전사로 이동)</h3><table>${m.inc.slice(0,3).map(t=>`<tr><td><span class="link" onclick="go(1);select(${state.trials.indexOf(t)})">${String(t.order).padStart(2,'0')} ${t.stim}</span></td><td>“${t.attempts[0].th??t.attempts[0].ai??''}”</td><td>${t.review.first_judgement}</td><td class="small">${t.attempts[0].audio}</td></tr>`).join('')}</table>
+  <h3>제외·보류</h3><table>${[...m.exc,...m.hold].map(t=>`<tr><td><span class="link" onclick="go(1);select(${state.trials.indexOf(t)})">${String(t.order).padStart(2,'0')} ${t.stim}</span></td><td>${t.review.review_status}</td><td>${t.review.exclusion_reason||t.review.hold_reason||''}</td><td>결과 계산 미반영</td></tr>`).join('')||'<tr><td>없음</td></tr>'}</table>
+  <h3>이전 회기 비교 (2026-10-10)</h3><div class="notice">비교 제한: ${warns.join(' · ')} → 수치 비교에 주의</div><div>독립 수행 30.0% → ${m.inc.length?(m.indepOk.length/m.inc.length*100).toFixed(1):'—'}%</div>
+  <h3>치료사 해석 (AI 분석과 구분하여 저장)</h3><textarea id="interp" rows="3" placeholder="이번 회기에서 확인한 내용">${state.interp||''}</textarea>
+  <div style="margin-top:12px;display:flex;gap:8px;align-items:center"><button onclick="go(1)">문항으로 돌아가기</button>
+  ${CAN_APPROVE?`<button class="primary" onclick="finalize()" ${m.unrev.length?'disabled':''}>회기 결과 확정</button>`:`<button disabled>회기 결과 확정</button><span class="small">실습생 계정은 확정 권한이 없습니다. 지도자에게 승인 요청하세요.</span>`}
+  ${m.unrev.length?`<span class="small">미검토·확인 필요 문항 ${m.unrev.length}개가 남아 확정할 수 없습니다.</span>`:''}</div>`;
+  document.getElementById('view2').innerHTML=html;
+}
+function finalize(){ const m=metrics(); state.interp=document.getElementById('interp').value;
+  if(m.hold.length && !confirm(`보류 문항 ${m.hold.length}개는 계산에서 제외됩니다. 보류 처리와 해석 제한을 확인했습니까?`)) return;
+  state.resultFinalized=true; state.basisChanged=false; state.resultVersion+=1; state.sessionState='회기 결과 확정'; renderHeader(); renderResult(); toast(`회기 결과가 확정되었습니다 (v${state.resultVersion}, 승인자 slp). 다음 계획 승인은 별도 동작입니다.`); }
+
+// ---------------- ③ 다음 계획
+let proposals = DATA.plan.proposals.map(p=>({...p, decision:'AI 초안', edit:p.activity_draft}));
+function renderPlan(){
+  const canPlan = state.resultFinalized && !state.basisChanged;
+  let html=`<h2 style="font-size:16px;margin:0 0 8px">다음 회기 계획 · ${state.planApproved?'<span class="badge ok">확정</span>':'<span class="badge ai">AI 초안</span>'} ${state.basisChanged?'<span class="badge danger">기초 결과 변경됨 — 재승인 필요</span>':''}</h2>`;
+  if(!canPlan) html+=`<div class="notice">회기 결과가 확정되어야 다음 계획을 승인할 수 있습니다. ${state.basisChanged?'기초 결과가 변경되었으므로 결과를 다시 확정하세요.':''}</div>`;
+  html+=proposals.map((p,i)=>`<div class="proposal"><div class="row" style="display:flex;justify-content:space-between"><b>제안 ${String(i+1).padStart(2,'0')} · ${p.title}</b><span class="badge ${p.decision==='AI 초안'?'ai':p.decision==='채택하지 않음'?'danger':'ok'}">상태: ${p.decision}</span></div>
+    <dl><dt>연결 목표</dt><dd>${DATA.goal}</dd>
+    <dt>제안 근거(관찰 데이터)</dt><dd>${p.rationale_data} <span class="link" onclick="go(1);setFilter('전체')">[관련 문항 보기 ${p.related_trial_ids.length}개]</span></dd>
+    <dt>먼저 확인할 조건</dt><dd>${p.precheck_condition}</dd>
+    <dt>다음 활동 초안</dt><dd><textarea rows="2" ${state.planApproved?'disabled':''} oninput="proposals[${i}].edit=this.value">${p.edit}</textarea></dd>
+    <dt>판단 제한</dt><dd>${p.uncertainty}</dd>
+    <dt>치료사 확인 필요</dt><dd>${p.needs_confirmation}</dd>
+    <dt>참고 임상자료</dt><dd>${p.evidence_ids.length? p.evidence_ids.map(id=>{const e=DATA.evidence[id]; return `<div class="small">${e.title} — ${e.evidence_level}; 한국어 적용: ${e.korean_applicability}; 제한: ${e.limitations} <span class="badge">${e.verified_effect_in_app?'검증된 치료 효과':'치료사가 선택한 접근에 기반한 연습'}</span></div>`}).join('') : '<span class="badge warn">근거 자료 연결 필요</span>'}</dd></dl>
+    ${state.planApproved?'':`<div style="display:flex;gap:6px"><button onclick="decide(${i},'수락')">수락</button><button onclick="decide(${i},'수정')">수정</button><button onclick="decide(${i},'채택하지 않음')">채택하지 않음</button></div>`}
+    ${state.planApproved && (p.decision==='수락'||p.decision==='수정')?`<div style="margin-top:8px"><button onclick="assignHome(${i})" ${state.homeAssigned.includes(i)?'disabled':''}>${state.homeAssigned.includes(i)?'가정 연습 배정됨':'가정 연습 배정(별도 선택)'}</button></div>`:''}
+  </div>`).join('');
+  const pending=proposals.filter(p=>p.decision==='AI 초안').length;
+  html+=`<div class="small">계획 승인만으로 가정 연습이 자동 배정되지 않습니다. 승인 후 활동별로 선택해 배정합니다.</div>
+  <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <button onclick="toast('계획 초안이 저장되었습니다. 아직 실시·배정할 수 없는 상태입니다.')">계획 초안 저장</button>
+    ${CAN_APPROVE?`<button class="primary" ${(!canPlan||pending||state.planApproved)?'disabled':''} onclick="approvePlan()">다음 회기 계획 승인</button>`:`<button class="primary" ${(!canPlan||pending)?'disabled':''} onclick="toast('지도자에게 승인 요청을 보냈습니다. 지도자 검토 전에는 계획이 확정되지 않습니다.')">지도자 승인 요청</button><span class="small">실습생 계정: 승인 버튼 대신 승인 요청만 가능</span>`}
+    ${pending?`<span class="small">결정하지 않은 제안 ${pending}개</span>`:''}
+  </div>
+  <div class="small" style="margin-top:10px">이력: ${DATA.plan.history.map(h=>`${h.at} ${h.event} (${h.by})`).join(' · ')}</div>`;
+  document.getElementById('view3').innerHTML=html;
+}
+function decide(i,d){ proposals[i].decision=d; if(d==='수정'){ proposals[i].activity_draft=proposals[i].edit; } renderPlan(); }
+function approvePlan(){ state.planApproved=true; renderHeader(); renderPlan(); toast('다음 회기 계획이 승인되었습니다 (승인자 slp). 가정 연습은 별도로 배정하세요.'); }
+function assignHome(i){ const g=prompt('보호자 도움 안내(쉼표로 구분; "답을 대신 말해주기"는 허용되지 않음)','5초 기다리기, 두 개 중 고르게 하기, 표현한 내용 확인해 주기'); if(g==null) return; if(/대신/.test(g)&&/답/.test(g)){ toast('정답을 대신 말하는 도움은 승인된 보호자 안내로 배정할 수 없습니다.', true); return;} state.homeAssigned.push(i); renderPlan(); toast('가정 연습으로 배정되었습니다. 대상자 화면에는 "오늘 연습할 것 / 도움받는 방법 / 어려우면 멈추는 방법"만 표시됩니다.'); }
+
+function go(n){ [1,2,3].forEach(k=>{document.getElementById('step'+k).classList.toggle('active',k===n); document.getElementById('view'+k).classList.toggle('hidden',k!==n);}); document.querySelector('footer').style.display = n===1?'flex':'none'; if(n===2) renderResult(); if(n===3) renderPlan(); }
+renderHeader(); renderList(); renderEvidence(); renderJudge();
+</script>
+</body>
+</html>

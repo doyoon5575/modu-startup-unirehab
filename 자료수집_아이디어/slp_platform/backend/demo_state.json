@@ -1,0 +1,4691 @@
+{
+ "orgs": {
+  "ORG-1": {
+   "id": "ORG-1",
+   "name": "가상 재활병원",
+   "report_template": {
+    "header": "언어재활 회기 결과보고서(가상 재활병원 서식)"
+   },
+   "data_partition": "ORG-1"
+  }
+ },
+ "users": {
+  "slp": {
+   "id": "slp",
+   "name": "김치료",
+   "role": "언어재활사",
+   "org_id": "ORG-1",
+   "supervisor_id": null,
+   "clinical_access": true
+  },
+  "sup": {
+   "id": "sup",
+   "name": "박지도",
+   "role": "지도자·슈퍼바이저",
+   "org_id": "ORG-1",
+   "supervisor_id": null,
+   "clinical_access": true
+  },
+  "trn": {
+   "id": "trn",
+   "name": "이실습",
+   "role": "실습생",
+   "org_id": "ORG-1",
+   "supervisor_id": "sup",
+   "clinical_access": true
+  },
+  "adm": {
+   "id": "adm",
+   "name": "관리자",
+   "role": "병원·치료실 관리자",
+   "org_id": "ORG-1",
+   "supervisor_id": null,
+   "clinical_access": false
+  },
+  "pt": {
+   "id": "pt",
+   "name": "대상자",
+   "role": "대상자",
+   "org_id": "ORG-1",
+   "supervisor_id": null,
+   "clinical_access": true
+  },
+  "cg": {
+   "id": "cg",
+   "name": "보호자",
+   "role": "보호자·의사소통 상대자",
+   "org_id": "ORG-1",
+   "supervisor_id": null,
+   "clinical_access": true
+  }
+ },
+ "consents": {
+  "C-2941f99c": {
+   "id": "C-2941f99c",
+   "patient_id": "P-001",
+   "consent_type": "서비스 이용 동의",
+   "granted": true,
+   "granted_at": "2026-10-24T04:22:00",
+   "scope_note": ""
+  },
+  "C-26b59ce5": {
+   "id": "C-26b59ce5",
+   "patient_id": "P-001",
+   "consent_type": "보호자 열람 동의",
+   "granted": true,
+   "granted_at": "2026-10-24T04:22:00",
+   "scope_note": ""
+  },
+  "C-c9d4d0cd": {
+   "id": "C-c9d4d0cd",
+   "patient_id": "P-001",
+   "consent_type": "연구·모델 학습 이용 동의",
+   "granted": false,
+   "granted_at": "2026-10-24T04:22:00",
+   "scope_note": ""
+  }
+ },
+ "patients": {
+  "P-001": {
+   "id": "P-001",
+   "org_id": "ORG-1",
+   "code": "P-001",
+   "name_masked": "홍**",
+   "age": {
+    "value": "62",
+    "source": "의무기록에서 확인",
+    "status": "확인됨",
+    "confirmed_by": "slp",
+    "document_ref": "의무기록 2026-09"
+   },
+   "primary_language": {
+    "value": "한국어",
+    "source": "대상자·보호자 보고",
+    "status": "보고받음",
+    "confirmed_by": null,
+    "document_ref": null
+   },
+   "education_occupation": {
+    "value": null,
+    "source": null,
+    "status": "미입력",
+    "confirmed_by": null,
+    "document_ref": null
+   },
+   "domains": [
+    "실어증"
+   ],
+   "clinical": {
+    "diagnoses": [
+     {
+      "name": "좌측 MCA 뇌경색 후 실어증",
+      "source": "의무기록에서 확인",
+      "status": "확인됨",
+      "confirmed_by": "slp",
+      "document": "진단서"
+     }
+    ],
+    "onset_date": {
+     "value": "2026-06-10",
+     "source": "의무기록에서 확인",
+     "status": "확인됨",
+     "confirmed_by": "slp",
+     "document_ref": null
+    },
+    "course": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "assessment_date": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "assume_cognitive_impairment": false
+   },
+   "profile": {
+    "word_comprehension": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "sentence_comprehension": {
+     "value": "짧은 문장 이해 가능, 긴 문장 어려움",
+     "source": "치료사 직접 관찰",
+     "status": "관찰됨",
+     "confirmed_by": "slp",
+     "document_ref": null
+    },
+    "discourse_comprehension": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "naming": {
+     "value": "단어 수준 이름대기 어려움, 의미 단서에 반응",
+     "source": "치료사 직접 관찰",
+     "status": "관찰됨",
+     "confirmed_by": "slp",
+     "document_ref": null
+    },
+    "sentence_production": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "conversation": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "writing": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "gesture": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "reading_aloud": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "reading_comprehension": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "aac_use": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "articulation": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "speech_rate": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "voice": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "prosody": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "respiration": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "resonance": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "intelligibility_clinician_rating": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "attention": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "memory": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "organization": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "can_select_picture_when_speech_hard": {
+     "value": "가능",
+     "source": "치료사 직접 관찰",
+     "status": "관찰됨",
+     "confirmed_by": "slp",
+     "document_ref": null
+    },
+    "word_vs_long_sentence": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "sound_vs_word_retrieval": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "reading_writing_as_support": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "needs_time_to_answer": {
+     "value": "예(3~5초)",
+     "source": "치료사 직접 관찰",
+     "status": "관찰됨",
+     "confirmed_by": "slp",
+     "document_ref": null
+    },
+    "helpful_cues": [
+     "의미 단서",
+     "소리 단서"
+    ],
+    "most_needed_situations": [],
+    "hearing": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "vision": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "motor_access": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "fatigue": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "device_support_needed": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "touch_difficulty": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "recording_difficulty": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "font_scale": 1.0,
+    "large_buttons": false,
+    "alternative_input": null
+   },
+   "life_goals": [
+    {
+     "id": "LG-1",
+     "who": "마트 직원",
+     "where": "동네 마트",
+     "what": "필요한 물건 이름 말하고 요청하기",
+     "priority": 1,
+     "reported_by": "대상자·보호자 보고"
+    }
+   ],
+   "home": {
+    "devices": {
+     "value": "태블릿",
+     "source": "대상자·보호자 보고",
+     "status": "보고받음",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "helper": {
+     "value": "배우자",
+     "source": "대상자·보호자 보고",
+     "status": "보고받음",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "practice_time": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    },
+    "practice_situations": {
+     "value": null,
+     "source": null,
+     "status": "미입력",
+     "confirmed_by": null,
+     "document_ref": null
+    }
+   },
+   "standardized_tests": [
+    {
+     "test_name": "K-WAB(점수만 입력)",
+     "administered_on": "2026-09-01",
+     "scores": {
+      "AQ": "입력값(가상)"
+     },
+     "administered_by": "slp",
+     "note": ""
+    }
+   ],
+   "observations": [],
+   "speech_samples": [],
+   "assigned_therapist_id": "slp",
+   "assigned_trainee_id": "trn",
+   "aac_board": [
+    {
+     "유형": "요구",
+     "내용": "물 주세요"
+    },
+    {
+     "유형": "거절",
+     "내용": "아니요"
+    }
+   ],
+   "created_at": "2026-10-24T04:22:00"
+  }
+ },
+ "assessments": {
+  "A-26d7304b": {
+   "id": "A-26d7304b",
+   "patient_id": "P-001",
+   "date": "2026-09-01",
+   "assessor_id": "slp",
+   "domain_observations": {
+    "이름대기": "생활용품 20개 중 독립 6개(기초선, 가상)"
+   },
+   "structured_task_results": [],
+   "baseline": {
+    "naming_indep_pct": 30
+   }
+  }
+ },
+ "goals": {
+  "G-LT": {
+   "id": "G-LT",
+   "patient_id": "P-001",
+   "goal_type": "기능 향상",
+   "long_term": true,
+   "parent_goal_id": null,
+   "context_material": "일상 생활 상황",
+   "support_condition": "추가 단서 없는 조건",
+   "criterion": "치료사 설정 기준",
+   "target_behavior": "필요한 물건의 이름을 말해 요청한다",
+   "indicator": "독립 이름대기 비율",
+   "response_mode": "말하기",
+   "linked_life_goal_ids": [
+    "LG-1"
+   ],
+   "linked_domain": "실어증",
+   "status": "활성",
+   "history": [],
+   "created_by": "slp",
+   "approved_by": "slp"
+  },
+  "G-1": {
+   "id": "G-1",
+   "patient_id": "P-001",
+   "goal_type": "기능 향상",
+   "long_term": false,
+   "parent_goal_id": "G-LT",
+   "context_material": "생활용품 사진 10개",
+   "support_condition": "추가 단서 없는 조건",
+   "criterion": "8개 이상(기초선 3개 기준으로 치료사가 설정)",
+   "target_behavior": "이름을 말한다",
+   "indicator": "독립 이름대기 수(분자/분모)",
+   "response_mode": "말하기",
+   "linked_life_goal_ids": [
+    "LG-1"
+   ],
+   "linked_domain": "실어증",
+   "status": "활성",
+   "history": [],
+   "created_by": "slp",
+   "approved_by": "slp"
+  }
+ },
+ "stimuli": {
+  "ST-01": {
+   "id": "ST-01",
+   "version": 1,
+   "label": "사과",
+   "media_ref": "img/사과.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "사과"
+   ],
+   "needs_review_expressions": [
+    "사과이요",
+    "사과요"
+   ],
+   "purpose": "연습용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-02": {
+   "id": "ST-02",
+   "version": 1,
+   "label": "우유",
+   "media_ref": "img/우유.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "우유"
+   ],
+   "needs_review_expressions": [
+    "우유이요",
+    "우유요"
+   ],
+   "purpose": "연습용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-03": {
+   "id": "ST-03",
+   "version": 1,
+   "label": "비누",
+   "media_ref": "img/비누.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "비누"
+   ],
+   "needs_review_expressions": [
+    "비누이요",
+    "비누요"
+   ],
+   "purpose": "연습용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-04": {
+   "id": "ST-04",
+   "version": 1,
+   "label": "수건",
+   "media_ref": "img/수건.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "수건"
+   ],
+   "needs_review_expressions": [
+    "수건이요",
+    "수건요"
+   ],
+   "purpose": "연습용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-05": {
+   "id": "ST-05",
+   "version": 1,
+   "label": "칫솔",
+   "media_ref": "img/칫솔.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "칫솔"
+   ],
+   "needs_review_expressions": [
+    "칫솔이요",
+    "칫솔요"
+   ],
+   "purpose": "연습용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-06": {
+   "id": "ST-06",
+   "version": 1,
+   "label": "컵",
+   "media_ref": "img/컵.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "컵"
+   ],
+   "needs_review_expressions": [
+    "컵이요",
+    "컵요"
+   ],
+   "purpose": "연습용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-07": {
+   "id": "ST-07",
+   "version": 1,
+   "label": "숟가락",
+   "media_ref": "img/숟가락.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "숟가락"
+   ],
+   "needs_review_expressions": [
+    "숟가락이요",
+    "숟가락요"
+   ],
+   "purpose": "연습용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-08": {
+   "id": "ST-08",
+   "version": 1,
+   "label": "휴지",
+   "media_ref": "img/휴지.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "휴지"
+   ],
+   "needs_review_expressions": [
+    "휴지이요",
+    "휴지요"
+   ],
+   "purpose": "연습용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-09": {
+   "id": "ST-09",
+   "version": 1,
+   "label": "빗",
+   "media_ref": "img/빗.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "빗"
+   ],
+   "needs_review_expressions": [
+    "빗이요",
+    "빗요"
+   ],
+   "purpose": "새 자극 확인용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  },
+  "ST-10": {
+   "id": "ST-10",
+   "version": 1,
+   "label": "열쇠",
+   "media_ref": "img/열쇠.png",
+   "linked_goal_function": "이름대기",
+   "response_mode": "말하기",
+   "familiarity": "높음",
+   "personal_relevance": "마트 구매 품목",
+   "length_complexity": "단어(2음절)",
+   "allowed_cues": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "cue_order": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "accepted_expressions": [
+    "열쇠"
+   ],
+   "needs_review_expressions": [
+    "열쇠이요",
+    "열쇠요"
+   ],
+   "purpose": "새 자극 확인용",
+   "rights": {
+    "license": "자체 제작",
+    "redistribution_allowed": true,
+    "modification_allowed": true,
+    "verified_by": "slp"
+   },
+   "situation": "마트 장보기"
+  }
+ },
+ "criteria": {
+  "CR-1": {
+   "id": "CR-1",
+   "version": 2,
+   "description": "허용 표현에 '~이요' 추가",
+   "accepted_expressions_policy": "…",
+   "cue_conditions": "…",
+   "changed_by": "slp",
+   "changed_at": "2026-10-24T04:22:00"
+  }
+ },
+ "evidence": {
+  "EV-f751c9dd": {
+   "id": "EV-f751c9dd",
+   "title": "의미자질분석(Semantic Feature Analysis)",
+   "target_population": "실어증(이름대기 결함)",
+   "target_function": "이름대기",
+   "intervention": "목표어의 용도·장소·특징 등 의미 자질을 산출하도록 유도",
+   "evidence_level": "ASHA 실어증 임상자료(지침 수준)",
+   "outcome_measures": "훈련 자극 이름대기 정확도",
+   "limitations": "한국어 자극과 채점 기준, 이해 부담 미검토",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작 자극만 사용",
+   "linked_feature": "용도·장소·특징을 다루는 활동",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/",
+   "approach_key": "SFA",
+   "verified_effect_in_app": false
+  },
+  "EV-5f868758": {
+   "id": "EV-5f868758",
+   "title": "음운요소분석(Phonological Components Analysis)",
+   "target_population": "실어증",
+   "target_function": "이름대기",
+   "intervention": "목표어의 첫소리·음절 수·운 등 소리 정보를 활용",
+   "evidence_level": "ASHA 실어증 임상자료",
+   "outcome_measures": "이름대기 정확도",
+   "limitations": "영어의 운·철자 과제를 한국어에 그대로 적용하지 않는 검토 필요",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작 자극만 사용",
+   "linked_feature": "소리·음절 정보를 제공하는 활동",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/",
+   "approach_key": "PCA",
+   "verified_effect_in_app": false
+  },
+  "EV-dacc7a1a": {
+   "id": "EV-dacc7a1a",
+   "title": "동사네트워크강화(VNeST)",
+   "target_population": "실어증",
+   "target_function": "문장 속 어휘 인출",
+   "intervention": "동사와 관련된 행위자·대상 역할을 구성",
+   "evidence_level": "ASHA 실어증 임상자료",
+   "outcome_measures": "동사·문장 산출",
+   "limitations": "조사·어미·생략 등 한국어 반응의 허용 범위 미정",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작",
+   "linked_feature": "'누가–무엇을–어떻게' 관계 구성 활동",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/",
+   "approach_key": "VNEST",
+   "verified_effect_in_app": false
+  },
+  "EV-f1523b67": {
+   "id": "EV-f1523b67",
+   "title": "스크립트 훈련",
+   "target_population": "실어증",
+   "target_function": "기능적 대화",
+   "intervention": "개인에게 중요한 상황의 말하기를 반복 연습",
+   "evidence_level": "ASHA 실어증 임상자료",
+   "outcome_measures": "스크립트 산출 정확도·속도",
+   "limitations": "연습한 문장과 새로운 상황 수행을 분리 측정해야 함",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작",
+   "linked_feature": "주문·예약·자기소개 등 개인별 대화 연습",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/",
+   "approach_key": "SCRIPT",
+   "verified_effect_in_app": false
+  },
+  "EV-554ede95": {
+   "id": "EV-554ede95",
+   "title": "읽기 지원",
+   "target_population": "실어증",
+   "target_function": "읽기 이해",
+   "intervention": "이해를 돕는 사진·형식·언어적 지원 활용",
+   "evidence_level": "ASHA 실어증 임상자료",
+   "outcome_measures": "읽기 이해",
+   "limitations": "읽기 이해와 소리 내어 읽기의 평가 분리 필요",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작",
+   "linked_feature": "안내문·메시지·일정 읽기 활동",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/",
+   "approach_key": "READING_SUPPORT",
+   "verified_effect_in_app": false
+  },
+  "EV-57967823": {
+   "id": "EV-57967823",
+   "title": "의사소통 상대자 훈련",
+   "target_population": "실어증·보호자",
+   "target_function": "상대자의 지원 방식",
+   "intervention": "기다리기, 선택지 제공, 표현 확인 등 지원 방식 훈련",
+   "evidence_level": "ASHA 실어증 임상자료",
+   "outcome_measures": "대화 참여·상대자 행동 변화",
+   "limitations": "정답을 대신 말하는 도움과 의사표현을 지원하는 도움의 구분 필요",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작",
+   "linked_feature": "보호자용 도움 안내와 연습",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/aphasia/",
+   "approach_key": "PARTNER_TRAINING",
+   "verified_effect_in_app": false
+  },
+  "EV-3f5742b8": {
+   "id": "EV-3f5742b8",
+   "title": "말실행증: 조음운동 접근·감각 단서·속도/리듬 조절(SPT 등)",
+   "target_population": "후천성 말실행증",
+   "target_function": "말운동 계획",
+   "intervention": "모델 보고 따라 말하기, 함께 말하기, 길이·복잡도 조절, 피드백 조건 설정",
+   "evidence_level": "ASHA 말실행증 임상자료 + 개별 비교연구(소표본)",
+   "outcome_measures": "조음 정확도",
+   "limitations": "표본이 작아 확대 해석 주의; 한국어 미검증",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작",
+   "linked_feature": "말운동 연습(2단계 이후)",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/acquired-apraxia-of-speech/",
+   "approach_key": "AOS_MOTOR",
+   "verified_effect_in_app": false
+  },
+  "EV-e04a8bc2": {
+   "id": "EV-e04a8bc2",
+   "title": "마비말장애: 하위체계별 개별화",
+   "target_population": "마비말장애",
+   "target_function": "말 산출",
+   "intervention": "원인과 영향을 받는 말 하위체계(호흡·발성·공명·조음·운율)에 맞춘 개별화",
+   "evidence_level": "ASHA 마비말장애 임상자료",
+   "outcome_measures": "말명료도(청자 기반)",
+   "limitations": "특정 질환 발성훈련을 모든 말장애에 공통 적용 금지",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작",
+   "linked_feature": "말 특성 분석과 치료사가 선택한 연습(2단계 이후)",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/dysarthria-in-adults/",
+   "approach_key": "DYSARTHRIA",
+   "verified_effect_in_app": false
+  },
+  "EV-34ef70f4": {
+   "id": "EV-34ef70f4",
+   "title": "AAC: 개인의 언어·운동·감각·환경·상대자 고려",
+   "target_population": "AAC 필요 성인",
+   "target_function": "보완·대체 표현",
+   "intervention": "사진·글자·선택판을 정식 의사소통 방식으로 제공",
+   "evidence_level": "ASHA AAC 임상자료",
+   "outcome_measures": "메시지 전달 여부",
+   "limitations": "말이 일부 가능해도 보완 수단이 필요할 수 있음",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작",
+   "linked_feature": "개인별 표현판, 반응 방식 전환",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/professional-issues/augmentative-and-alternative-communication/",
+   "approach_key": "AAC",
+   "verified_effect_in_app": false
+  },
+  "EV-13106c79": {
+   "id": "EV-13106c79",
+   "title": "인지-의사소통: 기능적 상황 정보 중시",
+   "target_population": "외상성 뇌손상 등",
+   "target_function": "정보 조직화·전략 사용",
+   "intervention": "검사 결과와 일상 수행이 다를 수 있으므로 기능적 상황 기록",
+   "evidence_level": "ASHA TBI 임상자료",
+   "outcome_measures": "정보 유지·순서·전략",
+   "limitations": "실어증이라는 이유만으로 인지장애를 전제하지 않음",
+   "korean_applicability": "미확인",
+   "usage_rights": "자체 제작",
+   "linked_feature": "정보 조직화·보상전략 연습(확장)",
+   "reviewer": "",
+   "reviewed_at": "",
+   "update_status": "검토 필요",
+   "url": "https://www.asha.org/practice-portal/clinical-topics/traumatic-brain-injury-in-adults/",
+   "approach_key": "COG_COMM",
+   "verified_effect_in_app": false
+  }
+ },
+ "sessions": {
+  "S-777472f9": {
+   "id": "S-777472f9",
+   "patient_id": "P-001",
+   "date": "2026-10-10",
+   "setting": "치료실",
+   "therapist_id": "slp",
+   "goal_ids": [
+    "G-1"
+   ],
+   "state": "회기 결과 확정",
+   "transitions": [
+    {
+     "from_state": "-",
+     "to_state": "계획됨",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": ""
+    },
+    {
+     "from_state": "계획됨",
+     "to_state": "실시 중",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": ""
+    },
+    {
+     "from_state": "실시 중",
+     "to_state": "검토 중",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": ""
+    },
+    {
+     "from_state": "검토 중",
+     "to_state": "회기 결과 확정",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": "결과 v1"
+    }
+   ],
+   "therapist_interpretation": "회기 1: 독립 3/10, 의미 단서 후 추가 성공 관찰(가상).",
+   "result_finalized_by": "slp",
+   "result_finalized_at": "2026-10-24T04:22:00",
+   "result_version": 1,
+   "rest_stop_condition": "대상자가 피로를 호소하거나 3문항 연속 무반응이면 휴식 5분, 2회 휴식 후에도 지속되면 종료",
+   "author_id": "slp",
+   "reviewer_id": null,
+   "created_by_role": "언어재활사"
+  },
+  "S-c6c03412": {
+   "id": "S-c6c03412",
+   "patient_id": "P-001",
+   "date": "2026-10-17",
+   "setting": "치료실",
+   "therapist_id": "slp",
+   "goal_ids": [
+    "G-1"
+   ],
+   "state": "기초 결과 변경됨",
+   "transitions": [
+    {
+     "from_state": "-",
+     "to_state": "계획됨",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": ""
+    },
+    {
+     "from_state": "계획됨",
+     "to_state": "실시 중",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": ""
+    },
+    {
+     "from_state": "실시 중",
+     "to_state": "검토 중",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": ""
+    },
+    {
+     "from_state": "검토 중",
+     "to_state": "회기 결과 확정",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": "결과 v1"
+    },
+    {
+     "from_state": "회기 결과 확정",
+     "to_state": "계획 승인",
+     "actor_id": "sup",
+     "at": "2026-10-24T04:22:00",
+     "note": ""
+    },
+    {
+     "from_state": "계획 승인",
+     "to_state": "기초 결과 변경됨",
+     "actor_id": "slp",
+     "at": "2026-10-24T04:22:00",
+     "note": "문항 T-023c2c85 수정 → 결과·계획 재검토 필요"
+    }
+   ],
+   "therapist_interpretation": "회기 2: 연습 자극에서 독립 반응 증가, 새 자극(빗·열쇠)은 보류·수집실패로 자료 없음. 단서 효과는 반복 제시 영향으로 확정 불가.",
+   "result_finalized_by": "slp",
+   "result_finalized_at": "2026-10-24T04:22:00",
+   "result_version": 2,
+   "rest_stop_condition": "대상자가 피로를 호소하거나 3문항 연속 무반응이면 휴식 5분, 2회 휴식 후에도 지속되면 종료",
+   "author_id": "slp",
+   "reviewer_id": null,
+   "created_by_role": "언어재활사"
+  }
+ },
+ "activities": {
+  "ACT-61c057cd": {
+   "id": "ACT-61c057cd",
+   "session_id": "S-777472f9",
+   "goal_id": "G-1",
+   "name": "생활용품 사진 이름대기",
+   "approach_key": "SFA",
+   "stimulus_ids": [
+    "ST-01",
+    "ST-02",
+    "ST-03",
+    "ST-04",
+    "ST-05",
+    "ST-06",
+    "ST-07",
+    "ST-08",
+    "ST-09",
+    "ST-10"
+   ],
+   "response_mode": "말하기",
+   "cue_sequence": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "target_response_form": "단어 산출(허용 표현 포함)",
+   "error_no_response_handling": "5초 무반응 또는 오반응 시 의미 단서 → 소리 단서 순 제공",
+   "measurement_method": "최초 반응·단서 후 반응 분리 기록, 반응 시간은 자극 음성 종료→첫 발화 시작",
+   "production_condition": "혼자 말하기",
+   "length_level": "단어",
+   "rate_rhythm_support": null,
+   "feedback_setting": {
+    "timing": "즉시",
+    "frequency": "매 문항",
+    "type": "정답 안내"
+   },
+   "rest_stop_condition": "",
+   "order_in_session": 1,
+   "planned": true,
+   "actually_performed": true
+  },
+  "ACT-4b1488f3": {
+   "id": "ACT-4b1488f3",
+   "session_id": "S-c6c03412",
+   "goal_id": "G-1",
+   "name": "생활용품 사진 이름대기",
+   "approach_key": "SFA",
+   "stimulus_ids": [
+    "ST-01",
+    "ST-02",
+    "ST-03",
+    "ST-04",
+    "ST-05",
+    "ST-06",
+    "ST-07",
+    "ST-08",
+    "ST-09",
+    "ST-10"
+   ],
+   "response_mode": "말하기",
+   "cue_sequence": [
+    "의미 단서",
+    "소리 단서"
+   ],
+   "target_response_form": "단어 산출(허용 표현 포함)",
+   "error_no_response_handling": "5초 무반응 또는 오반응 시 의미 단서 → 소리 단서 순 제공",
+   "measurement_method": "최초 반응·단서 후 반응 분리 기록, 반응 시간은 자극 음성 종료→첫 발화 시작",
+   "production_condition": "혼자 말하기",
+   "length_level": "단어",
+   "rate_rhythm_support": null,
+   "feedback_setting": {
+    "timing": "즉시",
+    "frequency": "매 문항",
+    "type": "정답 안내"
+   },
+   "rest_stop_condition": "",
+   "order_in_session": 1,
+   "planned": true,
+   "actually_performed": true
+  }
+ },
+ "trials": {
+  "T-5995f0e4": {
+   "id": "T-5995f0e4",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-01",
+   "stimulus_version": 1,
+   "order": 1,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-01_1.wav|{\"text\": \"사과\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "사과",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "독립 성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "독립 성공",
+    "cues_given": [],
+    "post_cue_judgement": "해당 없음",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 2,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-f950ade5": {
+   "id": "T-f950ade5",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-02",
+   "stimulus_version": 1,
+   "order": 2,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-02_1.wav|{\"text\": \"우유\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "우유",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "독립 성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "독립 성공",
+    "cues_given": [],
+    "post_cue_judgement": "해당 없음",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-ee305e6d": {
+   "id": "T-ee305e6d",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-03",
+   "stimulus_version": 1,
+   "order": 3,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-03_1.wav|{\"text\": \"씻는 거\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "씻는 거",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "다른 반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-10/ST-03_2.wav|{\"text\": \"비누\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "비누",
+     "therapist_transcript": null,
+     "cue_before": "의미 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "다른 반응",
+    "cues_given": [
+     "의미 단서"
+    ],
+    "post_cue_judgement": "성공",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "성공",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-59ba443a": {
+   "id": "T-59ba443a",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-04",
+   "stimulus_version": 1,
+   "order": 4,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-04_1.wav|{\"text\": \"\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "무반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-10/ST-04_2.wav|{\"text\": \"수건\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "수건",
+     "therapist_transcript": null,
+     "cue_before": "의미 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "무반응",
+    "cues_given": [
+     "의미 단서"
+    ],
+    "post_cue_judgement": "성공",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "무반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "성공",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-08d72af1": {
+   "id": "T-08d72af1",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-05",
+   "stimulus_version": 1,
+   "order": 5,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-05_1.wav|{\"text\": \"이 닦는\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "이 닦는",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "다른 반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-10/ST-05_2.wav|{\"text\": \"칫솔\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "칫솔",
+     "therapist_transcript": null,
+     "cue_before": "의미 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "다른 반응",
+    "cues_given": [
+     "의미 단서"
+    ],
+    "post_cue_judgement": "성공",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "성공",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-07a4267f": {
+   "id": "T-07a4267f",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-06",
+   "stimulus_version": 1,
+   "order": 6,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-06_1.wav|{\"text\": \"물 먹는 거\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "물 먹는 거",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "다른 반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-10/ST-06_2.wav|{\"text\": \"컵\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "컵",
+     "therapist_transcript": null,
+     "cue_before": "의미 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "다른 반응",
+    "cues_given": [
+     "의미 단서"
+    ],
+    "post_cue_judgement": "성공",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "성공",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-3b6c4771": {
+   "id": "T-3b6c4771",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-07",
+   "stimulus_version": 1,
+   "order": 7,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-07_1.wav|{\"text\": \"\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "무반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-10/ST-07_2.wav|{\"text\": \"숟가락\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "숟가락",
+     "therapist_transcript": null,
+     "cue_before": "소리 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "무반응",
+    "cues_given": [
+     "소리 단서"
+    ],
+    "post_cue_judgement": "성공",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "무반응",
+       "cues": [
+        "소리 단서"
+       ],
+       "post": "성공",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-3049473e": {
+   "id": "T-3049473e",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-08",
+   "stimulus_version": 1,
+   "order": 8,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-08_1.wav|{\"text\": \"휴지\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "휴지",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "독립 성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "독립 성공",
+    "cues_given": [],
+    "post_cue_judgement": "해당 없음",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-f2cdad51": {
+   "id": "T-f2cdad51",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-09",
+   "stimulus_version": 1,
+   "order": 9,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-09_1.wav|{\"text\": \"\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "무반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-10/ST-09_2.wav|{\"text\": \"\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "",
+     "therapist_transcript": null,
+     "cue_before": "의미 단서",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "무반응 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "무반응",
+    "cues_given": [
+     "의미 단서"
+    ],
+    "post_cue_judgement": "무반응",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "무반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "무반응",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "새 자극 확인용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-8da01e75": {
+   "id": "T-8da01e75",
+   "session_id": "S-777472f9",
+   "activity_id": "ACT-61c057cd",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-10",
+   "stimulus_version": 1,
+   "order": 10,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-10/ST-10_1.wav|{\"text\": \"\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "무반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-10/ST-10_2.wav|{\"text\": \"열쇠\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "열쇠",
+     "therapist_transcript": null,
+     "cue_before": "의미 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "무반응",
+    "cues_given": [
+     "의미 단서"
+    ],
+    "post_cue_judgement": "성공",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "무반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "성공",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 1,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "새 자극 확인용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-023c2c85": {
+   "id": "T-023c2c85",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-01",
+   "stimulus_version": 1,
+   "order": 1,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-01_1.wav|{\"text\": \"사과\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "사과",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "독립 성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "수정됨",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "다른 반응",
+    "cues_given": [],
+    "post_cue_judgement": null,
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": "기준 적용 오류",
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 2,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 3,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": "기준 적용 오류",
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 4
+  },
+  "T-f7ddba21": {
+   "id": "T-f7ddba21",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-02",
+   "stimulus_version": 1,
+   "order": 2,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-02_1.wav|{\"text\": \"우유\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "우유",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "독립 성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "독립 성공",
+    "cues_given": [],
+    "post_cue_judgement": "해당 없음",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 2,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 3
+  },
+  "T-812e4452": {
+   "id": "T-812e4452",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-03",
+   "stimulus_version": 1,
+   "order": 3,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-03_1.wav|{\"text\": \"비누\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "비누",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "독립 성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "독립 성공",
+    "cues_given": [],
+    "post_cue_judgement": "해당 없음",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 2,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 3
+  },
+  "T-a741a343": {
+   "id": "T-a741a343",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-04",
+   "stimulus_version": 1,
+   "order": 4,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-04_1.wav|{\"text\": \"수건\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "수건",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "독립 성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "독립 성공",
+    "cues_given": [],
+    "post_cue_judgement": "해당 없음",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 2,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 3
+  },
+  "T-08d4867b": {
+   "id": "T-08d4867b",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-05",
+   "stimulus_version": 1,
+   "order": 5,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-05_1.wav|{\"text\": \"치솔\", \"conf\": 0.55, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "치솔",
+     "therapist_transcript": "칫솔",
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "판정 보류 제안(전사 신뢰도 낮음)",
+     "ai_confidence": 0.55
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-17/ST-05_2.wav|{\"text\": \"칫솔\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "칫솔",
+     "therapist_transcript": null,
+     "cue_before": "소리 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.1,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": "slp"
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [
+     "최초 반응: 전사 신뢰도 0.55 → 치료사 확인 필요"
+    ],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "수정됨",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "다른 반응",
+    "cues_given": [],
+    "post_cue_judgement": null,
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "원음상 '칫솔'로 들림",
+       "transcripts": [
+        "칫솔",
+        null
+       ],
+       "timing": {
+        "onset": 3.1,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": "전사 오류",
+      "note": ""
+     },
+     {
+      "version": 2,
+      "reviewer_id": "trn",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "원음상 '칫솔'로 들림",
+       "transcripts": [
+        "칫솔",
+        null
+       ],
+       "timing": {
+        "onset": 3.1,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        "칫솔",
+        null
+       ],
+       "timing": {
+        "onset": 3.1,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 3,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        "칫솔",
+        null
+       ],
+       "timing": {
+        "onset": 3.1,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        "칫솔",
+        null
+       ],
+       "timing": {
+        "onset": 3.1,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 3
+  },
+  "T-d6a2e71c": {
+   "id": "T-d6a2e71c",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-06",
+   "stimulus_version": 1,
+   "order": 6,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-06_1.wav|{\"text\": \"물 먹는 거\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "물 먹는 거",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "다른 반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-17/ST-06_2.wav|{\"text\": \"컵\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "컵",
+     "therapist_transcript": null,
+     "cue_before": "의미 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "다른 반응",
+    "cues_given": [
+     "의미 단서"
+    ],
+    "post_cue_judgement": "성공",
+    "observation_tags": [
+     "이름 대신 용도 설명"
+    ],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "성공",
+       "tags": [
+        "이름 대신 용도 설명"
+       ],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 2,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "성공",
+       "tags": [
+        "이름 대신 용도 설명"
+       ],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "다른 반응",
+       "cues": [
+        "의미 단서"
+       ],
+       "post": "성공",
+       "tags": [
+        "이름 대신 용도 설명"
+       ],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 3
+  },
+  "T-f5281c2e": {
+   "id": "T-f5281c2e",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-07",
+   "stimulus_version": 1,
+   "order": 7,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-07_1.wav|{\"text\": \"\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"bad\", \"issues\": [\"잡음\", \"잘림\"]}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": null,
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": null,
+     "ai_classification": null,
+     "ai_confidence": null
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": null,
+    "first_speech_onset_s": null,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {},
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "재녹음",
+    "recording_issues": [
+     "잡음",
+     "잘림"
+    ],
+    "status": "녹음 품질 부족",
+    "limits": [
+     "녹음 품질 부족: 임상 점수 산출 보류(잡음, 잘림)"
+    ],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "제외",
+    "usage": "결과에서 제외",
+    "exclusion_reason": "녹음 품질 부족(잡음·잘림)",
+    "first_judgement": null,
+    "cues_given": [],
+    "post_cue_judgement": null,
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": null,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에서 제외",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": null,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-2645ee10": {
+   "id": "T-2645ee10",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-08",
+   "stimulus_version": 1,
+   "order": 8,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-08_1.wav|{\"text\": \"휴지\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "휴지",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "독립 성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 완료",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "검토 완료",
+    "usage": "결과에 포함",
+    "exclusion_reason": null,
+    "first_judgement": "독립 성공",
+    "cues_given": [],
+    "post_cue_judgement": "해당 없음",
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     },
+     {
+      "version": 2,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "current": {
+       "usage": "결과에 포함",
+       "first": "독립 성공",
+       "cues": [],
+       "post": "해당 없음",
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": null
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "연습용",
+   "note": "",
+   "row_version": 3
+  },
+  "T-9a057c1c": {
+   "id": "T-9a057c1c",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-09",
+   "stimulus_version": 1,
+   "order": 9,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집됨",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-09_1.wav|{\"text\": \"머리 하는 거\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": "머리 하는 거",
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": false,
+     "ai_classification": "다른 반응 제안",
+     "ai_confidence": 0.9
+    },
+    {
+     "attempt_type": "단서 후 반응",
+     "audio_ref": "audio/2026-10-17/ST-09_2.wav|{\"text\": \"빗\", \"conf\": 0.9, \"stim_end\": 8.0, \"onset\": 9.2}",
+     "audio_start_s": 7,
+     "audio_end_s": 12,
+     "ai_transcript": "빗",
+     "therapist_transcript": null,
+     "cue_before": "의미 단서",
+     "cue_given_at": null,
+     "ai_target_match": true,
+     "ai_classification": "성공 제안",
+     "ai_confidence": 0.9
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": 1.0,
+    "first_speech_onset_s": 3.5,
+    "cue_given_s": 8.0,
+    "post_cue_onset_s": 9.2,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {
+     "stimulus_end_s": 1.0,
+     "first_speech_onset_s": 3.5,
+     "target_completed_s": null,
+     "cue_given_s": 8.0,
+     "post_cue_onset_s": 9.2
+    },
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "분석 가능",
+    "recording_issues": [],
+    "status": "자동 분석 후 검토 대기",
+    "limits": [],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "판정 보류",
+    "usage": "보류",
+    "exclusion_reason": null,
+    "first_judgement": "판정 보류",
+    "cues_given": [],
+    "post_cue_judgement": null,
+    "observation_tags": [
+     "이름 대신 용도 설명"
+    ],
+    "observation_note": "",
+    "hold_reason": "'머리 하는 거'가 용도 설명인지 부분 반응인지 재청취 필요",
+    "modification_reason": null,
+    "reviewer_id": "slp",
+    "reviewed_at": "2026-10-24T04:22:00",
+    "history": [
+     {
+      "version": 1,
+      "reviewer_id": "slp",
+      "at": "2026-10-24T04:22:00",
+      "previous": {
+       "usage": "결과에 포함",
+       "first": null,
+       "cues": [],
+       "post": null,
+       "tags": [],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "current": {
+       "usage": "보류",
+       "first": "판정 보류",
+       "cues": [],
+       "post": null,
+       "tags": [
+        "이름 대신 용도 설명"
+       ],
+       "note": "",
+       "transcripts": [
+        null,
+        null
+       ],
+       "timing": {
+        "onset": 3.5,
+        "post_cue_onset": 9.2
+       }
+      },
+      "reason": null,
+      "note": ""
+     }
+    ],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "새 자극 확인용",
+   "note": "",
+   "row_version": 2
+  },
+  "T-81c7ba3b": {
+   "id": "T-81c7ba3b",
+   "session_id": "S-c6c03412",
+   "activity_id": "ACT-4b1488f3",
+   "goal_id": "G-1",
+   "stimulus_id": "ST-10",
+   "stimulus_version": 1,
+   "order": 10,
+   "presentation_mode": "사진 제시",
+   "presented_at": "2026-10-24T04:22:00",
+   "response_mode": "말하기",
+   "setting": "치료실",
+   "collection": "수집 실패",
+   "attempts": [
+    {
+     "attempt_type": "최초 반응",
+     "audio_ref": "audio/2026-10-17/ST-10_1.wav|{\"text\": \"\", \"conf\": 0.9, \"stim_end\": 1.0, \"onset\": 3.5, \"quality\": \"ok\", \"issues\": []}",
+     "audio_start_s": 0,
+     "audio_end_s": 6,
+     "ai_transcript": null,
+     "therapist_transcript": null,
+     "cue_before": "없음",
+     "cue_given_at": null,
+     "ai_target_match": null,
+     "ai_classification": null,
+     "ai_confidence": null
+    }
+   ],
+   "timing": {
+    "stimulus_end_s": null,
+    "first_speech_onset_s": null,
+    "cue_given_s": null,
+    "post_cue_onset_s": null,
+    "target_completed_s": null,
+    "definition": "자극 음성 종료 → 첫 발화 시작",
+    "exclusion_rule": "기침·헛기침·타인의 말·목표 반응 전 비언어 소리는 발화 시작으로 보지 않음",
+    "auto_values": {},
+    "corrected_by": null
+   },
+   "analysis": {
+    "model_version": "mock-ko-asr-0.1",
+    "recording_quality": "재녹음",
+    "recording_issues": [
+     "녹음 누락"
+    ],
+    "status": "녹음 품질 부족",
+    "limits": [
+     "녹음 누락: 대상자 오반응으로 계산하지 않음"
+    ],
+    "speech_rate": null,
+    "speech_rate_unit": "음절/초(쉼 제외)",
+    "speech_rate_segment": "",
+    "repetitions": [],
+    "pauses": [],
+    "analyzed_at": "2026-10-24T04:22:00"
+   },
+   "review": {
+    "review_status": "제외",
+    "usage": "결과에서 제외",
+    "exclusion_reason": "수집 실패(녹음 누락)",
+    "first_judgement": null,
+    "cues_given": [],
+    "post_cue_judgement": null,
+    "observation_tags": [],
+    "observation_note": "",
+    "hold_reason": null,
+    "modification_reason": null,
+    "reviewer_id": null,
+    "reviewed_at": null,
+    "history": [],
+    "clinician_speech_ratings": {}
+   },
+   "scoring_criterion_id": "CR-1",
+   "scoring_criterion_version": 2,
+   "helper": null,
+   "help_level": "도움 없음",
+   "distractions": "",
+   "production_condition": "혼자 말하기",
+   "stimulus_purpose": "새 자극 확인용",
+   "note": "",
+   "row_version": 1
+  }
+ },
+ "plans": {
+  "PLAN-d5f1e1e3": {
+   "id": "PLAN-d5f1e1e3",
+   "patient_id": "P-001",
+   "based_on_session_id": "S-c6c03412",
+   "based_on_result_version": 1,
+   "state": "재승인 필요",
+   "goals_to_keep": [
+    {
+     "goal_id": "G-1",
+     "goal": "대상자는 생활용품 사진 10개에서 추가 단서 없는 조건으로 8개 이상(기초선 3개 기준으로 치료사가 설정)에 따라 이름을 말한다.",
+     "reason": "이번 회기 결과가 확정되어 다음 회기 비교 기준으로 사용"
+    }
+   ],
+   "conditions_to_change": [
+    {
+     "target": "분량",
+     "change": "생활용품 사진 10개에서 동일 조건으로 문항 수를 늘려 재실시",
+     "proposal_id": "PR-f3940535"
+    },
+    {
+     "target": "자극",
+     "change": "새로운 생활용품 사진을 포함하여 독립 이름대기를 확인",
+     "proposal_id": "PR-60ee24ff"
+    },
+    {
+     "target": "분량",
+     "change": "문항 수를 줄이거나 중간 휴식을 넣고 순서를 바꿔 재실시",
+     "proposal_id": "PR-21314948"
+    }
+   ],
+   "selection_rationale": "결과 포함 문항 7개(기준 8개 미만); 연습한 자극의 수행 기록은 있으나 새 자극 기록이 없음; 앞 절반 100.0% → 뒤 절반 50.0%",
+   "probe_tasks": [
+    "새로운 생활용품 사진을 포함하여 독립 이름대기를 확인"
+   ],
+   "home_practice_candidates": [],
+   "stop_adjust_conditions": "대상자가 피로를 호소하거나 3문항 연속 무반응이면 휴식 5분, 2회 휴식 후에도 지속되면 종료",
+   "proposals": [
+    {
+     "id": "PR-f3940535",
+     "plan_id": "PLAN-d5f1e1e3",
+     "title": "추가 관찰 제안",
+     "linked_goal_id": "G-1",
+     "rationale_data": "결과 포함 문항 7개(기준 8개 미만)",
+     "related_trial_ids": [
+      "T-023c2c85",
+      "T-f7ddba21",
+      "T-812e4452",
+      "T-a741a343",
+      "T-08d4867b",
+      "T-d6a2e71c",
+      "T-2645ee10"
+     ],
+     "activity_draft": "생활용품 사진 10개에서 동일 조건으로 문항 수를 늘려 재실시",
+     "uncertainty": "자료가 적어 진전 여부를 판단할 수 없음",
+     "needs_confirmation": "다음 회기 문항 수와 제외 기준",
+     "evidence_ids": [],
+     "rule_key": "MORE_OBSERVATION",
+     "precheck_condition": "제외·보류 문항 사유 확인",
+     "decision": "수락",
+     "therapist_edit": null,
+     "decided_by": "trn",
+     "decided_at": "2026-10-24T04:22:00"
+    },
+    {
+     "id": "PR-60ee24ff",
+     "plan_id": "PLAN-d5f1e1e3",
+     "title": "새로운 자극에서 수행 확인",
+     "linked_goal_id": "G-1",
+     "rationale_data": "연습한 자극의 수행 기록은 있으나 새 자극 기록이 없음",
+     "related_trial_ids": [
+      "T-023c2c85",
+      "T-f7ddba21",
+      "T-812e4452",
+      "T-a741a343",
+      "T-08d4867b",
+      "T-d6a2e71c",
+      "T-2645ee10"
+     ],
+     "activity_draft": "새로운 생활용품 사진을 포함하여 독립 이름대기를 확인",
+     "uncertainty": "현재 자료로 생활 상황의 일반화는 판단하지 않음",
+     "needs_confirmation": "치료사가 자극의 친숙도와 과제 적합성을 검토",
+     "evidence_ids": [
+      "EV-f751c9dd"
+     ],
+     "rule_key": "NO_PROBE",
+     "precheck_condition": "새 자극의 친숙도",
+     "decision": "수락",
+     "therapist_edit": null,
+     "decided_by": "trn",
+     "decided_at": "2026-10-24T04:22:00"
+    },
+    {
+     "id": "PR-21314948",
+     "plan_id": "PLAN-d5f1e1e3",
+     "title": "과제 순서·분량·휴식 검토",
+     "linked_goal_id": "G-1",
+     "rationale_data": "앞 절반 100.0% → 뒤 절반 50.0%",
+     "related_trial_ids": [
+      "T-023c2c85",
+      "T-f7ddba21",
+      "T-812e4452",
+      "T-a741a343",
+      "T-08d4867b",
+      "T-d6a2e71c",
+      "T-2645ee10"
+     ],
+     "activity_draft": "문항 수를 줄이거나 중간 휴식을 넣고 순서를 바꿔 재실시",
+     "uncertainty": "순서 효과와 난이도 효과를 이번 자료로 구분할 수 없음",
+     "needs_confirmation": "휴식 삽입 또는 분량 조정 여부",
+     "evidence_ids": [],
+     "rule_key": "FATIGUE",
+     "precheck_condition": "피로·환경·과제 난이도",
+     "decision": "채택하지 않음",
+     "therapist_edit": null,
+     "decided_by": "trn",
+     "decided_at": "2026-10-24T04:22:00"
+    }
+   ],
+   "document_draft": "[다음 회기 계획 초안] 대상자 P-001 · 기준 회기 2026-10-17 (결과 v1)\n\n■ 유지할 목표\n  - 대상자는 생활용품 사진 10개에서 추가 단서 없는 조건으로 8개 이상(기초선 3개 기준으로 치료사가 설정)에 따라 이름을 말한다. — 이유: 이번 회기 결과가 확정되어 다음 회기 비교 기준으로 사용\n■ 바꿀 조건\n  - 분량: 생활용품 사진 10개에서 동일 조건으로 문항 수를 늘려 재실시\n  - 자극: 새로운 생활용품 사진을 포함하여 독립 이름대기를 확인\n  - 분량: 문항 수를 줄이거나 중간 휴식을 넣고 순서를 바꿔 재실시\n■ 제안별 근거\n  [추가 관찰 제안] 근거: 결과 포함 문항 7개(기준 8개 미만) / 불확실성: 자료가 적어 진전 여부를 판단할 수 없음 / 확인 필요: 다음 회기 문항 수와 제외 기준 / 참고자료: 근거 자료 연결 필요\n  [새로운 자극에서 수행 확인] 근거: 연습한 자극의 수행 기록은 있으나 새 자극 기록이 없음 / 불확실성: 현재 자료로 생활 상황의 일반화는 판단하지 않음 / 확인 필요: 치료사가 자극의 친숙도와 과제 적합성을 검토 / 참고자료: 근거 자료 연결됨\n  [과제 순서·분량·휴식 검토] 근거: 앞 절반 100.0% → 뒤 절반 50.0% / 불확실성: 순서 효과와 난이도 효과를 이번 자료로 구분할 수 없음 / 확인 필요: 휴식 삽입 또는 분량 조정 여부 / 참고자료: 근거 자료 연결 필요\n■ 확인 과제: 새로운 생활용품 사진을 포함하여 독립 이름대기를 확인\n■ 가정 연습 후보(승인 후 별도 배정): 없음\n■ 중단·조정 조건: 대상자가 피로를 호소하거나 3문항 연속 무반응이면 휴식 5분, 2회 휴식 후에도 지속되면 종료\n■ 승인 상태: 초안",
+   "author_id": "trn",
+   "approved_by": "sup",
+   "approved_at": "2026-10-24T04:22:00",
+   "history": [
+    {
+     "at": "2026-10-24T04:22:00",
+     "by": "trn",
+     "event": "AI 초안 생성",
+     "role": "실습생"
+    },
+    {
+     "at": "2026-10-24T04:22:00",
+     "by": "trn",
+     "event": "제안 '추가 관찰 제안' → 수락"
+    },
+    {
+     "at": "2026-10-24T04:22:00",
+     "by": "trn",
+     "event": "제안 '새로운 자극에서 수행 확인' → 수락"
+    },
+    {
+     "at": "2026-10-24T04:22:00",
+     "by": "trn",
+     "event": "제안 '과제 순서·분량·휴식 검토' → 채택하지 않음"
+    },
+    {
+     "at": "2026-10-24T04:22:00",
+     "by": "trn",
+     "event": "지도자 승인 요청"
+    },
+    {
+     "at": "2026-10-24T04:22:00",
+     "by": "sup",
+     "event": "다음 회기 계획 승인"
+    },
+    {
+     "at": "2026-10-24T04:22:00",
+     "by": "slp",
+     "event": "기초 결과 변경됨 → 재승인 요구"
+    }
+   ],
+   "supervisor_feedback": [
+    {
+     "at": "2026-10-24T04:22:00",
+     "by": "sup",
+     "feedback": "새 자극 확인 제안 적절. 승인."
+    }
+   ]
+  }
+ },
+ "home_assignments": {
+  "HA-57f186aa": {
+   "id": "HA-57f186aa",
+   "patient_id": "P-001",
+   "plan_id": "PLAN-d5f1e1e3",
+   "proposal_id": "PR-60ee24ff",
+   "activity_description": "새로운 생활용품 사진을 포함하여 독립 이름대기를 확인",
+   "caregiver_guidance": [
+    "5초 기다리기",
+    "두 개 중 고르게 하기",
+    "표현한 내용 확인해 주기"
+   ],
+   "stop_rule": "3개 연속 어려우면 오늘은 여기까지",
+   "assigned_by": "slp",
+   "assigned_at": "2026-10-24T04:22:00",
+   "offline_fallback": "녹음·네트워크가 작동하지 않으면 종이 표현판·체크표로 수행 후 다음 방문 시 입력"
+  }
+ },
+ "home_reports": {
+  "HR-6bc34473": {
+   "id": "HR-6bc34473",
+   "assignment_id": "HA-57f186aa",
+   "performed_at": "2026-10-20",
+   "performed_alone": false,
+   "helper": "배우자",
+   "help_level": "선택지 제공",
+   "environment_note": "거실, TV 켜짐",
+   "trial_ids": [],
+   "life_goal_events": [
+    {
+     "who": "마트 직원",
+     "msg": "우유 주세요",
+     "delivered": "예"
+    }
+   ]
+  }
+ },
+ "validation_items": {
+  "한국어 중재 근거": {
+   "key": "한국어 중재 근거",
+   "required_material": "접근별 국내 연구, 대상자 특성, 연구 설계, 결과·제한",
+   "reason": "해외 접근의 단순 번역 방지",
+   "status": "미확보"
+  },
+  "한국어 장애 발화 성능": {
+   "key": "한국어 장애 발화 성능",
+   "required_material": "장애·중증도·기기·환경별 전사 및 채점 결과",
+   "reason": "자동 분석 공개 범위 결정",
+   "status": "미확보"
+  },
+  "반응 시간 타당성": {
+   "key": "반응 시간 타당성",
+   "required_material": "전문가 표시 시점과 자동 측정의 차이",
+   "reason": "측정값 신뢰성 확인",
+   "status": "미확보"
+  },
+  "임상가 간 일치": {
+   "key": "임상가 간 일치",
+   "required_material": "같은 반응에 대한 평가자 간 차이",
+   "reason": "정답 기준과 검토 기준 정교화",
+   "status": "미확보"
+  },
+  "기능적 의사소통 효과": {
+   "key": "기능적 의사소통 효과",
+   "required_material": "새 자극·생활 상황·유지 결과",
+   "reason": "연습 성적과 생활 변화를 구분",
+   "status": "미확보"
+  },
+  "사용자 조사": {
+   "key": "사용자 조사",
+   "required_material": "치료사·대상자·보호자·실습생의 실제 업무 관찰",
+   "reason": "기능의 필요성과 부담 확인",
+   "status": "미확보"
+  },
+  "검사·콘텐츠 권리": {
+   "key": "검사·콘텐츠 권리",
+   "required_material": "검사별 디지털 사용·재배포·변형 허용 범위",
+   "reason": "무단 탑재 방지",
+   "status": "미확보"
+  },
+  "국내 규제 검토": {
+   "key": "국내 규제 검토",
+   "required_material": "확정된 사용 목적과 출력물 기준의 검토(식약처 AI·LLM·전문가용 DMD 가이드라인)",
+   "reason": "제품 기능과 표현 범위 결정",
+   "status": "미확보"
+  },
+  "개인정보 처리": {
+   "key": "개인정보 처리",
+   "required_material": "녹음·건강정보의 저장, 외부 전송, 학습 이용 조건",
+   "reason": "데이터 흐름과 동의 설계",
+   "status": "미확보"
+  },
+  "사업성": {
+   "key": "사업성",
+   "required_material": "실제 검토 시간, 운영비, 지속 사용·지불 의사",
+   "reason": "가격과 고객군 결정",
+   "status": "미확보"
+  },
+  "치료사 수정 부담": {
+   "key": "치료사 수정 부담",
+   "required_material": "검토 시간을 포함한 기록·계획 시간 변화",
+   "reason": "업무 효과 검증",
+   "status": "미확보"
+  },
+  "중증도·기기·환경별 성능 차이": {
+   "key": "중증도·기기·환경별 성능 차이",
+   "required_material": "조건별 분석 오류율",
+   "reason": "출시 전 분석 성능 확인",
+   "status": "미확보"
+  }
+ },
+ "access_logs": [
+  {
+   "id": "LOG-0d1426c1",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-5995f0e4",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-b7a9c7a8",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-f950ade5",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-c9064834",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-ee305e6d",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-34b39dc0",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-59ba443a",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-785c0b6d",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-08d72af1",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-c448207e",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-07a4267f",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-9a06b2c5",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-3b6c4771",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-094beaa3",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-3049473e",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-63493a99",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-f2cdad51",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-fc998988",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-8da01e75",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-e750035f",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-08d4867b",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-eb9fcff3",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-f5281c2e",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-e660259c",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-9a057c1c",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-5bc4bd0a",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-023c2c85",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-bf72d81e",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-f7ddba21",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-de07f274",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-812e4452",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-693b9a28",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-a741a343",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-8a0d239f",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-2645ee10",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-f1b0159b",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-d6a2e71c",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-a0670b76",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-023c2c85",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-6f3e8ed4",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-f7ddba21",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-24d225a0",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-812e4452",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-3f3e322f",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-a741a343",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-89c1b1dd",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-08d4867b",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-6ccd64e5",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-d6a2e71c",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-7a5e8f32",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-2645ee10",
+   "at": "2026-10-24T04:22:00"
+  },
+  {
+   "id": "LOG-72327b42",
+   "user_id": "slp",
+   "patient_id": "P-001",
+   "action": "trial.review:T-023c2c85",
+   "at": "2026-10-24T04:22:00"
+  }
+ ]
+}
