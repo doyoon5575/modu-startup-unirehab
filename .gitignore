@@ -3,6 +3,13 @@
 *.gsheet
 *.gslides
 
+# Large zip archives & root media duplicates
+*.zip
+/11월28일 멘토링.mp3
+
+# Embedded Git repositories
+성인언어재활프로그램/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
