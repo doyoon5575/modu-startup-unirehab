@@ -133,3 +133,4 @@ class AdultLifeSkillGenerator:
             ],
             "staff_guide": "사회복지사 안내: 구어 표현이 어려운 이용자는 표현 카드(AAC)를 제시하도록 유도하세요."
         }
+

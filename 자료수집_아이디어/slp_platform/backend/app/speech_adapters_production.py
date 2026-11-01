@@ -117,3 +117,4 @@ class WhisperAPIAdapter:
             "repetitions": [],
             "pauses": []
         }
+

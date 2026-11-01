@@ -202,3 +202,4 @@ def generate_lifeskill_mission(req: LifeSkillTaskRequest):
     키오스크 주문, 대중교통 등 비전문가(사회복지사)를 위한 지도 가이드와 함께 반환합니다.
     """
     return _lifeskill_generator.generate_task_kit(req.domain, req.difficulty)
+

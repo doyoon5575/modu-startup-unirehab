@@ -153,3 +153,4 @@ ALLOWED_AUDIO_FORMATS=audio/wav,audio/webm,audio/ogg
 | **마일스톤 2 (BaaS 연동)** | • Supabase PostgreSQL 인스턴스 생성 및 `schema.sql` 마이그레이션<br>• Vercel Pro 서버리스 배포 및 도메인 연결 | Supabase Auth, PostgreSQL RLS, Vercel Serverless |
 | **마일스톤 3 (AI 실엔진 연동)** | • Gemini 1.5 Flash 유료 보안 엔드포인트 연동<br>• NIA AI Hub 5,000시간 구음장애 음성 Whisper 파인튜닝 모델 서빙 | Google GenAI SDK, Faster-Whisper 컨테이너 |
 | **마일스톤 4 (현장 파일럿)** | • 대구·경북권 대학 실습실(B2U) 및 성인 주간활동센터(B2G) 현장 연동 | 태블릿 PWA, 마이크 수음 보정, Onset 실측 검증 |
+
