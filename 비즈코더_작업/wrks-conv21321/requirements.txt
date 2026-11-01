@@ -1,0 +1,1 @@
+# Python 3.12 standard library only (zero external runtime dependency for offline/air-gapped reliability)

@@ -20,10 +20,9 @@ __pycache__/
 .coverage
 htmlcov/
 
-# Environments
-.venv/
-venv/
-ENV/
+# Databases & Local Runtime Storage
+*.db
+비즈코더_작업/wrks-conv21321/data/
 
 # OS generated files
 Thumbs.db

@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UniRehab — 성인 언어재활 및 실습 슈퍼비전 플랫폼</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --surface-card: #ffffff;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-subtle: #eff6ff;
+      --primary-border: #bfdbfe;
+      --accent: #0f766e;
+      --accent-subtle: #f0fdfa;
+      --success: #15803d;
+      --success-subtle: #dcfce7;
+      --success-border: #86efac;
+      --warn: #b45309;
+      --warn-subtle: #fef3c7;
+      --warn-border: #fcd34d;
+      --danger: #b91c1c;
+      --danger-subtle: #fee2e2;
+      --danger-border: #fca5a5;
+      --text: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --border: #cbd5e1;
+      --border-subtle: #e2e8f0;
+      --radius-sm: 8px;
+      --radius: 14px;
+      --radius-lg: 18px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* REQ-015: 식약처 비의료 건강관리서비스 가이드라인 상단 고정 배너 */
+    .samd-banner {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 28px;
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid #38bdf8;
+    }
+    .samd-banner strong {
+      color: #38bdf8;
+    }
+    .samd-badge {
+      background: #0284c7;
+      color: #fff;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: -0.2px;
+    }
+
+    /* 헤더 영역 */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 18px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+    }
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+      letter-spacing: -0.4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 2px 0 0 0;
+      font-weight: 500;
+    }
+
+    /* 상단 조작 컨트롤 (역할 전환 및 테넌트) */
+    .session-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface-subtle);
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .session-controls label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    select, input[type="text"], input[type="number"], textarea {
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      background: #ffffff;
+      color: var(--text);
+      font-family: inherit;
+      transition: var(--transition);
+      outline: none;
+    }
+    select:focus, input:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    select {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .role-pill {
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      background: #dbeafe;
+      color: #1e3a8a;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 2px rgba(30, 58, 138, 0.08);
+    }
+    .role-pill.trainee {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+    .role-pill.admin {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    /* 큼직하고 시원한 상단 탭 네비게이션 */
+    nav.tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px 32px 0 32px;
+      background: var(--surface);
+      border-bottom: 2px solid var(--border-subtle);
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 14px 22px;
+      border: none;
+      border-bottom: 3.5px solid transparent;
+      background: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 10px 10px 0 0;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--primary);
+      background: var(--primary-subtle);
+    }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: #ffffff;
+      font-weight: 800;
+    }
+
+    /* 메인 컨테이너 */
+    main {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 28px 32px 80px 32px;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.25s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 모던 큼직한 카드 컴포넌트 */
+    .card {
+      background: var(--surface-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 26px 30px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: #cbd5e1;
+    }
+    .card-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1.5px solid var(--surface-subtle);
+    }
+    .card h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card h3 {
+      margin: 16px 0 10px 0;
+      font-size: 17px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* 배지 및 태그 */
+    .clinical-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #e2e8f0;
+      color: #334155;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+    .status-PENDING_SUPERVISOR, .status-PENDING_REVIEW, .status-RECHECK_REQUIRED {
+      background: var(--warn-subtle);
+      color: var(--warn);
+      border: 1.5px solid var(--warn-border);
+    }
+    .status-APPROVED, .status-REVIEWED {
+      background: var(--success-subtle);
+      color: var(--success);
+      border: 1.5px solid var(--success-border);
+    }
+    .status-REVISION_REQUESTED {
+      background: var(--danger-subtle);
+      color: var(--danger);
+      border: 1.5px solid var(--danger-border);
+    }
+    .status-DRAFT {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1.5px solid #cbd5e1;
+    }
+
+    /* 폼 레이아웃 */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-group label {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    /* 분수 입력 큼직한 박스 */
+    .fraction-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+    }
+    .fraction-box input {
+      width: 75px !important;
+      height: 44px;
+      font-size: 18px !important;
+      font-weight: 800 !important;
+      text-align: center;
+      padding: 6px !important;
+      border: 1.5px solid #cbd5e1 !important;
+      border-radius: 6px !important;
+      background: #ffffff !important;
+    }
+    .fraction-slash {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+
+    /* 큼직한 KPI 스탯 카드 */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .kpi-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .kpi-card:hover {
+      border-color: var(--primary-border);
+      transform: translateY(-2px);
+    }
+    .kpi-label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .kpi-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+    .kpi-card.highlight {
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+      border-color: #93c5fd;
+    }
+    .kpi-card.highlight .kpi-value {
+      color: var(--primary);
+    }
+
+    /* SOAP 카드 그리드 */
+    .soap-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .soap-block {
+      background: #ffffff;
+      border: 1.5px solid var(--border-subtle);
+      border-left-width: 5px;
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+    .soap-block strong.soap-tag {
+      font-size: 16px;
+      font-weight: 800;
+      margin-right: 8px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .soap-s { border-left-color: #0284c7; }
+    .soap-s strong.soap-tag { background: #e0f2fe; color: #0369a1; }
+    .soap-o { border-left-color: #16a34a; }
+    .soap-o strong.soap-tag { background: #dcfce7; color: #15803d; }
+    .soap-a { border-left-color: #7c3aed; }
+    .soap-a strong.soap-tag { background: #f3e8ff; color: #6b21a8; }
+    .soap-p { border-left-color: #d97706; }
+    .soap-p strong.soap-tag { background: #fef3c7; color: #b45309; }
+
+    /* 버튼 시스템 */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      font-size: 15.5px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid transparent;
+      background: var(--primary);
+      color: #ffffff;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(29, 78, 216, 0.2);
+    }
+    .btn:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+    }
+    .btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .btn:disabled {
+      background: #cbd5e1;
+      border-color: #94a3b8;
+      color: #64748b;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+    .btn-lg {
+      padding: 14px 28px;
+      font-size: 17px;
+      font-weight: 800;
+      border-radius: 10px;
+    }
+    .btn-success {
+      background: var(--success);
+      box-shadow: 0 2px 6px rgba(21, 128, 61, 0.2);
+    }
+    .btn-success:hover:not(:disabled) {
+      background: #166534;
+      box-shadow: 0 4px 12px rgba(21, 128, 61, 0.3);
+    }
+    .btn-warn {
+      background: var(--warn);
+      box-shadow: 0 2px 6px rgba(180, 83, 9, 0.2);
+    }
+    .btn-warn:hover:not(:disabled) {
+      background: #92400e;
+      box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
+    }
+    .btn-secondary {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--surface-subtle);
+      color: var(--text);
+      border-color: #94a3b8;
+      box-shadow: var(--shadow);
+    }
+
+    /* 안내 메시지 */
+    .notice-box {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      color: #166534;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .notice-box.warning {
+      background: var(--warn-subtle);
+      border-color: var(--warn-border);
+      color: #92400e;
+    }
+
+    /* 레이어 카드 (교구, 검토 등) */
+    .layer-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .layer-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: var(--shadow);
+    }
+    .layer-title {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    /* 3단계 힌트 스타일 */
+    .hint-step {
+      background: var(--surface-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-top: 8px;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* 3단 음성 검토 화면 */
+    .three-col-review {
+      display: grid;
+      grid-template-columns: 320px 1.4fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    @media (max-width: 1200px) {
+      .three-col-review { grid-template-columns: 1fr; }
+    }
+    .col-box {
+      background: #ffffff;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      min-height: 520px;
+    }
+    .col-header {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f172a;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--surface-subtle);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* 테이블 스타일 */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin: 14px 0;
+      font-size: 15px;
+    }
+    th {
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 700;
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1.5px solid var(--border-subtle);
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+
+    /* 토스트 알림 */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      font-size: 15.5px;
+      font-weight: 600;
+      z-index: 9999;
+      display: none;
+      animation: slideUp 0.3s ease-out;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* 2단 그리드 */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+    @media (max-width: 960px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- REQ-015: 식약처 비의료 건강관리서비스 가이드라인 상단 고정 배너 -->
+  <div class="samd-banner">
+    <div>
+      <span class="samd-badge">식약처 가이드라인 준수</span>
+      &nbsp;<strong>[안내]</strong> 본 소프트웨어는 '<strong>비의료 일상생활 훈련</strong>' 지원 도구이며, 모든 과제는 '<strong>치료사가 선택한 접근에 기반한 연습</strong>'으로 제공돼요. 의학적 진단이나 처방을 대체하지 않아요.
+    </div>
+    <div style="font-size:13px; color:#cbd5e1;">
+      데이터 격리 보안 모드 가동 중 (PII 식별정보 물리 분리)
+    </div>
+  </div>
+
+  <header>
+    <div class="brand-wrap">
+      <div class="brand-logo">U</div>
+      <div>
+        <h1 class="brand-title">UniRehab <span class="clinical-badge" style="background:#dbeafe; color:#1e40af;">임상실습 에디션</span></h1>
+        <p class="brand-sub">성인 언어재활 음성·발화 분석 &amp; 지도교수 슈퍼비전 지원 플랫폼</p>
+      </div>
+    </div>
+
+    <!-- 상단 접속자 모드 및 기관 선택 -->
+    <div class="session-controls">
+      <label for="tenant-select">소속 기관:</label>
+      <select id="tenant-select" onchange="onSessionConfigChange()">
+        <option value="seoul_rehab">서울대학병원 언어재활실(본원)</option>
+        <option value="busan_welfare">부산 종합사회복지관(협약기관)</option>
+      </select>
+
+      <label for="role-select" style="margin-left:8px;">접속자 역할:</label>
+      <select id="role-select" onchange="onRoleChange()">
+        <option value="언어재활사">👩‍⚕️ 언어재활사 (1급 전문의 · 최종 승인 권한)</option>
+        <option value="지도교수">👨‍🏫 지도교수·슈퍼바이저 (임상 검토 및 승인)</option>
+        <option value="실습생" selected>🧑‍🎓 임상실습생 (실습생 모드 · 승인 요청 전용)</option>
+        <option value="관리자">🏢 기관 관리자 (감사 로그 전용 · 임상 열람 차단)</option>
+      </select>
+
+      <span id="role-badge" class="role-pill trainee">🧑‍🎓 실습생 전용 모드</span>
+    </div>
+  </header>
+
+  <!-- 큼직하고 시원한 5대 메뉴 탭 -->
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('tab-plan')" id="btn-tab-plan">
+      <span>📋</span> 1. 치료계획 및 SOAP 결과보고서
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-supervisor')" id="btn-tab-supervisor">
+      <span>👨‍🏫</span> 2. 지도교수 온라인 승인함
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-material')" id="btn-tab-material">
+      <span>🧩</span> 3. AI 일상생활 교구 &amp; 3단계 힌트
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-speech')" id="btn-tab-speech">
+      <span>🎙️</span> 4. 음성·발화 멀티모달 3단 검토
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-homecare')" id="btn-tab-homecare">
+      <span>🏠</span> 5. 가정훈련(홈케어) 및 영역별 확장
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-privacy')" id="btn-tab-privacy">
+      <span>🔒</span> 6. 개인정보 동의 &amp; 감사 추적
+    </button>
+  </nav>
+
+  <main>
+    <!-- TAB 1: 치료계획 및 결과보고서 작성 화면 + 실습생 작업 화면 -->
+    <section id="tab-plan" class="tab-panel active">
+      <div class="card">
+        <div class="card-header-bar">
+          <h2>
+            <span>대상자 평가 기반 ASHA 표준 장·단기 목표 및 SOAP 초안 생성</span>
+          </h2>
+          <span class="clinical-badge">ASHA FCM 성인 지침 연동</span>
+        </div>
+
+        <div class="notice-box">
+          <span>ℹ️ 본 화면의 모든 치료계획은 <strong>'치료사가 선택한 접근에 기반한 연습'</strong> 및 <strong>'비의료 일상생활 훈련'</strong> 지침을 준수하며, 실습생 계정 접속 시 지도교수 승인 요청만 허용돼요.</span>
+        </div>
+
+        <div class="form-grid" style="margin-top:18px;">
+          <div class="form-group">
+            <label>재활 대상자 (UUID 가명 매핑)</label>
+            <select id="plan-patient-select"></select>
+          </div>
+          <div class="form-group">
+            <label>장애 유형 (ASHA 분류)</label>
+            <select id="plan-disorder">
+              <option value="실어증">실어증 (Aphasia)</option>
+              <option value="마비말장애">마비말장애 (Dysarthria)</option>
+              <option value="말실행증">말실행증 (Apraxia of Speech)</option>
+              <option value="인지-의사소통장애">인지-의사소통장애 (Cognitive-Comm)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>중증도 및 ASHA FCM 단계</label>
+            <select id="plan-fcm-level">
+              <option value="2">Level 2 (중증 · 최대 단서 필요)</option>
+              <option value="3" selected>Level 3 (중등도 · 중등도 단서 필요)</option>
+              <option value="4">Level 4 (경도~중등도 · 최소 단서)</option>
+              <option value="5">Level 5 (경도 · 일상 맥락 자립 이행)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>성인 일상생활 훈련 맥락</label>
+            <select id="plan-context">
+              <option value="병원·약국 방문">병원·약국 방문 (진료실 소통)</option>
+              <option value="마트·장보기">마트·장보기 (물품 구매 및 계산)</option>
+              <option value="대중교통·이동">대중교통·이동 (목적지 및 환승)</option>
+              <option value="은행·관공서">은행·관공서 (서류 발급 및 업무)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>기초선 정반응 (분자 / 분모)</label>
+            <div class="fraction-box">
+              <input type="number" id="plan-base-num" value="11" min="0" max="50" />
+              <span class="fraction-slash">/</span>
+              <input type="number" id="plan-base-den" value="20" min="1" max="50" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>금일 회기 독립 정반응 (분자 / 분모)</label>
+            <div class="fraction-box">
+              <input type="number" id="plan-sess-num" value="16" min="0" max="50" />
+              <span class="fraction-slash">/</span>
+              <input type="number" id="plan-sess-den" value="20" min="1" max="50" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>3단계 힌트 단서 포함 정반응 (분자)</label>
+            <div class="fraction-box">
+              <input type="number" id="plan-cued-num" value="18" min="0" max="50" />
+              <span class="fraction-slash">/ 20</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>평균 발화 반응시간(ms)</label>
+            <input type="number" id="plan-rt-ms" value="1240" min="100" max="10000" style="height:44px; font-size:17px; font-weight:700;" />
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <button class="btn btn-lg" onclick="createPlanAndSoap()">
+            ✨ ASHA 장·단기 목표 및 SOAP 결과보고서 초안 자동 생성
+          </button>
+        </div>
+      </div>
+
+      <!-- 생성된 계획 및 SOAP 목록 -->
+      <div id="plans-container"></div>
+    </section>
+
+    <!-- TAB 2: 지도교수 온라인 승인함 -->
+    <section id="tab-supervisor" class="tab-panel">
+      <div class="card">
+        <div class="card-header-bar">
+          <h2>
+            <span>지도교수(슈퍼바이저) 온라인 검토 및 승인 대기함</span>
+          </h2>
+          <span class="clinical-badge">원격 슈퍼비전 워크플로우</span>
+        </div>
+        <p style="font-size:15px; color:var(--text-secondary); margin-top:0;">
+          임상실습생이 제출한 치료계획서 및 SOAP 결과보고서 초안을 검토하고, <strong>온라인 최종 승인</strong>하거나 보완 의견을 전달합니다. (실습생 계정에서는 최종 승인 버튼이 잠깁니다)
+        </p>
+        <div id="supervisor-queue-container"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: AI 생활교구 및 힌트 생성 -->
+    <section id="tab-material" class="tab-panel">
+      <div class="card">
+        <div class="card-header-bar">
+          <h2>
+            <span>AI 기반 성인 생활맥락 맞춤형 교구 &amp; 3단계 힌트 생성기</span>
+          </h2>
+          <span class="clinical-badge">한국어 경량 sLMM 연동</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>훈련 대상자 선택 (개인정보 동의 확인)</label>
+            <select id="mat-patient-select"></select>
+          </div>
+          <div class="form-group">
+            <label>일상생활 환경 (생활 맥락)</label>
+            <select id="mat-context">
+              <option value="병원·약국 방문">병원·약국 방문</option>
+              <option value="마트·장보기">마트·장보기</option>
+              <option value="대중교통·이동">대중교통·이동</option>
+              <option value="은행·관공서">은행·관공서</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>AI 모델 구동 모드</label>
+            <select id="mat-engine-mode">
+              <option value="local_slmm">🔒 온디바이스 한국어 경량 모델 (Ko-Rehab-sLMM-3B · 완전 망분리)</option>
+              <option value="external_llm">☁️ 외부 클라우드 LLM (외부 AI 전송 동의 환자 전용)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-lg" onclick="generateContextualMaterials()">
+          🎯 맞춤형 4대 과제 및 3단계 힌트 즉시 생성
+        </button>
+      </div>
+      <div id="materials-container"></div>
+    </section>
+
+    <!-- TAB 4: 6층 분리 음성·발화 멀티모달 3단 검토 화면 -->
+    <section id="tab-speech" class="tab-panel">
+      <div class="card">
+        <div class="card-header-bar">
+          <h2>
+            <span>음성·발화 6층 분리 아키텍처 &amp; 카메라 안면인식 멀티모달 검토</span>
+          </h2>
+          <span class="clinical-badge">구음장애 Conformer ASR 엔진</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; background:#f8fafc; padding:14px 18px; border-radius:var(--radius-sm); border:1.5px solid var(--border);">
+          <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+            <label style="font-weight:700;">목표 반응시간 임계값:</label>
+            <input type="number" id="criteria-latency-ms" value="1500" style="width:110px; font-weight:800;" /> ms
+            <label style="font-weight:700; margin-left:10px;">목표 정확도:</label>
+            <input type="number" id="criteria-acc-pct" value="80" style="width:90px; font-weight:800;" /> %
+            <button class="btn btn-warn" onclick="updateScoringCriteria()">
+              채점 기준 변경 적용 (완료 문항 '재확인 필요' 전환)
+            </button>
+          </div>
+          <div>
+            <span class="status-badge status-REVISION_REQUESTED" id="no-bulk-approve-policy">
+              임상 안전 지침: AI 일괄 승인 배제됨 (문항별 개별 검토 필수)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3단 검토 화면 (three-col-review 유지) -->
+      <div class="three-col-review">
+        <!-- 1단: 문항 목록 및 채점 상태 -->
+        <div class="col-box">
+          <div class="col-header">
+            <span>[1단] 발화 문항 목록</span>
+            <span id="speech-session-summary" style="font-size:13px; color:var(--text-muted); font-weight:600;"></span>
+          </div>
+          <div id="utterance-list-col"></div>
+        </div>
+
+        <!-- 2단: 6층 분리 분석 & Onset 수동 보정 + 멀티모달 카메라 -->
+        <div class="col-box">
+          <div class="col-header">
+            <span>[2단] 6층 분석 &amp; Onset 수동 보정</span>
+            <span class="clinical-badge" style="background:#f0fdf4; color:#166534;">멀티모달 카메라 연동</span>
+          </div>
+          <div id="utterance-layers-col"></div>
+        </div>
+
+        <!-- 3단: Layer 6 치료사 개별 검토 및 판정 -->
+        <div class="col-box">
+          <div class="col-header">
+            <span>[3단] 치료사 문항별 최종 판정</span>
+            <span class="clinical-badge">개별 확인 전용</span>
+          </div>
+          <div id="utterance-review-col"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: 승인형 가정 훈련 & 영역별 확장 모듈 -->
+    <section id="tab-homecare" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header-bar">
+            <h2><span>승인형 가정 훈련 (홈케어) 배정 및 이력</span></h2>
+            <span class="clinical-badge">퇴원 후 연속 재활</span>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>대상자 구분</label>
+              <select id="hc-target-group">
+                <option value="퇴원 성인 환자">퇴원 성인 환자 (병원 퇴원 후 연속 재활)</option>
+                <option value="복지관 대기자">복지관 대기자 (대기 기간 사전 가정 훈련)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>일일 목표 문항 수</label>
+              <input type="number" id="hc-daily-goal" value="10" min="5" max="30" />
+            </div>
+          </div>
+          <button class="btn" onclick="createHomecareAssignment()">승인형 가정 훈련 과제 배정</button>
+          <div id="homecare-list-container" style="margin-top:16px;"></div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header-bar">
+              <h2><span>한국어 경량 모델(sLMM) 로컬 설정</span></h2>
+              <span class="clinical-badge">망분리 온디바이스</span>
+            </div>
+            <div id="slmm-settings-container"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-bar">
+              <h2><span>영역별 확장 플러그인 (마비말·말실행·AAC·시니어)</span></h2>
+              <span class="clinical-badge">모듈형 확장</span>
+            </div>
+            <div id="plugins-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: 4종 동의 및 감사 로그 -->
+    <section id="tab-privacy" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header-bar">
+            <h2><span>개인정보 4종 분리 동의 관리</span></h2>
+            <span class="clinical-badge">UUID 가명화 격리</span>
+          </div>
+          <div id="patients-consent-container"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-bar">
+            <h2><span>기관 계정 온보딩 관리</span></h2>
+            <span class="clinical-badge">기관 SSO &amp; 승인제</span>
+          </div>
+          <div id="org-accounts-container"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header-bar">
+          <h2><span>전수 접근 로그 및 상태 변경 감사 추적</span></h2>
+          <span class="clinical-badge">무결성 보증</span>
+        </div>
+        <div id="audit-logs-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const state = {
+      tenantId: "seoul_rehab",
+      role: "언어재활사",
+      actorId: "slp-kim",
+      patients: [],
+      plans: [],
+      materials: [],
+      speechSessions: [],
+      activeSession: null,
+      selectedUtteranceId: null,
+      homecare: [],
+      plugins: [],
+      runtimeSettings: null,
+      audit: { items: [], state_changes: [] }
+    };
+
+    function showToast(msg, isError = false) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.style.background = isError ? "#991b1b" : "#0f172a";
+      el.style.display = "block";
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => { el.style.display = "none"; }, 4000);
+    }
+
+    function initFromUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const roleParam = params.get("role");
+      const tenantParam = params.get("tenant");
+      if (tenantParam) {
+        state.tenantId = tenantParam;
+        const tSel = document.getElementById("tenant-select");
+        if (tSel) tSel.value = tenantParam;
+      }
+      if (roleParam) {
+        state.role = roleParam;
+        const rSel = document.getElementById("role-select");
+        if (rSel) {
+          for (const opt of rSel.options) {
+            if (opt.value === roleParam) rSel.value = roleParam;
+          }
+        }
+      }
+      syncRoleBadge();
+    }
+
+    function syncRoleBadge() {
+      const badge = document.getElementById("role-badge");
+      const isTrainee = state.role === "실습생" || state.role === "trainee";
+      if (isTrainee) {
+        state.actorId = "trainee-lee";
+        badge.textContent = "🧑‍🎓 실습생 전용 모드 (최종 승인 잠김 · 승인 요청 전용)";
+        badge.className = "role-pill trainee";
+      } else if (state.role === "지도교수") {
+        state.actorId = "prof-park";
+        badge.textContent = "👨‍🏫 지도교수 (슈퍼바이저 검토 및 최종 승인 권한)";
+        badge.className = "role-pill";
+      } else if (state.role === "관리자") {
+        state.actorId = "admin-choi";
+        badge.textContent = "🏢 기관 관리자 (임상 열람 차단 · 감사 로그 전용)";
+        badge.className = "role-pill admin";
+      } else {
+        state.actorId = "slp-kim";
+        badge.textContent = "👩‍⚕️ 언어재활사 모드 (임상 전문가 · 최종 승인 가능)";
+        badge.className = "role-pill";
+      }
+    }
+
+    function onRoleChange() {
+      state.role = document.getElementById("role-select").value;
+      const url = new URL(window.location.href);
+      url.searchParams.set("role", state.role);
+      window.history.replaceState({}, "", url.toString());
+      syncRoleBadge();
+      refreshAll();
+    }
+
+    function onSessionConfigChange() {
+      state.tenantId = document.getElementById("tenant-select").value;
+      refreshAll();
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      const p = document.getElementById(tabId);
+      if (p) p.classList.add("active");
+      const btn = document.getElementById("btn-" + tabId);
+      if (btn) btn.classList.add("active");
+    }
+
+    async function apiFetch(path, options = {}) {
+      const headers = Object.assign({
+        "Content-Type": "application/json",
+        "X-Tenant-Id": state.tenantId,
+        "X-Actor-Id": state.actorId,
+        "X-Actor-Role": encodeURIComponent(state.role)
+      }, options.headers || {});
+      const resp = await fetch(path, Object.assign({}, options, { headers }));
+      const data = await resp.json();
+      if (!resp.ok) {
+        const errMsg = (data && data.error && data.error.message) || data.message || "요청 처리 중 오류가 발생했어요.";
+        throw new Error(errMsg);
+      }
+      return data;
+    }
+
+    async function refreshAll() {
+      try {
+        await loadAuditAndAccounts();
+        if (state.role === "관리자") {
+          renderAdminBlockedView();
+          return;
+        }
+        await Promise.all([
+          loadPatients(),
+          loadPlans(),
+          loadMaterials(),
+          loadSpeechSessions(),
+          loadHomecareAndPlugins()
+        ]);
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    function renderAdminBlockedView() {
+      const msg = `<div class="card" style="border-left:5px solid var(--danger);">
+        <h2>기관 관리자 임상 데이터 직접 열람 차단</h2>
+        <p style="font-size:15px; margin-top:8px;">
+          개인정보 보호법 및 임상 데이터 물리 격리 정책에 따라 <strong>기관 관리자(admin)</strong> 계정은 환자의 치료계획, SOAP 보고서, 음성·발화 분석, 교구 데이터를 직접 열람할 수 없어요. [6. 개인정보 동의 &amp; 감사 추적] 탭에서 전수 접근 기록과 상태 변경 이력만 감사할 수 있어요.
+        </p>
+      </div>`;
+      document.getElementById("plans-container").innerHTML = msg;
+      document.getElementById("supervisor-queue-container").innerHTML = msg;
+      document.getElementById("materials-container").innerHTML = msg;
+      document.getElementById("utterance-list-col").innerHTML = msg;
+      document.getElementById("utterance-layers-col").innerHTML = "";
+      document.getElementById("utterance-review-col").innerHTML = "";
+      document.getElementById("homecare-list-container").innerHTML = msg;
+    }
+
+    async function loadPatients() {
+      const res = await apiFetch("/api/patients?limit=50");
+      state.patients = res.items || [];
+      const pSelects = ["plan-patient-select", "mat-patient-select"];
+      for (const id of pSelects) {
+        const sel = document.getElementById(id);
+        if (!sel) continue;
+        sel.innerHTML = state.patients.map(p =>
+          `<option value="${p.patient_uuid}">👤 ${p.masked_name} (${p.birth_year}년생 · 가명: ${p.patient_uuid.slice(0, 11)}… · 외부AI동의: ${p.consents.external_ai_transfer ? '동의' : '미동의'})</option>`
+        ).join("");
+      }
+      renderPatientsConsentTable();
+    }
+
+    function renderPatientsConsentTable() {
+      const box = document.getElementById("patients-consent-container");
+      if (!box) return;
+      if (!state.patients.length) {
+        box.innerHTML = "<p>등록된 대상자가 없어요.</p>";
+        return;
+      }
+      box.innerHTML = state.patients.map(p => {
+        const c = p.consents || {};
+        return `<div class="layer-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <strong style="font-size:16px;">👤 ${p.masked_name} (${p.birth_year}년생)</strong>
+            <span class="clinical-badge">가명 매핑: <code>${p.patient_uuid}</code></span>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; font-size:14px;">
+            <label><input type="checkbox" ${c.terms_of_service ? "checked" : ""} onchange="toggleConsent('${p.patient_uuid}', 'terms_of_service', this.checked)" /> 1. 이용약관 동의 (필수)</label>
+            <label><input type="checkbox" ${c.voice_collection ? "checked" : ""} onchange="toggleConsent('${p.patient_uuid}', 'voice_collection', this.checked)" /> 2. 음성 수집 동의 (필수)</label>
+            <label><input type="checkbox" ${c.external_ai_transfer ? "checked" : ""} onchange="toggleConsent('${p.patient_uuid}', 'external_ai_transfer', this.checked)" /> 3. 외부 AI 전송 동의 (미동의 시 클라우드 차단)</label>
+            <label><input type="checkbox" ${c.pseudonym_research ? "checked" : ""} onchange="toggleConsent('${p.patient_uuid}', 'pseudonym_research', this.checked)" /> 4. 가명 연구 활용 동의</label>
+          </div>
+          <div style="margin-top:10px; font-size:13px; color:var(--text-muted);">
+            물리 분리 DB: PII [${p.physical_isolation.pii_db_file}] / 임상 [${p.physical_isolation.clinical_db_file}]
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    async function toggleConsent(patientUuid, key, checked) {
+      try {
+        await apiFetch(`/api/patients/${patientUuid}/consents`, {
+          method: "PATCH",
+          body: JSON.stringify({ [key]: checked })
+        });
+        showToast("대상자 4종 개인정보 동의 상태가 반영되었어요.");
+        await loadPatients();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+        await loadPatients();
+      }
+    }
+
+    async function loadPlans() {
+      const res = await apiFetch("/api/plans?limit=50");
+      state.plans = res.items || [];
+      renderPlans();
+      renderSupervisorQueue();
+    }
+
+    function renderPlans() {
+      const isTrainee = state.role === "실습생" || state.role === "trainee";
+      const box = document.getElementById("plans-container");
+      if (!state.plans.length) {
+        box.innerHTML = `<div class="card"><p>생성된 치료계획 및 SOAP 결과보고서가 없어요.</p></div>`;
+        return;
+      }
+      box.innerHTML = state.plans.map(plan => {
+        const st = plan.session_stats;
+        return `<div class="card">
+          <div class="card-header-bar">
+            <h2>
+              <span>[${plan.disorder_type}] ${plan.life_context} 회기 결과보고서</span>
+              <span class="clinical-badge">문서번호: ${plan.plan_id}</span>
+            </h2>
+            <span class="status-badge status-${plan.status}">
+              ${plan.status === 'PENDING_SUPERVISOR' ? '⏳ 지도교수 승인 대기' : (plan.status === 'APPROVED' ? '✅ 지도교수 승인 완료' : plan.status)}
+            </span>
+          </div>
+
+          <p style="font-size:14.5px; color:var(--text-secondary); margin:0 0 14px 0;">
+            대상자 가명: <code>${plan.patient_uuid}</code> | ASHA 영역: <strong>${plan.asha_fcm_domain} (Level ${plan.asha_fcm_level})</strong> | 작성자: <strong>${plan.created_by}</strong> (${plan.created_role})
+          </p>
+
+          <!-- 큼직한 KPI 스탯 카드 블록 -->
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-label">기초선 정확도</div>
+              <div class="kpi-value">${st.baseline_accuracy.formatted}</div>
+              <div class="kpi-sub">훈련 전 사전 측정치</div>
+            </div>
+            <div class="kpi-card highlight">
+              <div class="kpi-label">금일 회기 독립 정반응률</div>
+              <div class="kpi-value">${st.independent_accuracy.formatted}</div>
+              <div class="kpi-sub" style="color:var(--success); font-weight:800;">기초선 대비 +${st.delta_percentage_pt.toFixed(1)}%p 향상 ↑</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">3단계 단서 포함 정반응</div>
+              <div class="kpi-value">${st.cued_accuracy.formatted}</div>
+              <div class="kpi-sub">힌트 제공 후 정반응</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">평균 발화 반응시간</div>
+              <div class="kpi-value">${st.avg_reaction_time_ms.toLocaleString("ko-KR")} ms</div>
+              <div class="kpi-sub">목표치(1,500ms) 이내 달성</div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:20px;">
+            <div>
+              <h3>🎯 장기 목표 (ASHA 표준 지침)</h3>
+              <ul style="padding-left:22px; font-size:15.5px; line-height:1.7;">
+                ${plan.long_term_goals.map(g => `<li style="margin-bottom:8px;">${g}</li>`).join("")}
+              </ul>
+
+              <h3 style="margin-top:20px;">📌 단기 목표 (분자/분모 정량 기준)</h3>
+              <ul style="padding-left:22px; font-size:15.5px; line-height:1.7;">
+                ${plan.short_term_goals.map(g => `<li style="margin-bottom:8px;">${g}</li>`).join("")}
+              </ul>
+            </div>
+
+            <div>
+              <h3>📝 회기 SOAP 결과보고서 초안</h3>
+              <div class="soap-grid">
+                <div class="soap-block soap-s"><strong class="soap-tag">S (주관적 보고)</strong> ${plan.soap_draft.S}</div>
+                <div class="soap-block soap-o"><strong class="soap-tag">O (객관적 수치)</strong> ${plan.soap_draft.O}</div>
+                <div class="soap-block soap-a"><strong class="soap-tag">A (임상 평가)</strong> ${plan.soap_draft.A}</div>
+                <div class="soap-block soap-p"><strong class="soap-tag">P (향후 계획)</strong> ${plan.soap_draft.P}</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; align-items:center; margin-top:22px; padding-top:16px; border-top:1.5px solid var(--surface-subtle); flex-wrap:wrap;">
+            <button class="btn btn-warn" onclick="transitionPlan('${plan.plan_id}', 'PENDING_SUPERVISOR')">
+              📢 지도교수 승인 요청 제출 (PENDING_SUPERVISOR)
+            </button>
+            <button class="btn btn-success" ${isTrainee ? "disabled" : ""} onclick="transitionPlan('${plan.plan_id}', 'APPROVED')">
+              ${isTrainee ? "🔒 최종 승인 권한 없음 (지도교수 승인 대기 필요)" : "✅ 지도교수 온라인 최종 승인 (APPROVED)"}
+            </button>
+            ${plan.supervisor_comment ? `<div style="font-size:14.5px; color:var(--accent); font-weight:700; margin-left:8px;">💬 지도교수 검토 의견: ${plan.supervisor_comment}</div>` : ""}
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    function renderSupervisorQueue() {
+      const isTrainee = state.role === "실습생" || state.role === "trainee";
+      const box = document.getElementById("supervisor-queue-container");
+      if (!state.plans.length) {
+        box.innerHTML = "<p>검토 대기 중인 문서가 없어요.</p>";
+        return;
+      }
+      box.innerHTML = `<table>
+        <thead>
+          <tr>
+            <th style="width:130px;">문서 ID</th>
+            <th>장애유형 및 생활맥락</th>
+            <th>회기 정반응률</th>
+            <th>작성자(실습생)</th>
+            <th>상태</th>
+            <th>지도교수 검토 코멘트 및 승인 액션</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${state.plans.map(p => `
+            <tr>
+              <td><code>${p.plan_id}</code></td>
+              <td><strong>[${p.disorder_type}]</strong> ${p.life_context}</td>
+              <td><span style="font-size:16px; font-weight:800; color:var(--primary);">${p.session_stats.independent_accuracy.formatted}</span></td>
+              <td>${p.created_by} (${p.created_role})</td>
+              <td><span class="status-badge status-${p.status}">${p.status}</span></td>
+              <td>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                  <input type="text" id="sup-comment-${p.plan_id}" placeholder="검토 코멘트 입력" value="${p.supervisor_comment || 'ASHA 단기목표 및 SOAP 정량 지표 적합함'}" style="width:230px;" />
+                  <button class="btn btn-success" ${isTrainee ? "disabled" : ""} onclick="transitionPlan('${p.plan_id}', 'APPROVED', document.getElementById('sup-comment-${p.plan_id}').value)">
+                    최종 승인
+                  </button>
+                  <button class="btn btn-secondary" ${isTrainee ? "disabled" : ""} onclick="transitionPlan('${p.plan_id}', 'REVISION_REQUESTED', document.getElementById('sup-comment-${p.plan_id}').value)">
+                    보완 요청
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>`;
+    }
+
+    async function createPlanAndSoap() {
+      try {
+        const payload = {
+          patient_uuid: document.getElementById("plan-patient-select").value,
+          disorder_type: document.getElementById("plan-disorder").value,
+          life_context: document.getElementById("plan-context").value,
+          asha_fcm_level: Number(document.getElementById("plan-fcm-level").value),
+          baseline_correct: Number(document.getElementById("plan-base-num").value),
+          baseline_total: Number(document.getElementById("plan-base-den").value),
+          session_correct: Number(document.getElementById("plan-sess-num").value),
+          session_total: Number(document.getElementById("plan-sess-den").value),
+          cued_correct: Number(document.getElementById("plan-cued-num").value),
+          avg_reaction_time_ms: Number(document.getElementById("plan-rt-ms").value)
+        };
+        await apiFetch("/api/plans", { method: "POST", body: JSON.stringify(payload) });
+        showToast("ASHA 표준 장·단기 목표와 SOAP 결과보고서 초안이 자동 생성되었어요.");
+        await loadPlans();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    async function transitionPlan(planId, targetStatus, comment = "") {
+      try {
+        await apiFetch(`/api/plans/${planId}/transition`, {
+          method: "POST",
+          body: JSON.stringify({
+            target_status: targetStatus,
+            supervisor_comment: comment || "온라인 슈퍼비전 워크플로우 상태 전이"
+          })
+        });
+        showToast(`문서(${planId}) 상태가 '${targetStatus}'(으)로 전환되었어요.`);
+        await loadPlans();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    async function loadMaterials() {
+      const res = await apiFetch("/api/materials?limit=30");
+      state.materials = res.items || [];
+      renderMaterials();
+    }
+
+    function renderMaterials() {
+      const box = document.getElementById("materials-container");
+      if (!state.materials.length) {
+        box.innerHTML = `<div class="card"><p>생성된 교구가 없어요.</p></div>`;
+        return;
+      }
+      box.innerHTML = state.materials.map(mat => `
+        <div class="card">
+          <div class="card-header-bar">
+            <h2>
+              <span>[${mat.life_context}] 성인 생활맥락 맞춤형 어휘·문장 훈련 카드</span>
+            </h2>
+            <span class="clinical-badge">${mat.engine_used}</span>
+          </div>
+          <div class="notice-box">${mat.non_medical_label}</div>
+          <div class="grid-2" style="margin-top:16px;">
+            ${mat.items.map(item => `
+              <div class="layer-card">
+                <div class="layer-title">과제 ${item.item_no}. 목표 단어: [${item.target_word}] <span style="font-size:14px; color:var(--text-muted); font-weight:500;">(${item.category})</span></div>
+                <div style="font-size:16px; margin:8px 0; font-weight:600;">📖 문장 빈칸 완성: ${item.sentence_task}</div>
+                <div class="hint-step"><strong>1단계 의미 단서:</strong> ${item.hints.step1_semantic}</div>
+                <div class="hint-step"><strong>2단계 문장 단서:</strong> ${item.hints.step2_sentence_completion}</div>
+                <div class="hint-step"><strong>3단계 시각적 3지선다:</strong> ${item.hints.step3_visual_choices.map(c => `<span class="samd-badge" style="background:#334155; padding:3px 10px; font-size:13px;">${c}</span>`).join(" ")}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function generateContextualMaterials() {
+      try {
+        const payload = {
+          patient_uuid: document.getElementById("mat-patient-select").value,
+          life_context: document.getElementById("mat-context").value,
+          engine_mode: document.getElementById("mat-engine-mode").value,
+          item_count: 4
+        };
+        await apiFetch("/api/materials", { method: "POST", body: JSON.stringify(payload) });
+        showToast("성인 생활맥락 과제 및 3단계 힌트 단서가 생성되었어요.");
+        await loadMaterials();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+        await loadAuditAndAccounts();
+      }
+    }
+
+    async function loadSpeechSessions() {
+      const res = await apiFetch("/api/speech-sessions?limit=20");
+      state.speechSessions = res.items || [];
+      if (state.speechSessions.length) {
+        state.activeSession = state.speechSessions[0];
+        if (!state.selectedUtteranceId && state.activeSession.utterances.length) {
+          state.selectedUtteranceId = state.activeSession.utterances[0].utterance_id;
+        }
+      }
+      renderSpeechThreeColumnReview();
+    }
+
+    function selectUtterance(uttId) {
+      state.selectedUtteranceId = uttId;
+      renderSpeechThreeColumnReview();
+    }
+
+    function renderSpeechThreeColumnReview() {
+      const sess = state.activeSession;
+      if (!sess) return;
+      document.getElementById("speech-session-summary").textContent =
+        `검토 완료: ${sess.summary.review_completion_ratio} · 재확인 필요: ${sess.summary.recheck_required_count}건`;
+
+      const listCol = document.getElementById("utterance-list-col");
+      listCol.innerHTML = `
+        <div style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px; line-height:1.6;">
+          세션 ID: <code>${sess.session_id}</code><br/>
+          기준 버전: <strong>${sess.scoring_criteria_version}</strong><br/>
+          ASR 모델: <strong>${sess.asr_engine_profile.title}</strong>
+        </div>
+        ${sess.utterances.map(u => {
+          const isSel = u.utterance_id === state.selectedUtteranceId;
+          return `<div class="layer-card" style="cursor:pointer; border-left:4px solid ${isSel ? '#1d4ed8' : '#94a3b8'}; background:${isSel ? '#eff6ff' : '#ffffff'}; margin-bottom:10px; padding:12px 14px;" onclick="selectUtterance('${u.utterance_id}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="font-size:15px;">#${u.item_index}. ${u.target_word}</strong>
+              <span class="status-badge status-${u.review_status}" style="font-size:12px; padding:2px 8px;">${u.review_status}</span>
+            </div>
+            <div style="font-size:13.5px; margin-top:4px;">전사: "<strong>${u.layer2_asr.transcribed_text}</strong>"</div>
+            <div style="font-size:13px; color:var(--text-muted); margin-top:2px;">
+              반응시간: <strong style="color:var(--primary);">${u.reaction_time_ms.toLocaleString("ko-KR")} ms</strong>
+            </div>
+          </div>`;
+        }).join("")}
+      `;
+
+      const utt = sess.utterances.find(u => u.utterance_id === state.selectedUtteranceId) || sess.utterances[0];
+      if (!utt) return;
+
+      const l1 = utt.layer1_audio_quality;
+      const l2 = utt.layer2_asr;
+      const l3 = utt.layer3_timing;
+      const l4 = utt.layer4_acoustic;
+      const l5 = utt.layer5_linguistic;
+      const l6 = utt.layer6_therapist_review;
+      const mm = utt.multimodal;
+
+      document.getElementById("utterance-layers-col").innerHTML = `
+        <div class="layer-card">
+          <div class="layer-title">[Layer 1] ${l1.layer_name}</div>
+          <div style="font-size:14.5px;">SNR: <strong>${l1.snr_db} dB</strong> | 소음: ${l1.background_noise_dbfs} dBFS | 품질 판정: <strong style="color:var(--success);">${l1.quality_grade}</strong></div>
+        </div>
+        <div class="layer-card">
+          <div class="layer-title">[Layer 2] ${l2.layer_name} (장애발화 특화 한국어 ASR)</div>
+          <div style="font-size:14.5px;">목표 어휘: <strong>${l2.target_word}</strong> → 전사 결과: <strong style="color:var(--primary); font-size:16px;">"${l2.transcribed_text}"</strong> (신뢰도: ${Math.round(l2.confidence * 100)}%)</div>
+        </div>
+        <div class="layer-card" style="border-left:5px solid #0f766e; background:#f0fdfa;">
+          <div class="layer-title" style="color:#0f766e;">[Layer 3] ${l3.layer_name} — 발화 시작점(Onset) 수동 보정</div>
+          <div style="font-size:14.5px;">자극 종료: <strong>${l3.stimulus_end_ms.toLocaleString("ko-KR")} ms</strong> | AI 자동 Onset: <strong>${l3.auto_onset_ms.toLocaleString("ko-KR")} ms</strong></div>
+          <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <label style="font-weight:700;">수동 보정 Onset(ms):</label>
+            <input type="range" id="onset-slider" min="${l3.stimulus_end_ms}" max="4000" step="10" value="${l3.manual_onset_ms}" style="width:160px;" oninput="previewRealtimeLatency(${l3.stimulus_end_ms}, this.value, ${mm.visual_onset_ms})" />
+            <input type="number" id="onset-number" value="${l3.manual_onset_ms}" min="${l3.stimulus_end_ms}" max="6000" style="width:100px; font-weight:800;" oninput="previewRealtimeLatency(${l3.stimulus_end_ms}, this.value, ${mm.visual_onset_ms})" />
+          </div>
+          <div id="realtime-latency-preview" style="margin-top:10px; font-size:16px; font-weight:800; color:var(--primary);">
+            실시간 반응시간: ${l3.reaction_time_ms.toLocaleString("ko-KR")} ms (${l3.within_latency_threshold ? '✅ 정상 범위' : '⚠️ 지연'})
+          </div>
+        </div>
+        <div class="layer-card">
+          <div class="layer-title">[Layer 4 &amp; 5] 음향 분석 &amp; 언어적 반응 분류</div>
+          <div style="font-size:14.5px;">F0: ${l4.f0_mean_hz} Hz | 강도: ${l4.intensity_mean_db} dB | 오류 분류: <strong style="color:var(--warn);">${l5.classification}</strong> | AI 제안 점수: <strong>${l5.auto_suggested_score}/${l5.max_score}점</strong></div>
+        </div>
+        <div class="layer-card" style="border-left:5px solid #7c3aed; background:#faf5ff;">
+          <div class="layer-title" style="color:#7c3aed;">[카메라 멀티모달 분석] 안면·입술 개구도 및 조음 탐색</div>
+          <div style="font-size:14.5px; line-height:1.7;">
+            입술 개구도: <strong>${mm.lip_aperture_mm} mm</strong> | 안면 비대칭 지수: <strong>${mm.facial_asymmetry_idx}</strong> (${mm.asymmetry_status})<br/>
+            조음 탐색(Groping): <strong style="color:var(--danger);">${mm.groping_detected ? '감지됨' : '없음'}</strong> — ${mm.groping_description}<br/>
+            <span id="realtime-mm-lag">시각적 발화시작: <strong>${mm.visual_onset_ms.toLocaleString("ko-KR")} ms</strong> vs 음향시작: <strong>${mm.audio_onset_ms.toLocaleString("ko-KR")} ms</strong> (격차: <strong>${mm.visual_to_audio_lag_ms.toLocaleString("ko-KR")} ms</strong>)</span>
+          </div>
+        </div>
+      `;
+
+      const isTrainee = state.role === "실습생" || state.role === "trainee";
+      document.getElementById("utterance-review-col").innerHTML = `
+        <div class="layer-card" style="border-top:4px solid var(--primary);">
+          <div class="layer-title">[Layer 6] ${l6.layer_name}</div>
+          <div style="font-size:15px; margin-bottom:12px;">현재 문항 검토 상태: <span class="status-badge status-${utt.review_status}">${utt.review_status}</span></div>
+          ${l6.recheck_reason ? `<div class="notice-box warning" style="margin-bottom:12px;">⚠️ ${l6.recheck_reason}</div>` : ""}
+          <div class="form-group">
+            <label>치료사 최종 판정 점수</label>
+            <select id="review-final-score" style="height:46px; font-size:16px; font-weight:700;">
+              <option value="2" ${(l6.final_score ?? l5.auto_suggested_score) === 2 ? "selected" : ""}>2점 (정반응 · 목표 시간 내 정확 산출)</option>
+              <option value="1" ${(l6.final_score ?? l5.auto_suggested_score) === 1 ? "selected" : ""}>1점 (지연 정반응 · 조음 탐색 또는 힌트 후 산출)</option>
+              <option value="0" ${(l6.final_score ?? l5.auto_suggested_score) === 0 ? "selected" : ""}>0점 (착어 · 오반응)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-top:12px;">
+            <label>임상 검토 메모</label>
+            <textarea id="review-therapist-note" rows="3" style="font-size:14.5px;">${l6.therapist_note || "스펙트로그램 및 구강 카메라 대조 후 Onset 보정 완료"}</textarea>
+          </div>
+          <div class="notice-box" style="margin-top:12px; font-size:13px;">
+            ${l6.non_medical_notice} · ${NON_MEDICAL_BANNER_SHORT}
+          </div>
+          <div style="margin-top:16px;">
+            <button class="btn btn-success" style="width:100%;" onclick="saveUtteranceCalibration('${utt.utterance_id}')">
+              ${isTrainee ? "Onset 보정 저장 및 승인 요청 (실습생 초안)" : "✅ 문항 검토 완료 및 판정 확정 (REVIEWED)"}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    const NON_MEDICAL_BANNER_SHORT = "비의료 일상생활 훈련";
+
+    function previewRealtimeLatency(stimEndMs, newManualOnsetVal, visualOnsetMs) {
+      const manualMs = Math.max(stimEndMs, Number(newManualOnsetVal || stimEndMs));
+      document.getElementById("onset-slider").value = manualMs;
+      document.getElementById("onset-number").value = manualMs;
+      const rt = manualMs - stimEndMs;
+      const threshold = Number(document.getElementById("criteria-latency-ms").value || 1500);
+      const previewEl = document.getElementById("realtime-latency-preview");
+      if (previewEl) {
+        previewEl.textContent = `실시간 반응시간: ${rt.toLocaleString("ko-KR")} ms (${rt <= threshold ? '✅ 정상 범위' : '⚠️ 지연'})`;
+      }
+      const lagEl = document.getElementById("realtime-mm-lag");
+      if (lagEl) {
+        const lag = manualMs - visualOnsetMs;
+        lagEl.innerHTML = `시각적 발화시작: <strong>${visualOnsetMs.toLocaleString("ko-KR")} ms</strong> vs 음향시작: <strong>${manualMs.toLocaleString("ko-KR")} ms</strong> (격차: <strong>${lag.toLocaleString("ko-KR")} ms</strong>)`;
+      }
+    }
+
+    async function saveUtteranceCalibration(utteranceId) {
+      try {
+        const manualOnset = Number(document.getElementById("onset-number").value);
+        const score = Number(document.getElementById("review-final-score").value);
+        const note = document.getElementById("review-therapist-note").value;
+        await apiFetch(`/api/speech-utterances/${utteranceId}/calibrate`, {
+          method: "POST",
+          body: JSON.stringify({
+            manual_onset_ms: manualOnset,
+            final_score: score,
+            therapist_note: note,
+            mark_reviewed: true
+          })
+        });
+        showToast("발화 시작점(Onset) 보정 및 재계산이 저장되었어요.");
+        await loadSpeechSessions();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    async function updateScoringCriteria() {
+      if (!state.activeSession) return;
+      try {
+        const lat = Number(document.getElementById("criteria-latency-ms").value);
+        const acc = Number(document.getElementById("criteria-acc-pct").value);
+        const res = await apiFetch(`/api/speech-sessions/${state.activeSession.session_id}/scoring-criteria`, {
+          method: "POST",
+          body: JSON.stringify({
+            latency_threshold_ms: lat,
+            accuracy_threshold_pct: acc
+          })
+        });
+        showToast(`채점 기준 변경으로 ${res.recheck_transitioned_count}개 문항이 '재확인 필요' 상태로 전환되었어요.`);
+        await loadSpeechSessions();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    async function loadHomecareAndPlugins() {
+      const [hcRes, plugRes, rtRes] = await Promise.all([
+        apiFetch("/api/homecare?limit=20"),
+        apiFetch("/api/plugins"),
+        apiFetch("/api/runtime-settings")
+      ]);
+      state.homecare = hcRes.items || [];
+      state.plugins = plugRes.items || [];
+      state.runtimeSettings = rtRes;
+      renderHomecare();
+      renderPlugins();
+      renderRuntimeSettings();
+    }
+
+    function renderHomecare() {
+      const box = document.getElementById("homecare-list-container");
+      if (!state.homecare.length) {
+        box.innerHTML = "<p>배정된 가정 훈련이 없어요.</p>";
+        return;
+      }
+      box.innerHTML = state.homecare.map(hc => `
+        <div class="layer-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-size:16px;">[${hc.target_group}] ${hc.title}</strong>
+            <span class="status-badge status-${hc.approval_status}">${hc.approval_status}</span>
+          </div>
+          <div style="font-size:14.5px; margin-top:6px;">
+            누적 수행: <strong>${hc.progress_summary}</strong> | 평균 정반응률: <strong>${hc.average_accuracy_pct}%</strong>
+          </div>
+          <div style="margin-top:12px;">
+            <button class="btn btn-secondary" onclick="recordHomecareTrial('${hc.assignment_id}')">
+              가정 훈련 1회기 수행 기록 추가 (9/10 · 90.0%)
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function createHomecareAssignment() {
+      try {
+        const patientUuid = (state.patients[0] && state.patients[0].patient_uuid) || "";
+        await apiFetch("/api/homecare", {
+          method: "POST",
+          body: JSON.stringify({
+            patient_uuid: patientUuid,
+            target_group: document.getElementById("hc-target-group").value,
+            daily_goal_count: Number(document.getElementById("hc-daily-goal").value)
+          })
+        });
+        showToast("승인형 가정 훈련 과제가 배정되었어요.");
+        await loadHomecareAndPlugins();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    async function recordHomecareTrial(assignmentId) {
+      try {
+        await apiFetch(`/api/homecare/${assignmentId}/logs`, {
+          method: "POST",
+          body: JSON.stringify({
+            correct_count: 9,
+            trial_count: 10,
+            avg_reaction_time_ms: 1210,
+            guardian_memo: "가정에서 보호자 동반 하에 병원·마트 과제 10문항 중 9문항 정반응 수행"
+          })
+        });
+        showToast("가정 훈련 정량 수행 이력(9/10, 90.0%)이 기록되었어요.");
+        await loadHomecareAndPlugins();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    function renderRuntimeSettings() {
+      const box = document.getElementById("slmm-settings-container");
+      const rt = state.runtimeSettings;
+      if (!rt) return;
+      box.innerHTML = `
+        <div class="layer-card">
+          <div style="font-size:15px; line-height:1.7;">
+            현재 모드: <strong>${rt.slmm_mode === 'local_slmm' ? '🔒 온디바이스 / 로컬 sLMM (망분리 안전 모드)' : '☁️ 외부 클라우드 LLM'}</strong><br/>
+            활성 모델: <code>${rt.slmm_model_name}</code> (${rt.active_model_spec.quantization})<br/>
+            망분리 오프라인 지원: <strong style="color:var(--success);">${rt.active_model_spec.air_gapped_ready ? '완전 지원 (외부 전송 0건)' : '외부망 필요'}</strong>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-secondary" onclick="switchSlmmModel('local_slmm', 'Ko-Rehab-sLMM-3B-OnDevice-GGUF')">
+              Ko-Rehab-sLMM-3B 전환
+            </button>
+            <button class="btn btn-secondary" onclick="switchSlmmModel('local_slmm', 'Ko-Speech-sLMM-1.8B-ONNX-Edge')">
+              Ko-Speech-sLMM-1.8B 전환
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function switchSlmmModel(mode, modelName) {
+      try {
+        await apiFetch("/api/runtime-settings", {
+          method: "PUT",
+          body: JSON.stringify({
+            slmm_mode: mode,
+            slmm_model_name: modelName,
+            network_isolation_mode: true
+          })
+        });
+        showToast(`한국어 경량 모델(${modelName}) 구동 설정이 적용되었어요.`);
+        await loadHomecareAndPlugins();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    function renderPlugins() {
+      const box = document.getElementById("plugins-container");
+      box.innerHTML = state.plugins.map(p => `
+        <div class="layer-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-size:15.5px;">${p.title} (${p.domain_code})</strong>
+            <label style="font-size:14px; font-weight:700;">
+              <input type="checkbox" ${p.enabled ? "checked" : ""} onchange="togglePlugin('${p.plugin_id}', this.checked)" />
+              활성화
+            </label>
+          </div>
+          <div style="font-size:13.5px; color:var(--text-muted); margin-top:4px;">
+            핵심 지표: ${p.config.key_metrics.join(", ")}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function togglePlugin(pluginId, enabled) {
+      try {
+        await apiFetch(`/api/plugins/${pluginId}`, {
+          method: "PATCH",
+          body: JSON.stringify({ enabled })
+        });
+        showToast("영역별 확장 플러그인 상태가 변경되었어요.");
+        await loadHomecareAndPlugins();
+        await loadAuditAndAccounts();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    async function loadAuditAndAccounts() {
+      const [auditRes, accRes] = await Promise.all([
+        apiFetch("/api/audit-logs?limit=30"),
+        apiFetch("/api/org-accounts")
+      ]);
+      state.audit = auditRes;
+      renderAuditLogs();
+      renderOrgAccounts(accRes.items || []);
+    }
+
+    function renderOrgAccounts(accounts) {
+      const box = document.getElementById("org-accounts-container");
+      if (!box) return;
+      box.innerHTML = `<table>
+        <thead>
+          <tr><th>사용자</th><th>역할</th><th>인증 방식</th><th>상태</th></tr>
+        </thead>
+        <tbody>
+          ${accounts.map(a => `
+            <tr>
+              <td><strong>${a.display_name}</strong> (<code>${a.email}</code>)</td>
+              <td>${a.role}</td>
+              <td><code>${a.auth_mode}</code></td>
+              <td><span class="status-badge status-APPROVED">${a.account_status}</span></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>`;
+    }
+
+    function renderAuditLogs() {
+      const box = document.getElementById("audit-logs-container");
+      if (!box) return;
+      const accessRows = (state.audit.items || []).slice(0, 10);
+      const stateRows = (state.audit.state_changes || []).slice(0, 10);
+      box.innerHTML = `
+        <div class="grid-2">
+          <div>
+            <h3>전수 접근 로그 (AccessLog)</h3>
+            <table>
+              <thead><tr><th>시각</th><th>행위자</th><th>액션 / 리소스</th><th>결과</th></tr></thead>
+              <tbody>
+                ${accessRows.map(r => `
+                  <tr>
+                    <td>${r.created_at.slice(11, 19)}</td>
+                    <td>${r.actor_id} (${r.actor_role})</td>
+                    <td>${r.action} · <code>${r.resource_type}</code></td>
+                    <td><strong>${r.outcome}</strong></td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>상태 변경 감사 이력 (StateChangeHistory)</h3>
+            <table>
+              <thead><tr><th>시각</th><th>엔티티</th><th>상태 전이</th><th>사유</th></tr></thead>
+              <tbody>
+                ${stateRows.map(s => `
+                  <tr>
+                    <td>${s.created_at.slice(11, 19)}</td>
+                    <td><code>${s.entity_type}</code></td>
+                    <td>${s.from_state} → <strong>${s.to_state}</strong></td>
+                    <td>${s.reason}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initFromUrlParams();
+      refreshAll();
+    });
+  </script>
+</body>
+</html>

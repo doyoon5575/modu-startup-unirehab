@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>음성·발화 분석 및 언어재활 지원 플랫폼 구축 완료 안내</title>
+<style>
+:root{--ink:#1a1d29;--muted:#5b6478;--line:#e6e8ef;--bg:#f6f7fb;
+      --accent:#2b5cff;--accent-soft:#eef2ff;--green:#0a8f5b;--green-soft:#e7f6ee;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+     font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR",
+                 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+     line-height:1.7;-webkit-font-smoothing:antialiased;padding:40px 16px;}
+.wrap{max-width:820px;margin:0 auto;background:#fff;border:1px solid var(--line);
+      border-radius:14px;padding:48px 52px;}
+.badge{display:inline-block;background:var(--accent-soft);color:var(--accent);
+       font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.02em;}
+h1{font-size:26px;line-height:1.35;margin:14px 0 6px;}
+.meta{color:var(--muted);font-size:14px;margin-bottom:28px;
+      padding-bottom:20px;border-bottom:2px solid var(--ink);}
+h2{font-size:17px;margin:30px 0 10px;padding-left:10px;border-left:3px solid var(--accent);}
+p{margin:8px 0;}
+ul{margin:8px 0;padding-left:22px;}
+li{margin:4px 0;}
+.links{background:var(--green-soft);border-radius:10px;padding:14px 18px;margin:24px 0;}
+.links .lk{margin:4px 0;font-size:15px;}
+.links .lk b{color:var(--green);margin-right:8px;}
+.links a{color:var(--ink);word-break:break-all;}
+.items{background:var(--accent-soft);border-radius:10px;padding:16px 20px;margin:24px 0;}
+.items h2{border:none;padding:0;margin:0 0 8px;color:var(--accent);}
+.items ol{margin:6px 0 2px;padding-left:22px;}
+.items li{margin:6px 0;}
+.closing{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);}
+footer{max-width:820px;margin:14px auto 0;color:var(--muted);font-size:12px;text-align:right;}
+@page{size:A4;margin:18mm 16mm;}
+@media print{
+  body{background:#fff;padding:0;}
+  .wrap{border:none;border-radius:0;padding:0;max-width:none;}
+  footer{margin-top:18px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">결과 안내문</span>
+  <h1>음성·발화 분석 및 언어재활 지원 플랫폼 구축 완료 안내</h1>
+  <div class="meta">2026년 11월 01일</div>
+  <p>안녕하세요! 요청해 주신 '음성·발화 분석 및 언어재활 지원 플랫폼'의 핵심 기능 개발과 검증 작업을 모두 마쳤습니다. 치료계획 작성부터 인공지능 기반 맞춤형 교구 생성, 음성 분석 검토, 지도교수 승인 흐름까지 한곳에서 체계적으로 진행하실 수 있도록 구현했습니다.</p>
+<h2>치료계획 작성 및 지도교수 승인 흐름</h2>
+<p>환자의 평가 정보를 입력하면 표준 임상 지침에 맞춘 장·단기 치료 목표 후보와 정량적 통계, 그리고 SOAP 보고서(환자 상태와 치료 경과를 정리하는 표준 기록 양식) 초안이 자동으로 생성됩니다.</p>
+<p>실습생과 지도교수의 권한도 안전하게 분리했습니다. 실습생 모드에서는 최종 승인 버튼이 작동하지 않으며 '지도교수 승인 요청'만 가능합니다. 지도교수는 작성된 초안을 온라인에서 검토한 뒤 승인하거나 보완을 요청할 수 있습니다.</p>
+<h2>성인 일상생활 맞춤형 교구 및 힌트 생성</h2>
+<p>병원, 마트, 대중교통 등 성인 환자가 실제로 접하는 일상 환경을 반영한 어휘·문장 재활 과제를 제공합니다.</p>
+<p>과제 수행을 돕기 위해 1단계 의미 단서부터 3단계까지 단계별 힌트를 함께 만들어 내어 가정 및 임상 현장에서 효과적으로 활용할 수 있습니다.</p>
+<h2>음성·발화 분석 및 서비스 상태</h2>
+<p>환자의 발성 데이터를 다각도로 분석하고, 분석된 발화 시작점을 화면에서 직접 확인하고 보정할 수 있는 검토 화면을 준비했습니다.</p>
+<p>현재 웹 서비스 주소에 시스템이 정상 배치되었으며, 안전한 이용을 위한 관리자 승인 절차가 진행 중입니다. 승인이 완료되면 추가 작업 없이 바로 접속하여 이용하실 수 있습니다.</p>
+<div class="links"><div class="lk"><b>완성된 화면 보기</b><a href="https://prd-otter.onpod.ai">https://prd-otter.onpod.ai</a></div></div>
+<div class="items"><h2>이렇게 확인해 보세요</h2><ol><li>실습생 계정 접속 시 지도교수 승인 요청 기능이 정상 동작하는지 확인해 보세요.</li><li>병원·마트 등 일상 상황을 선택하여 맞춤형 과제와 3단계 힌트가 잘 생성되는지 둘러보세요.</li><li>SOAP 결과보고서 초안과 정량 통계 지표가 제대로 제안되는지 살펴보세요.</li></ol></div>
+<div class="closing"><p>필요한 기능들이 원활하게 작동하도록 꼼꼼히 검증을 마쳤습니다. 사용 중 궁금한 점이나 추가 요청사항이 있으시면 언제든 말씀해 주세요.</p></div>
+</div>
+<footer>BizCoder와 함께 정리했어요</footer>
+</body>
+</html>
